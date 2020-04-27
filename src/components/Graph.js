@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import styled from 'styled-components';
+import GraphSquare from './GraphSquare';
 
 class Graph extends Component{
     constructor(){
@@ -7,28 +7,31 @@ class Graph extends Component{
         this.state = {
             squareRows: [],
             rows: 20,
-            columns: 20
+            columns: 1
         }
     }
 
-    componentWillMount(){
+    createGraph = () => {
         let rows = [];
-        for (r=0; r<=this.state.rows; r++){
-            rows.push({
-                cols: []
-            });
-            for (c=0; c<= this.state.columns; c++){
-                rows[r].cols.push(
-
+        for (var r=0; r<=this.state.rows; r++){
+            let cols = []
+            for (var c=0; c<= this.state.columns; c++){
+                cols.push(
+                    <GraphSquare />
                 )
             }
+        rows.push(<div>{cols}</div>);
         }
+        return rows;
     }
 
     render(){
         return (
-            <>
-            </>
+            <div>
+                {this.createGraph()}
+            </div>
         );
     }
 }
+
+export default Graph;
