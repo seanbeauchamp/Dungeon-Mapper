@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './logo.svg';
 import './App.css';
+import {Container, Row, Col} from 'reactstrap';
 
 import Header from './components/Header';
 import Graph from './components/Graph';
@@ -9,7 +10,13 @@ function App() {
   return (
     <>
     <Header />
-    <Graph />
+    <Container className='mt-3'>
+      <Row>
+        <Col></Col>
+        <Col md="auto"><Graph /></Col>
+        <Col></Col>
+      </Row>
+    </Container>    
     {/*<div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
