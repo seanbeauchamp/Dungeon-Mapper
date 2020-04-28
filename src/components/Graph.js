@@ -14,10 +14,13 @@ class Graph extends Component{
     constructor(){
         super();
         this.state = {
-            squareRows: [],
             rows: 20,
             columns: 20
         }
+    }
+
+    checkAdjacentSquares = () => {
+        console.log("test");
     }
 
     createGraph = () => {
@@ -27,7 +30,8 @@ class Graph extends Component{
             for (var c=0; c<= this.state.columns; c++){
                 cols.push(
                     <GraphSquare rowNum={r} colNum={c} 
-                        gridWidth={this.state.rows} gridHeight={this.state.columns} />
+                        gridWidth={this.state.rows} gridHeight={this.state.columns}
+                        checkAdjacentSquares={this.checkAdjacentSquares} />
                 )
             }
         rows.push(<RowDiv>{cols}</RowDiv>);

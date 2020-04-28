@@ -22,6 +22,7 @@ class GraphSquare extends Component{
 
     toggleborder = () => {
         this.setState({border: !this.state.border});
+        this.props.checkAdjacentSquares();
     }
 
     render(){
