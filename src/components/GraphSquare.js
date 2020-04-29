@@ -16,13 +16,13 @@ class GraphSquare extends Component{
             selected: false,
             border: false,
             row: this.props.rowNum,
-            count: this.props.colNum
+            col: this.props.colNum
         }
     }
 
     toggleborder = () => {
         this.setState({border: !this.state.border});
-        this.props.checkAdjacentSquares();
+        this.props.checkAdjacentSquares(this.state.row, this.state.col);
     }
 
     render(){

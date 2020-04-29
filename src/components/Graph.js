@@ -14,13 +14,15 @@ class Graph extends Component{
     constructor(){
         super();
         this.state = {
+            squareArray: [],
             rows: 20,
             columns: 20
         }
     }
 
-    checkAdjacentSquares = () => {
-        console.log("test");
+    checkAdjacentSquares = (thisRow, thisCol) => {
+        let testint = React.Children.count(this.props.children);
+        console.log(testint);
     }
 
     createGraph = () => {
@@ -34,9 +36,9 @@ class Graph extends Component{
                         checkAdjacentSquares={this.checkAdjacentSquares} />
                 )
             }
-        rows.push(<RowDiv>{cols}</RowDiv>);
+        this.state.squareArray.push(<RowDiv>{cols}</RowDiv>);
         }
-        return rows;
+        return this.state.squareArray;
     }
 
     render(){
