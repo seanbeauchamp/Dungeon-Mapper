@@ -20,8 +20,8 @@ class Graph extends Component{
         }
     }
 
+    //TODO: Account for disabled squares as well, returning the original borders if they existed
     checkAdjacentSquares = (thisRow, thisCol) => {
-        //let testReturn = this.state.squareArray[thisRow].props.children[thisCol].ref.current.state.border;
         let upBox = (thisRow - 1 >= 0 ? 
             this.state.squareArray[thisRow - 1].props.children[thisCol].ref.current : null);
         let downBox = (thisRow + 1 <= this.state.rows ? 
@@ -38,9 +38,24 @@ class Graph extends Component{
             left: false
         };
        
-        if (upBox.state.borderSides.up || upBox.state.border){
+        if (upBox.state.borderSides.bottom){
             borderResults.top = true;
-            upBox.toggleSide('top');
+            upBox.toggleSide('bottom');
+        }
+
+        if (downBox.state.borderSides.top){
+            borderResults.bottom = true;
+            downBox.toggleSide('top');
+        }
+
+        if (rightBox.state.borderSides.left){
+            borderResults.right = true;
+            rightBox.toggleSide('left');
+        }
+
+        if (leftBox.state.borderSides.right){
+            borderResults.left = true;
+            leftBox.toggleSide('right');
         }
         
         return borderResults;

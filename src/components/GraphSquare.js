@@ -5,13 +5,13 @@ const StyledSquare = styled.span`
     display: inline-block;
     height: 30px;
     width: 30px;
-    border-top: ${props => !props.bordered && !props.borderSides.top ? 
+    border-top: ${props => !props.borderSides.top ? 
         "1px solid #BBBBBB" : "2px solid black"};
-    border-bottom: ${props => !props.bordered && !props.borderSides.bottom ? 
+    border-bottom: ${props => !props.borderSides.bottom ? 
         "1px solid #BBBBBB" : "2px solid black"};        
-    border-right: ${props => !props.bordered && !props.borderSides.right ? 
+    border-right: ${props => !props.borderSides.right ? 
         "1px solid #BBBBBB" : "2px solid black"};
-    border-left: ${props => !props.bordered && !props.borderSides.left ? 
+    border-left: ${props => !props.borderSides.left ? 
         "1px solid #BBBBBB" : "2px solid black"}; 
 `;
 
@@ -32,11 +32,13 @@ class GraphSquare extends Component{
         }
     }
 
+    //TODO: Check if no borderSides are present but border bool is True, in which case set it false
+    //Note: Lower priority than reverting adjacent square changes, check it it's even an issue afterwards
     toggleborder = () => {
-        this.setState({border: !this.state.border});
+        this.changeAllSides();
         let newSides = this.props.checkAdjacentSquares(this.state.row, this.state.col);
         for (var side in newSides){
-            if (side){
+            if (newSides[side]){
                 this.toggleSide(side);
             }
         }
@@ -46,6 +48,16 @@ class GraphSquare extends Component{
         let newBorderSides = this.state.borderSides;
         newBorderSides[side] = !newBorderSides[side];
         this.setState({borderSides: newBorderSides});
+    }
+
+    changeAllSides = () =>
+    {
+        let newState = !this.state.border;
+        let tempSides = this.state.borderSides;
+        for (let key in tempSides){
+            tempSides[key] = newState;
+        }
+        this.setState({borderSides: tempSides, border: newState});
     }
 
     render(){
