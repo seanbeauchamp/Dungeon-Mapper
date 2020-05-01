@@ -1,22 +1,13 @@
 import React from 'react';
-import logo from './logo.svg';
+//import logo from './logo.svg';
 import './App.css';
-import {Container, Row, Col} from 'reactstrap';
 
-import Header from './components/Header';
-import Graph from './components/Graph';
+import MapController from './components/MapController';
 
 function App() {
   return (
     <>
-    <Header />
-    <Container className='mt-3'>
-      <Row>
-        <Col></Col>
-        <Col md="auto"><Graph /></Col>
-        <Col></Col>
-      </Row>
-    </Container>    
+       <MapController />
     {/*<div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />

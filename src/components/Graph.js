@@ -15,18 +15,19 @@ class Graph extends Component{
         super();
         this.state = {
             squareArray: [],
-            rows: 20,
-            columns: 20
         }
     }
 
     //TODO: Account for disabled squares as well, returning the original borders if they existed
     checkAdjacentSquares = (thisRow, thisCol) => {
+        if (!this.props.autoExpandSquares)
+            return null;
+
         let upBox = (thisRow - 1 >= 0 ? 
             this.state.squareArray[thisRow - 1].props.children[thisCol].ref.current : null);
-        let downBox = (thisRow + 1 <= this.state.rows ? 
+        let downBox = (thisRow + 1 <= this.props.rows ? 
             this.state.squareArray[thisRow + 1].props.children[thisCol].ref.current : null);
-        let rightBox = (thisCol + 1 <= this.state.columns ? 
+        let rightBox = (thisCol + 1 <= this.props.columns ? 
             this.state.squareArray[thisRow].props.children[thisCol + 1].ref.current : null);
         let leftBox = (thisCol - 1 >= 0 ? 
             this.state.squareArray[thisRow].props.children[thisCol - 1].ref.current : null);
@@ -38,22 +39,22 @@ class Graph extends Component{
             left: false
         };
        
-        if (upBox.state.borderSides.bottom){
+        if (upBox !== null && upBox.state.borderSides.bottom){
             borderResults.top = true;
             upBox.toggleSide('bottom');
         }
 
-        if (downBox.state.borderSides.top){
+        if (downBox !== null && downBox.state.borderSides.top){
             borderResults.bottom = true;
             downBox.toggleSide('top');
         }
 
-        if (rightBox.state.borderSides.left){
+        if (rightBox !== null && rightBox.state.borderSides.left){
             borderResults.right = true;
             rightBox.toggleSide('left');
         }
 
-        if (leftBox.state.borderSides.right){
+        if (leftBox !== null && leftBox.state.borderSides.right){
             borderResults.left = true;
             leftBox.toggleSide('right');
         }
@@ -63,25 +64,30 @@ class Graph extends Component{
 
     createGraph = () => {
         let rows = [];
-        for (var r=0; r<=this.state.rows; r++){
+        for (var r=0; r<=this.props.rows; r++){
             let cols = [];
-            for (var c=0; c<= this.state.columns; c++){
+            for (var c=0; c<= this.props.columns; c++){
                 let newref = React.createRef();
                 cols.push(
                     <GraphSquare rowNum={r} colNum={c} ref={newref}
                         gridWidth={this.state.rows} gridHeight={this.state.columns}
-                        checkAdjacentSquares={this.checkAdjacentSquares} />
+                        checkAdjacentSquares={this.checkAdjacentSquares}
+                        autoExpandSquares={this.state.autoExpandSquares} />
                 )
             }
-        this.state.squareArray.push(<RowDiv>{cols}</RowDiv>);
+            rows.push(<RowDiv>{cols}</RowDiv>);
         }
-        return this.state.squareArray;
+        this.setState({squareArray: rows});
+    }
+
+    componentDidMount(){
+        this.createGraph();
     }
 
     render(){
-        return (
+    return (
             <GraphDiv>
-                {this.createGraph()}
+                {this.state.squareArray}
             </GraphDiv>
         );
     }

@@ -37,9 +37,11 @@ class GraphSquare extends Component{
     toggleborder = () => {
         this.changeAllSides();
         let newSides = this.props.checkAdjacentSquares(this.state.row, this.state.col);
-        for (var side in newSides){
-            if (newSides[side]){
-                this.toggleSide(side);
+        if (newSides){        
+            for (var side in newSides){
+                if (newSides[side]){
+                    this.toggleSide(side);
+                }
             }
         }
     }
