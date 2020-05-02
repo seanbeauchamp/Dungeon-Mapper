@@ -32,11 +32,9 @@ class GraphSquare extends Component{
         }
     }
 
-    //TODO: Check if no borderSides are present but border bool is True, in which case set it false
-    //Note: Lower priority than reverting adjacent square changes, check it it's even an issue afterwards
     toggleborder = () => {
         this.changeAllSides();
-        let newSides = this.props.checkAdjacentSquares(this.state.row, this.state.col);
+        let newSides = this.props.checkAdjacentSquares(this.state.row, this.state.col, this.state.border);
         if (newSides){        
             for (var side in newSides){
                 if (newSides[side]){
@@ -60,6 +58,25 @@ class GraphSquare extends Component{
             tempSides[key] = newState;
         }
         this.setState({borderSides: tempSides, border: newState});
+    }
+
+    componentDidUpdate(prevProps, prevState){
+        this.confirmBordersInPlace();
+    }
+
+    confirmBordersInPlace = () => {
+        if (this.state.border){
+            let borderFound = false;
+            for (let key in this.state.borderSides){
+                if(this.state.borderSides[key]){
+                    borderFound = true;
+                    break;
+                }
+            }
+            if (!borderFound){
+                this.setState({border: false});
+            }
+        }
     }
 
     render(){

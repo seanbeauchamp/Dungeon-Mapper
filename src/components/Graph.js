@@ -19,7 +19,7 @@ class Graph extends Component{
     }
 
     //TODO: Account for disabled squares as well, returning the original borders if they existed
-    checkAdjacentSquares = (thisRow, thisCol) => {
+    checkAdjacentSquares = (thisRow, thisCol, borderOn) => {
         if (!this.props.autoExpandSquares)
             return null;
 
@@ -32,31 +32,48 @@ class Graph extends Component{
         let leftBox = (thisCol - 1 >= 0 ? 
             this.state.squareArray[thisRow].props.children[thisCol - 1].ref.current : null);
 
+        return this.calculateGraphNeighbours(upBox, downBox, rightBox, leftBox, borderOn);
+    }
+
+    calculateGraphNeighbours = (upBox, downBox, rightBox, leftBox, borderOn) => {
         let borderResults = {
             top: false,
             bottom: false,
             right: false,
             left: false
         };
-       
-        if (upBox !== null && upBox.state.borderSides.bottom){
-            borderResults.top = true;
-            upBox.toggleSide('bottom');
-        }
-
-        if (downBox !== null && downBox.state.borderSides.top){
-            borderResults.bottom = true;
-            downBox.toggleSide('top');
-        }
-
-        if (rightBox !== null && rightBox.state.borderSides.left){
-            borderResults.right = true;
-            rightBox.toggleSide('left');
-        }
-
-        if (leftBox !== null && leftBox.state.borderSides.right){
-            borderResults.left = true;
-            leftBox.toggleSide('right');
+        
+        //"borderOn" value passed will appear opposite because the child's state has yet to change with the render
+        if (!borderOn){
+            if (upBox !== null && upBox.state.borderSides.bottom){
+                borderResults.top = true;
+                upBox.toggleSide('bottom');
+            }
+            if (downBox !== null && downBox.state.borderSides.top){
+                borderResults.bottom = true;
+                downBox.toggleSide('top');
+            }
+            if (rightBox !== null && rightBox.state.borderSides.left){
+                borderResults.right = true;
+                rightBox.toggleSide('left');
+            }
+            if (leftBox !== null && leftBox.state.borderSides.right){
+                borderResults.left = true;
+                leftBox.toggleSide('right');
+            }
+        } else {
+            if (upBox !== null && !upBox.state.borderSides.bottom && upBox.state.border){
+                upBox.toggleSide('bottom');
+            }
+            if (downBox !== null && !downBox.state.borderSides.top && downBox.state.border){
+                downBox.toggleSide('top');
+            }
+            if (rightBox !== null && !rightBox.state.borderSides.left && rightBox.state.border){
+                rightBox.toggleSide('left');
+            }
+            if (leftBox !== null && !leftBox.state.borderSides.right && leftBox.state.border){
+                leftBox.toggleSide('right');
+            }
         }
         
         return borderResults;
