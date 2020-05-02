@@ -23,7 +23,7 @@ class MapController extends Component {
         return(
             <>
                 <Header />
-                <Container className='mt-3'>
+                <Container fluid className='mt-3'>
                 <Row>
                     <Col></Col>
                     <Col md="auto">
