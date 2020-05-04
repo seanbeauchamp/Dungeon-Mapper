@@ -23,10 +23,12 @@ class PropertyCard extends Component{
                                     />
                                     Auto-Expand/Retract Grid with Neighbour Squares
                                 </Label>
-                                <Label>
-                                    Custom Border Sides:
-                                    <BorderSelector />
-                                </Label>
+                                <fieldset>
+                                    <Label>
+                                        Custom Border Sides:
+                                        <BorderSelector />
+                                    </Label>
+                                </fieldset>
                             </FormGroup>
                         </Form>
                     </div>

@@ -3,7 +3,14 @@ import styled from 'styled-components';
 
 const CustomBorderGrid = styled.table`
     border: collapse;
-    border: 1px solid black;
+    border-left: ${props => props.borderPresets.left ?
+        "2px solid black" : "2px solid #EEEEEE"};
+    border-right: ${props => props.borderPresets.right ?
+        "2px solid black" : "2px solid #EEEEEE"};
+    border-top: ${props => props.borderPresets.top ?
+        "2px solid black" : "2px solid #EEEEEE"};
+    border-bottom: ${props => props.borderPresets.bottom ?
+        "2px solid black" : "2px solid #EEEEEE"};
 `;
 
 const CenterSquare = styled.td`
@@ -17,31 +24,58 @@ const SideSection = styled.td`
     height: ${props => props.styleHeight};
     padding: 0;
     background-color: ${props => !props.hovering ?
-    "#FFFFFF": "#EEEEEE"}
+        "#FFFFFF": "#EEEEEE"}
 `;
 
 class BorderSelector extends Component{
+    constructor(){
+        super();
+        this.state = {
+            borderPresets: {
+                top: true,
+                bottom: true,
+                left: true,
+                right: true
+            }
+        }
+    }
+
+    toggleSide = side => {
+        let newPresets = this.state.borderPresets;
+        newPresets[side] = !newPresets[side];
+        this.setState({borderPresets: newPresets});
+    }
+
     render(){
         return(
             <div>
-            <CustomBorderGrid>
+            <CustomBorderGrid borderPresets={this.state.borderPresets}>
                 <tr>
-                    <td colspan="3" style={{padding: "0", borderBottom: "1px solid #CCCCCC"}}>
+                    <td colspan="3" style={{padding: "0", borderBottom: "1px solid #CCCCCC"}}
+                        onClick={() => this.toggleSide("top")}>
                         <CustomSide thisWidth={"142px"} thisHeight={"20px"} />
                     </td>
                 </tr>
                 <tr>
-                    <td style={{padding: "0", borderRight: "1px solid #CCCCCC"}}>
-                        <CustomSide thisWidth={"20px"} thisHeight={"100px"} />
+                    <td style={{padding: "0", borderRight: "1px solid #CCCCCC"}}
+                        onClick={() => this.toggleSide("left")}>
+                        <CustomSide thisWidth={"20px"} thisHeight={"100px"}
+                        toggleSide = {this.state.toggleSide} />
                     </td>
-                    <td style={{padding: "0"}}><CenterSquare /></td>
-                    <td style={{padding: "0", borderLeft: "1px solid #CCCCCC"}}>
-                        <CustomSide thisWidth={"20px"} thisHeight={"100px"} />
+                    <td style={{padding: "0"}}>
+                        <CenterSquare />
+                    </td>
+                    <td style={{padding: "0", borderLeft: "1px solid #CCCCCC"}}
+                        onClick={() => this.toggleSide("right")}>
+                        <CustomSide thisWidth={"20px"} thisHeight={"100px"}
+                        toggleSide = {this.state.toggleSide} />
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3" style={{padding: "0", borderTop: "1px solid #CCCCCC"}}>
-                        <CustomSide thisWidth={"142px"} thisHeight={"20px"} />
+                    <td colspan="3" style={{padding: "0", borderTop: "1px solid #CCCCCC"}}
+                        onClick={() => this.toggleSide("bottom")}>
+                        <CustomSide thisWidth={"142px"} thisHeight={"20px"}
+                        toggleSide = {this.state.toggleSide} />
                     </td>
                 </tr>
             </CustomBorderGrid>
