@@ -13,10 +13,10 @@ class MapController extends Component {
             columns: 20,
             autoExpandSquares: true,
             borderPresets: {
-                "top": true,
-                "bottom": true,
-                "left": true,
-                "right": true
+                top: true,
+                bottom: true,
+                left: true,
+                right: true
             }
         }
     }
@@ -43,7 +43,7 @@ class MapController extends Component {
                             autoExpandSquares={this.state.autoExpandSquares} 
                             rows = {this.state.rows}
                             columns = {this.state.columns} 
-                            borderPresets = {this.state.borderPresets}>{this.props.children}</Graph>
+                            borderPresets = {this.state.borderPresets} />
                     </Col>
                     <Col>
                         <PropertyCard

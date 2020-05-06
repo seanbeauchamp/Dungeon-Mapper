@@ -33,14 +33,19 @@ class GraphSquare extends Component{
     }
 
     toggleborder = () => {
-        this.changeAllSides();
-        let newSides = this.props.checkAdjacentSquares(this.state.row, this.state.col, this.state.border);
-        if (newSides){        
-            for (var side in newSides){
-                if (newSides[side]){
-                    this.toggleSide(side);
+        if (this.props.autoExpandSquares){
+            this.changeAllSides();
+            //will return null if auto-expand is disabled
+            let newSides = this.props.checkAdjacentSquares(this.state.row, this.state.col, this.state.border);
+            if (newSides){        
+                for (var side in newSides){
+                    if (newSides[side]){
+                        this.toggleSide(side);
+                    }
                 }
             }
+        } else {
+            this.changeDefaultSides();
         }
     }
 
@@ -58,6 +63,23 @@ class GraphSquare extends Component{
             tempSides[key] = newState;
         }
         this.setState({borderSides: tempSides, border: newState});
+    }
+
+    changeDefaultSides = () =>
+    {
+        if (this.state.border){
+            let newSides = this.state.borderSides;
+            for (let key in newSides){
+                newSides[key] = false
+            }
+            this.setState({borderSides: newSides, border: false});
+        } else {
+            let newSides = this.state.borderSides;
+            for (let key in newSides){
+                newSides[key] = this.props.borderPresets[key];
+            }
+            this.setState({borderSides: newSides, border: true});
+        }
     }
 
     componentDidUpdate(prevProps, prevState){

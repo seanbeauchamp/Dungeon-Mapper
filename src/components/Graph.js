@@ -91,22 +91,23 @@ class Graph extends Component{
 
     createGraph = () => {
         let rows = [];
+        let keyID = 0;
         for (var r=0; r<=this.props.rows; r++){
             let cols = [];
             for (var c=0; c<= this.props.columns; c++){
                 let newref = this.state.refArray[r][c];
                 cols.push(
-                    <GraphSquare rowNum={r} colNum={c} ref={newref}
+                    <GraphSquare rowNum={r} colNum={c} ref={newref} key={keyID}
                         gridWidth={this.state.rows} gridHeight={this.state.columns}
                         checkAdjacentSquares={this.checkAdjacentSquares}
-                        autoExpandSquares={this.state.autoExpandSquares} 
+                        autoExpandSquares={this.props.autoExpandSquares} 
                         borderPresets={this.props.borderPresets} />
                 )
+                keyID++;
             }
-            rows.push(<RowDiv>{cols}</RowDiv>);
+            rows.push(<RowDiv key={keyID}>{cols}</RowDiv>);
         }
         return rows;
-        //this.setState({squareArray: rows});
     }
 
     componentDidMount(){

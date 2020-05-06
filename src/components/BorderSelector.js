@@ -53,6 +53,7 @@ class BorderSelector extends Component{
         return(
             <div>
             <CustomBorderGrid borderPresets={this.state.borderPresets}>
+                <tbody>
                 <tr>
                     <td colSpan="3" style={{padding: "0", borderBottom: "1px solid #CCCCCC"}}
                         onClick={() => this.toggleSide("top")}>
@@ -82,6 +83,7 @@ class BorderSelector extends Component{
                             expand={this.props.expand} />
                     </td>
                 </tr>
+            </tbody>
             </CustomBorderGrid>
             </div>
         )
