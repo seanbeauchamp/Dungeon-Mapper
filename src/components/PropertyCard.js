@@ -1,8 +1,14 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardHeader, Form, FormGroup,
     Input, Label} from 'reactstrap';
+import styled from 'styled-components';
 
 import BorderSelector from './BorderSelector';
+
+const CustomBordersField = styled.fieldset`
+    opacity: ${props => props.expand ? 
+            "0.3" : "1.0"};
+`;
 
 class PropertyCard extends Component{
 
@@ -23,12 +29,13 @@ class PropertyCard extends Component{
                                     />
                                     Auto-Expand/Retract Grid with Neighbour Squares
                                 </Label>
-                                <fieldset>
+                                <CustomBordersField expand={this.props.autoExpandSquares}>
                                     <Label>
                                         Custom Border Sides:
-                                        <BorderSelector />
+                                        <BorderSelector expand={this.props.autoExpandSquares}
+                                            updatePresets={this.props.updatePresets} />
                                     </Label>
-                                </fieldset>
+                                </CustomBordersField>
                             </FormGroup>
                         </Form>
                     </div>

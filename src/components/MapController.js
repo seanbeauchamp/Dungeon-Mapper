@@ -11,12 +11,24 @@ class MapController extends Component {
         this.state= {
             rows: 20,
             columns: 20,
-            autoExpandSquares: true
+            autoExpandSquares: true,
+            borderPresets: {
+                "top": true,
+                "bottom": true,
+                "left": true,
+                "right": true
+            }
         }
     }
 
     toggleAutoExpandSquares = () => {
         this.setState({autoExpandSquares: !this.state.autoExpandSquares});
+    }
+
+    updatePresets = (side) => {
+        let newPresets = this.state.borderPresets;
+        newPresets[side] = !newPresets[side];
+        this.setState({borderPresets: newPresets})
     }
 
     render(){
@@ -30,12 +42,15 @@ class MapController extends Component {
                         <Graph 
                             autoExpandSquares={this.state.autoExpandSquares} 
                             rows = {this.state.rows}
-                            columns = {this.state.columns} />
+                            columns = {this.state.columns} 
+                            borderPresets = {this.state.borderPresets}>{this.props.children}</Graph>
                     </Col>
                     <Col>
                         <PropertyCard
                             autoExpandSquares={this.state.autoExpandSquares}
-                            toggleAutoExpandSquares={this.toggleAutoExpandSquares} />
+                            toggleAutoExpandSquares={this.toggleAutoExpandSquares}
+                            borderPresets = {this.state.borderPresets}
+                            updatePresets = {this.updatePresets} />
                     </Col>
                 </Row>
                 </Container> 

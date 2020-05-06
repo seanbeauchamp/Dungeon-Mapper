@@ -11,7 +11,7 @@ class Header extends Component{
     render(){
         return(
             <HeaderWrapper className="text-center">
-                <h1 style={{padding: "1%"}}>Placeholder Header</h1>
+                <h1 style={{padding: "0%"}}>Placeholder Header</h1>
             </HeaderWrapper>
         );
     }

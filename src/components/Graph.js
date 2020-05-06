@@ -11,10 +11,20 @@ const RowDiv = styled.div`
 `;
 
 class Graph extends Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
+        let refs = [];
+        for (var r=0; r<=this.props.rows; r++){
+            let cols = [];
+            for (var c=0; c<= this.props.columns; c++){
+                cols.push(React.createRef());
+            }
+            refs.push(cols)
+        }
+
         this.state = {
             squareArray: [],
+            refArray: refs,
         }
     }
 
@@ -84,27 +94,32 @@ class Graph extends Component{
         for (var r=0; r<=this.props.rows; r++){
             let cols = [];
             for (var c=0; c<= this.props.columns; c++){
-                let newref = React.createRef();
+                let newref = this.state.refArray[r][c];
                 cols.push(
                     <GraphSquare rowNum={r} colNum={c} ref={newref}
                         gridWidth={this.state.rows} gridHeight={this.state.columns}
                         checkAdjacentSquares={this.checkAdjacentSquares}
-                        autoExpandSquares={this.state.autoExpandSquares} />
+                        autoExpandSquares={this.state.autoExpandSquares} 
+                        borderPresets={this.props.borderPresets} />
                 )
             }
             rows.push(<RowDiv>{cols}</RowDiv>);
         }
-        this.setState({squareArray: rows});
+        return rows;
+        //this.setState({squareArray: rows});
     }
 
     componentDidMount(){
-        this.createGraph();
+        let rows = this.createGraph();
+        this.setState({squareArray: rows});
     }
 
     render(){
+    let rows = this.createGraph();
+        
     return (
             <GraphDiv>
-                {this.state.squareArray}
+                {rows}
             </GraphDiv>
         );
     }

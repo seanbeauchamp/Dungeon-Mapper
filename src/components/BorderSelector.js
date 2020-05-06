@@ -41,9 +41,12 @@ class BorderSelector extends Component{
     }
 
     toggleSide = side => {
-        let newPresets = this.state.borderPresets;
-        newPresets[side] = !newPresets[side];
-        this.setState({borderPresets: newPresets});
+        if (!this.props.expand){
+            let newPresets = this.state.borderPresets;
+            newPresets[side] = !newPresets[side];
+            this.setState({borderPresets: newPresets});
+            this.props.updatePresets(side);
+        }
     }
 
     render(){
@@ -51,16 +54,17 @@ class BorderSelector extends Component{
             <div>
             <CustomBorderGrid borderPresets={this.state.borderPresets}>
                 <tr>
-                    <td colspan="3" style={{padding: "0", borderBottom: "1px solid #CCCCCC"}}
+                    <td colSpan="3" style={{padding: "0", borderBottom: "1px solid #CCCCCC"}}
                         onClick={() => this.toggleSide("top")}>
-                        <CustomSide thisWidth={"142px"} thisHeight={"20px"} />
+                        <CustomSide thisWidth={"142px"} thisHeight={"20px"}
+                            expand={this.props.expand} />
                     </td>
                 </tr>
                 <tr>
                     <td style={{padding: "0", borderRight: "1px solid #CCCCCC"}}
                         onClick={() => this.toggleSide("left")}>
                         <CustomSide thisWidth={"20px"} thisHeight={"100px"}
-                        toggleSide = {this.state.toggleSide} />
+                            expand={this.props.expand} />
                     </td>
                     <td style={{padding: "0"}}>
                         <CenterSquare />
@@ -68,14 +72,14 @@ class BorderSelector extends Component{
                     <td style={{padding: "0", borderLeft: "1px solid #CCCCCC"}}
                         onClick={() => this.toggleSide("right")}>
                         <CustomSide thisWidth={"20px"} thisHeight={"100px"}
-                        toggleSide = {this.state.toggleSide} />
+                            expand={this.props.expand} />
                     </td>
                 </tr>
                 <tr>
-                    <td colspan="3" style={{padding: "0", borderTop: "1px solid #CCCCCC"}}
+                    <td colSpan="3" style={{padding: "0", borderTop: "1px solid #CCCCCC"}}
                         onClick={() => this.toggleSide("bottom")}>
                         <CustomSide thisWidth={"142px"} thisHeight={"20px"}
-                        toggleSide = {this.state.toggleSide} />
+                            expand={this.props.expand} />
                     </td>
                 </tr>
             </CustomBorderGrid>
@@ -93,7 +97,9 @@ class CustomSide extends Component{
     }
 
     setHoveringStatus = status => {
-        this.setState({hovering: status});
+        if (!this.props.expand){
+            this.setState({hovering: status});
+        }
     }
 
     render(){
