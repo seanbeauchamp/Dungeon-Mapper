@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 import styled from 'styled-components';
 
 const StyledSquare = styled.span`
+    background-color: ${props => !props.selected ?
+        "#FFFFFF" : "#e3e184"};
     display: inline-block;
     height: 30px;
     width: 30px;
@@ -30,6 +32,10 @@ class GraphSquare extends Component{
             row: this.props.rowNum,
             col: this.props.colNum
         }
+    }
+
+    toggleSelected = () => {
+        this.setState({selected: !this.state.selected});
     }
 
     toggleborder = () => {
@@ -101,9 +107,20 @@ class GraphSquare extends Component{
         }
     }
 
+    handleClicks = () => {
+        if (this.props.activeButton === "1"){
+            this.props.setSelectedSquare(this.state.row, this.state.col)
+        } else if (this.props.activeButton === "2"){
+            this.toggleborder();
+        }
+    }
+
     render(){
         return(
-            <StyledSquare bordered={this.state.border} onClick={this.toggleborder} borderSides={this.state.borderSides} />
+            <StyledSquare bordered={this.state.border} 
+            onClick={this.handleClicks} 
+            borderSides={this.state.borderSides}
+            selected={this.state.selected} />
         );
     }
 }

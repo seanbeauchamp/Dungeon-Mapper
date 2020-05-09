@@ -7,7 +7,7 @@ const GraphDiv = styled.div`
 `;
 
 const RowDiv = styled.div`
-    margin-bottom: -5.5px;
+    margin-bottom: -.95%;
 `;
 
 class Graph extends Component{
@@ -25,7 +25,21 @@ class Graph extends Component{
         this.state = {
             squareArray: [],
             refArray: refs,
+            currentRow: null,
+            currentCol: null
         }
+    }
+
+    setSelectedSquare = (thisRow, thisCol) => {
+        //if a previously selected square is in place, de-select that first
+        if (this.state.currentRow){
+            let oldSquare = this.state.squareArray[this.state.currentRow].props.children[this.state.currentCol].ref.current;
+            oldSquare.toggleSelected();
+        }
+
+        let currentSquare = this.state.squareArray[thisRow].props.children[thisCol].ref.current;
+        currentSquare.toggleSelected();
+        this.setState({currentRow: thisRow, currentCol: thisCol});
     }
 
     //TODO: Account for disabled squares as well, returning the original borders if they existed
@@ -101,7 +115,9 @@ class Graph extends Component{
                         gridWidth={this.state.rows} gridHeight={this.state.columns}
                         checkAdjacentSquares={this.checkAdjacentSquares}
                         autoExpandSquares={this.props.autoExpandSquares} 
-                        borderPresets={this.props.borderPresets} />
+                        borderPresets={this.props.borderPresets}
+                        activeButton={this.props.activeButton}
+                        setSelectedSquare={this.setSelectedSquare} />
                 )
                 keyID++;
             }

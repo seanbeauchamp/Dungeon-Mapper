@@ -46,7 +46,9 @@ class PropertyCard extends Component{
                     <TabPane tabId="1">
                         <Row>
                             <Col sm="12">
-                                <h4 className="pt-4">No Cell Selected</h4>
+                                <h4 className="pt-4">
+                                    {!this.props.selectedSquare ? "No Cell Selected" : "Cell Selected"}
+                                </h4>
                             </Col>
                         </Row>
                     </TabPane>

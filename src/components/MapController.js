@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
-import {Container, Row, Col} from 'reactstrap';
+import {Container, Row, Col, Button, ButtonGroup} from 'reactstrap';
+import {FaMousePointer, FaSquare, FaBorderAll} from 'react-icons/fa';
 
 import Header from './Header';
 import Graph from './Graph';
@@ -17,7 +18,9 @@ class MapController extends Component {
                 bottom: true,
                 left: true,
                 right: true
-            }
+            },
+            activeButton: "2",
+            selectedSquare: null
         }
     }
 
@@ -31,26 +34,49 @@ class MapController extends Component {
         this.setState({borderPresets: newPresets})
     }
 
+    toggleButton = (button) => {
+        this.setState({activeButton: button});
+    }
+
     render(){
         return(
             <>
                 <Header />
-                <Container fluid className='mt-3'>
+                <Container fluid className='mt-2'>
                 <Row>
+                    <Col></Col>
+                    <Col>
+                        <ButtonGroup>
+                            <Button className={this.state.activeButton === "1" ?
+                            "active": null} onClick={() => this.toggleButton("1")}
+                            ><FaMousePointer /></Button>
+                            <Button className={this.state.activeButton === "2" ?
+                            "active" : null} onClick={() => this.toggleButton("2")}
+                            ><FaSquare /></Button>
+                            <Button className={this.state.activeButton === "3" ?
+                            "active" : null} onClick={() => this.toggleButton(3)}
+                            ><FaBorderAll /></Button>
+                        </ButtonGroup>
+                    </Col>
+                    <Col></Col>
+                </Row>
+                <Row className='mt-2'>
                     <Col></Col>
                     <Col md="auto">
                         <Graph 
                             autoExpandSquares={this.state.autoExpandSquares} 
                             rows = {this.state.rows}
                             columns = {this.state.columns} 
-                            borderPresets = {this.state.borderPresets} />
+                            borderPresets = {this.state.borderPresets} 
+                            activeButton = {this.state.activeButton} />
                     </Col>
                     <Col>
                         <PropertyCard
                             autoExpandSquares={this.state.autoExpandSquares}
                             toggleAutoExpandSquares={this.toggleAutoExpandSquares}
                             borderPresets = {this.state.borderPresets}
-                            updatePresets = {this.updatePresets} />
+                            updatePresets = {this.updatePresets} 
+                            selectedSquare = {this.state.selectedSquare} />
                     </Col>
                 </Row>
                 </Container> 
