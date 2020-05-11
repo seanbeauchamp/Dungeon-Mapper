@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import classnames from 'classnames';
 
 import BorderSelector from './BorderSelector';
+import CellSpecs from './CellSpecs';
 
 const CustomBordersField = styled.fieldset`
     opacity: ${props => props.expand ? 
@@ -46,9 +47,10 @@ class PropertyCard extends Component{
                     <TabPane tabId="1">
                         <Row>
                             <Col sm="12">
-                                <h4 className="pt-4">
-                                    {!this.props.selectedSquare ? "No Cell Selected" : "Cell Selected"}
-                                </h4>
+                                {!this.props.selectedSquare ? 
+                                <h4 className="pt-4"> No Cell Selected </h4> :
+                                <CellSpecs className="pt-4"
+                                    selectedSquare={this.props.selectedSquare} />} 
                             </Col>
                         </Row>
                     </TabPane>

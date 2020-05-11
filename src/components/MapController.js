@@ -28,6 +28,18 @@ class MapController extends Component {
         this.setState({autoExpandSquares: !this.state.autoExpandSquares});
     }
 
+    setSelectedSquare = (newRow, newCol) => {
+        let newSquare = {
+            row: newRow,
+            col: newCol
+        };
+        this.setState({selectedSquare: newSquare});
+    }
+
+    nullifySelectedSquare = () => {
+        this.setState({selectedSquare: null});
+    }
+
     updatePresets = (side) => {
         let newPresets = this.state.borderPresets;
         newPresets[side] = !newPresets[side];
@@ -68,7 +80,10 @@ class MapController extends Component {
                             rows = {this.state.rows}
                             columns = {this.state.columns} 
                             borderPresets = {this.state.borderPresets} 
-                            activeButton = {this.state.activeButton} />
+                            activeButton = {this.state.activeButton}
+                            selectedSquare = {this.state.selectedSquare}
+                            setSelectedSquare = {this.setSelectedSquare} 
+                            nullifySelectedSquare = {this.nullifySelectedSquare} />
                     </Col>
                     <Col>
                         <PropertyCard

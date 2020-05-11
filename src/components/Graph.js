@@ -25,21 +25,19 @@ class Graph extends Component{
         this.state = {
             squareArray: [],
             refArray: refs,
-            currentRow: null,
-            currentCol: null
         }
     }
 
     setSelectedSquare = (thisRow, thisCol) => {
         //if a previously selected square is in place, de-select that first
-        if (this.state.currentRow){
-            let oldSquare = this.state.squareArray[this.state.currentRow].props.children[this.state.currentCol].ref.current;
+        if (this.props.selectedSquare){
+            let oldSquare = this.state.squareArray[this.props.selectedSquare.row].props.children[this.props.selectedSquare.col].ref.current;
             oldSquare.toggleSelected();
         }
 
         let currentSquare = this.state.squareArray[thisRow].props.children[thisCol].ref.current;
         currentSquare.toggleSelected();
-        this.setState({currentRow: thisRow, currentCol: thisCol});
+        this.props.setSelectedSquare(thisRow, thisCol);
     }
 
     //TODO: Account for disabled squares as well, returning the original borders if they existed
@@ -129,6 +127,16 @@ class Graph extends Component{
     componentDidMount(){
         let rows = this.createGraph();
         this.setState({squareArray: rows});
+    }
+
+    componentDidUpdate(prevProps){
+        if (prevProps.activeButton === "1" && this.props.activeButton !== "1")
+        {
+            let oldSquare = this.state.squareArray[this.props.selectedSquare.row].props.children[this.props.selectedSquare.col].ref.current;
+            oldSquare.toggleSelected();
+
+            this.props.nullifySelectedSquare();
+        }
     }
 
     render(){
