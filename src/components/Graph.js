@@ -136,11 +136,10 @@ class Graph extends Component{
     }
 
     componentDidUpdate(prevProps){
-        if (prevProps.activeButton === "1" && this.props.activeButton !== "1")
+        if (this.props.selectedSquare && prevProps.activeButton === "1" && this.props.activeButton !== "1")
         {
             let oldSquare = this.state.squareArray[this.props.selectedSquare.row].props.children[this.props.selectedSquare.col].ref.current;
             oldSquare.toggleSelected();
-
             this.props.nullifySelectedSquare();
         }
     }

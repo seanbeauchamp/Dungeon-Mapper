@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
-import {Card, CardBody, Form, FormGroup,
+import {Card, CardBody, Form, FormGroup, Container, Button,
     Input, Label, Nav, NavItem, NavLink, TabContent, TabPane,
     Row, Col} from 'reactstrap';
 import styled from 'styled-components';
+import {FaCog} from 'react-icons/fa';
 import classnames from 'classnames';
 
 import BorderSelector from './BorderSelector';
@@ -49,7 +50,7 @@ class PropertyCard extends Component{
                             <Col sm="12">
                                 {!this.props.selectedSquare ? 
                                 <h4 className="pt-4"> No Cell Selected </h4> :
-                                <CellSpecs className="pt-4"
+                                <CellSpecs 
                                     selectedSquare={this.props.selectedSquare} />} 
                             </Col>
                         </Row>
@@ -57,8 +58,8 @@ class PropertyCard extends Component{
                     <TabPane tabId="2">
                             <div className="optionsSection pl-2 pt-4">
                                 <Form>
-                                    <FormGroup>
-                                        <Label className="pl-3">
+                                    <FormGroup check>
+                                        <Label check>
                                         <Input
                                             type="checkbox"
                                             name="autoexpand"
@@ -67,6 +68,8 @@ class PropertyCard extends Component{
                                             />
                                             Auto-Expand/Retract Grid
                                         </Label>
+                                    </FormGroup>
+                                    <FormGroup>
                                         <CustomBordersField expand={this.props.autoExpandSquares}>
                                             <Label>
                                                 Custom Border Sides:
@@ -74,6 +77,20 @@ class PropertyCard extends Component{
                                                     updatePresets={this.props.updatePresets} />
                                             </Label>
                                         </CustomBordersField>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Container>
+                                            <Row>
+                                                <Col xs="1">X</Col>
+                                                <Col xs="2"><Input disabled type="number" id="rowCount" value={this.props.rows} /></Col>
+                                                <Col xs="1">Y</Col>
+                                                <Col xs="2"><Input disabled type="number" id="colCount" value={this.props.columns} /></Col>
+                                                <Col xs="1">
+                                                    <Button><FaCog /></Button>
+                                                </Col>
+                                                <Col xs="5"></Col>
+                                            </Row>
+                                        </Container>
                                     </FormGroup>
                                 </Form>
                             </div>

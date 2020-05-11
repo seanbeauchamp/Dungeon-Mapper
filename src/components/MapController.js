@@ -87,6 +87,8 @@ class MapController extends Component {
                     </Col>
                     <Col>
                         <PropertyCard
+                            rows={this.state.rows}
+                            columns={this.state.columns}
                             autoExpandSquares={this.state.autoExpandSquares}
                             toggleAutoExpandSquares={this.toggleAutoExpandSquares}
                             borderPresets = {this.state.borderPresets}
