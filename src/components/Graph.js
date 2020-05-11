@@ -33,11 +33,17 @@ class Graph extends Component{
         if (this.props.selectedSquare){
             let oldSquare = this.state.squareArray[this.props.selectedSquare.row].props.children[this.props.selectedSquare.col].ref.current;
             oldSquare.toggleSelected();
-        }
 
+            if (this.props.selectedSquare.row === thisRow && this.props.selectedSquare.col === thisCol){
+                this.props.nullifySelectedSquare();
+                return;
+            }           
+        }
+        
         let currentSquare = this.state.squareArray[thisRow].props.children[thisCol].ref.current;
         currentSquare.toggleSelected();
         this.props.setSelectedSquare(thisRow, thisCol);
+
     }
 
     //TODO: Account for disabled squares as well, returning the original borders if they existed
