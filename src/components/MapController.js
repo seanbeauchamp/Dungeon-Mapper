@@ -28,6 +28,10 @@ class MapController extends Component {
         this.setState({autoExpandSquares: !this.state.autoExpandSquares});
     }
 
+    resizeGrid = (newRows, newCols) => {
+        return;
+    }
+
     setSelectedSquare = (newRow, newCol) => {
         let newSquare = {
             row: newRow,
@@ -93,7 +97,8 @@ class MapController extends Component {
                             toggleAutoExpandSquares={this.toggleAutoExpandSquares}
                             borderPresets = {this.state.borderPresets}
                             updatePresets = {this.updatePresets} 
-                            selectedSquare = {this.state.selectedSquare} />
+                            selectedSquare = {this.state.selectedSquare} 
+                            resizeGrid = {this.resizeGrid} />
                     </Col>
                 </Row>
                 </Container> 

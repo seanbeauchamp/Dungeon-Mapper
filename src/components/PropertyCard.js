@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import {Card, CardBody, Form, FormGroup, Container, Button,
+import {Card, CardBody, Form, FormGroup, Container,
     Input, Label, Nav, NavItem, NavLink, TabContent, TabPane,
     Row, Col} from 'reactstrap';
 import styled from 'styled-components';
-import {FaCog} from 'react-icons/fa';
 import classnames from 'classnames';
 
 import BorderSelector from './BorderSelector';
 import CellSpecs from './CellSpecs';
+import ResizeModal from './ResizeModal';
 
 const CustomBordersField = styled.fieldset`
     opacity: ${props => props.expand ? 
@@ -35,12 +35,14 @@ class PropertyCard extends Component{
                             <NavLink
                               className={classnames({active: this.state.activeTab === '1'})}
                               onClick={() => this.setTab('1')}
+                              style={{cursor: "pointer"}}
                               >Current Cell</NavLink>
                         </NavItem>
                         <NavItem>
                             <NavLink
                               className={classnames({active: this.state.activeTab === '2'})}
                               onClick={() => this.setTab('2')}
+                              style={{cursor: "pointer"}}
                             >Settings</NavLink>
                         </NavItem>
                     </Nav>
@@ -82,13 +84,16 @@ class PropertyCard extends Component{
                                         <Container>
                                             <Row>
                                                 <Col xs="1">X</Col>
-                                                <Col xs="2"><Input disabled type="number" id="rowCount" value={this.props.rows} /></Col>
+                                                <Col xs="3"><Input disabled type="text" id="rowCount" value={this.props.rows} /></Col>
                                                 <Col xs="1">Y</Col>
-                                                <Col xs="2"><Input disabled type="number" id="colCount" value={this.props.columns} /></Col>
-                                                <Col xs="1">
-                                                    <Button><FaCog /></Button>
+                                                <Col xs="3"><Input disabled type="text" id="colCount" value={this.props.columns} /></Col>
+                                                <Col xs="2">
+                                                    <ResizeModal 
+                                                        rows={this.props.rows}
+                                                        columns={this.props.columns}
+                                                        resizeGrid={this.props.resizeGrid} />
                                                 </Col>
-                                                <Col xs="5"></Col>
+                                                <Col xs="3"></Col>
                                             </Row>
                                         </Container>
                                     </FormGroup>

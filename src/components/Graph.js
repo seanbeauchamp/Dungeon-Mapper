@@ -7,7 +7,7 @@ const GraphDiv = styled.div`
 `;
 
 const RowDiv = styled.div`
-    margin-bottom: -.95%;
+    height: 30px;
 `;
 
 class Graph extends Component{
