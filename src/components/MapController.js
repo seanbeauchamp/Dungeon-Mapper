@@ -6,6 +6,17 @@ import Header from './Header';
 import Graph from './Graph';
 import PropertyCard from './PropertyCard';
 
+
+const panelStyle = {
+    flex: "0 0 400px",
+    msFlex: "0 0 400px"
+};
+
+const graphStyle = {
+    margin: "auto",
+    //overflow: "scroll"
+}
+
 class MapController extends Component {
     constructor(){
         super();
@@ -20,7 +31,8 @@ class MapController extends Component {
                 right: true
             },
             activeButton: "2",
-            selectedSquare: null
+            selectedSquare: null,
+            refArray: []
         }
     }
 
@@ -29,7 +41,10 @@ class MapController extends Component {
     }
 
     resizeGrid = (newRows, newCols) => {
-        return;
+        //create new refArray. For each cell, check if one exists in current version.
+        //if so, copy that, if not create one, then reset the refArray state
+        let newRef = this.setReferenceArray(newRows, newCols);       
+        this.setState({rows: newRows, columns: newCols, refArray: newRef});
     }
 
     setSelectedSquare = (newRow, newCol) => {
@@ -52,6 +67,27 @@ class MapController extends Component {
 
     toggleButton = (button) => {
         this.setState({activeButton: button});
+    }
+
+    setReferenceArray = (rowNum, colNum) => {
+        let refs = [];
+        for (let r=0; r<=rowNum; r++){
+            let cols = [];
+            for (var c=0; c<= colNum; c++){
+                if (!this.state.refArray[r] || this.state.refArray[r][c] === undefined){
+                    cols.push(React.createRef());
+                } else{
+                    cols.push(this.state.refArray[r][c])
+                }
+            }
+            refs.push(cols)
+        }
+        return refs
+    }
+
+    componentWillMount() {
+        let refs = this.setReferenceArray(this.state.rows, this.state.columns)
+        this.setState({refArray: refs})
     }
 
     render(){
@@ -77,10 +113,11 @@ class MapController extends Component {
                     <Col></Col>
                 </Row>
                 <Row className='mt-2'>
-                    <Col></Col>
-                    <Col md="auto">
+                    <Col style={panelStyle}></Col>
+                    <Col md="auto" style={graphStyle}>
                         <Graph 
                             autoExpandSquares={this.state.autoExpandSquares} 
+                            refArray = {this.state.refArray}
                             rows = {this.state.rows}
                             columns = {this.state.columns} 
                             borderPresets = {this.state.borderPresets} 
@@ -89,7 +126,7 @@ class MapController extends Component {
                             setSelectedSquare = {this.setSelectedSquare} 
                             nullifySelectedSquare = {this.nullifySelectedSquare} />
                     </Col>
-                    <Col>
+                    <Col style={panelStyle}>
                         <PropertyCard
                             rows={this.state.rows}
                             columns={this.state.columns}

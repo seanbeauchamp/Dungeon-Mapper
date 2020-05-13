@@ -13,18 +13,9 @@ const RowDiv = styled.div`
 class Graph extends Component{
     constructor(props){
         super(props);
-        let refs = [];
-        for (var r=0; r<=this.props.rows; r++){
-            let cols = [];
-            for (var c=0; c<= this.props.columns; c++){
-                cols.push(React.createRef());
-            }
-            refs.push(cols)
-        }
 
         this.state = {
             squareArray: [],
-            refArray: refs,
         }
     }
 
@@ -109,13 +100,13 @@ class Graph extends Component{
 
     createGraph = () => {
         let rows = [];
-        let keyID = 0;
         for (var r=0; r<=this.props.rows; r++){
             let cols = [];
             for (var c=0; c<= this.props.columns; c++){
-                let newref = this.state.refArray[r][c];
+                let newref = this.props.refArray[r][c];
+                let newkey = `row${r}col${c}`;
                 cols.push(
-                    <GraphSquare rowNum={r} colNum={c} ref={newref} key={keyID}
+                    <GraphSquare rowNum={r} colNum={c} ref={newref} key={newkey}
                         gridWidth={this.state.rows} gridHeight={this.state.columns}
                         checkAdjacentSquares={this.checkAdjacentSquares}
                         autoExpandSquares={this.props.autoExpandSquares} 
@@ -123,9 +114,9 @@ class Graph extends Component{
                         activeButton={this.props.activeButton}
                         setSelectedSquare={this.setSelectedSquare} />
                 )
-                keyID++;
             }
-            rows.push(<RowDiv key={keyID}>{cols}</RowDiv>);
+            let rowkey=`row${r}`;
+            rows.push(<RowDiv key={rowkey}>{cols}</RowDiv>);
         }
         return rows;
     }
@@ -141,6 +132,11 @@ class Graph extends Component{
             let oldSquare = this.state.squareArray[this.props.selectedSquare.row].props.children[this.props.selectedSquare.col].ref.current;
             oldSquare.toggleSelected();
             this.props.nullifySelectedSquare();
+        }
+
+        if (this.props.refArray !== prevProps.refArray){
+            let rows = this.createGraph();
+            this.setState({squareArray: rows});
         }
     }
 

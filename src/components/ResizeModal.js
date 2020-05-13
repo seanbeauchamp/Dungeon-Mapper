@@ -22,6 +22,11 @@ class ResizeModal extends Component {
         this.toggle();
     };
 
+    handleChange(event) {
+        let stateName = event.target.name;
+        this.setState({[stateName]: event.target.value});
+    }
+
     render() {
         return (
             <>
@@ -31,22 +36,20 @@ class ResizeModal extends Component {
                     <ModalBody>
                         <Form onSubmit={this.performResize}>
                             <FormGroup>
-                                <Label for="rowBox">Rows:</Label>
+                                <Label for="currentRows">Rows:</Label>
                                 <Input 
                                     type="number"
-                                    name="rowBox"
-                                    onChange={event =>
-                                    this.setState({currentRows: event.target.value})}
+                                    name="currentRows"
+                                    onChange={(event) => this.handleChange(event)}
                                     value={this.state.currentRows}
                                     />
                                 
-                                <Label for="colBox">Columns:</Label>
+                                <Label for="currentColumns">Columns:</Label>
                                 <Input
                                     type="number"
-                                    name="colBox"
-                                    onChange={event =>
-                                    this.setState({currentColumns: event.target.value})}
-                                    value={this.state.currentRows}
+                                    name="currentColumns"
+                                    onChange={(event) => this.handleChange(event)}
+                                    value={this.state.currentColumns}
                                     />
                             </FormGroup>
 
