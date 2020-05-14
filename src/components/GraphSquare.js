@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const StyledSquare = styled.span`
     background-color: ${props => !props.selected ?
-        "#FFFFFF" : "#e3e184"};
+        props.backgroundNeutral : "#e3e184"};
     display: inline-block;
     height: 30px;
     width: 30px;
@@ -29,6 +29,7 @@ class GraphSquare extends Component{
                 right: false,
                 left: false
             },
+            backgroudNeutral: "#FFFFFF",
             row: this.props.rowNum,
             col: this.props.colNum
         }
@@ -115,12 +116,23 @@ class GraphSquare extends Component{
         }
     }
 
+    setHoveringStatus = status => {
+        if (status === true){
+            this.setState({backgroundNeutral: "#EEEEEE"});
+        } else {
+            this.setState({backgroundNeutral: "#FFFFFF"});
+        }
+    }
+
     render(){
         return(
             <StyledSquare bordered={this.state.border} 
             onClick={this.handleClicks} 
             borderSides={this.state.borderSides}
-            selected={this.state.selected} />
+            selected={this.state.selected}
+            backgroundNeutral={this.state.backgroundNeutral}
+            onMouseEnter={() => this.setHoveringStatus(true)}
+            onMouseLeave={() => this.setHoveringStatus(false)} />
         );
     }
 }

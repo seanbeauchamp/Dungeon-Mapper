@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import {Container, Row, Col, Button, ButtonGroup} from 'reactstrap';
-import {FaMousePointer, FaSquare, FaBorderAll} from 'react-icons/fa';
+import {FaMousePointer, FaSquare, FaBorderAll, FaExclamation} from 'react-icons/fa';
 
 import Header from './Header';
 import Graph from './Graph';
 import PropertyCard from './PropertyCard';
+//import GoblinFaceButton from '../Images/GoblinFaceButton.png';
 
 
 const panelStyle = {
@@ -113,8 +114,11 @@ class MapController extends Component {
                             "active" : null} onClick={() => this.toggleButton("2")}
                             ><FaSquare /></Button>
                             <Button className={this.state.activeButton === "3" ?
-                            "active" : null} onClick={() => this.toggleButton(3)}
+                            "active" : null} onClick={() => this.toggleButton("3")}
                             ><FaBorderAll /></Button>
+                            <Button className={this.state.activeButton === "4" ?
+                            "active" : null} onClick={() => this.toggleButton("4")}
+                            ><FaExclamation /></Button>
                         </ButtonGroup>
                     </Col>
                     <Col></Col>

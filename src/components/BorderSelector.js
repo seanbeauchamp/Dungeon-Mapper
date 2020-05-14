@@ -13,12 +13,6 @@ const CustomBorderGrid = styled.table`
         "2px solid black" : "2px solid #EEEEEE"};
 `;
 
-/*const CenterSquare = styled.td`
-    width: 100px;
-    height: 100px;
-    padding: 0;
-`;*/
-
 const SideSection = styled.td`
     width: ${props => props.styleWidth};
     height: ${props => props.styleHeight};
