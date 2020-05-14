@@ -19,7 +19,7 @@ class Graph extends Component{
         }
     }
 
-    setSelectedSquare = (thisRow, thisCol) => {
+    setSelectedSquare = (thisRow, thisCol, borderSides) => {
         //if a previously selected square is in place, de-select that first
         if (this.props.selectedSquare){
             let oldSquare = this.state.squareArray[this.props.selectedSquare.row].props.children[this.props.selectedSquare.col].ref.current;
@@ -33,8 +33,7 @@ class Graph extends Component{
         
         let currentSquare = this.state.squareArray[thisRow].props.children[thisCol].ref.current;
         currentSquare.toggleSelected();
-        this.props.setSelectedSquare(thisRow, thisCol);
-
+        this.props.setSelectedSquare(thisRow, thisCol, borderSides, currentSquare);
     }
 
     //TODO: Account for disabled squares as well, returning the original borders if they existed
@@ -141,13 +140,13 @@ class Graph extends Component{
     }
 
     render(){
-    let rows = this.createGraph();
-        
-    return (
-            <GraphDiv>
-                {rows}
-            </GraphDiv>
-        );
+        let rows = this.createGraph();
+            
+        return (
+                <GraphDiv>
+                    {rows}
+                </GraphDiv>
+            );
     }
 }
 

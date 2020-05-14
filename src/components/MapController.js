@@ -20,18 +20,22 @@ const graphStyle = {
 class MapController extends Component {
     constructor(){
         super();
+
+        let allTrueBorder = {
+            top: true,
+            bottom: true,
+            left: true,
+            right: true
+        };
+
         this.state= {
             rows: 20,
             columns: 20,
             autoExpandSquares: true,
-            borderPresets: {
-                top: true,
-                bottom: true,
-                left: true,
-                right: true
-            },
+            borderPresets: allTrueBorder,
             activeButton: "2",
             selectedSquare: null,
+            selectedSquareRef: null,
             refArray: []
         }
     }
@@ -41,22 +45,25 @@ class MapController extends Component {
     }
 
     resizeGrid = (newRows, newCols) => {
-        //create new refArray. For each cell, check if one exists in current version.
-        //if so, copy that, if not create one, then reset the refArray state
         let newRef = this.setReferenceArray(newRows, newCols);       
         this.setState({rows: newRows, columns: newCols, refArray: newRef});
     }
 
-    setSelectedSquare = (newRow, newCol) => {
+    setSelectedSquare = (newRow, newCol, borderSides, squareRef) => {
         let newSquare = {
             row: newRow,
-            col: newCol
+            col: newCol,
+            borders: borderSides,
         };
-        this.setState({selectedSquare: newSquare});
+        this.setState({selectedSquare: newSquare, selectedSquareRef: squareRef});
     }
 
     nullifySelectedSquare = () => {
-        this.setState({selectedSquare: null});
+        this.setState({selectedSquare: null, selectedSquareRef: null});
+    }
+
+    updateSelectedSquareBorders = () => {
+        //get reference to graph square
     }
 
     updatePresets = (side) => {
@@ -134,7 +141,8 @@ class MapController extends Component {
                             toggleAutoExpandSquares={this.toggleAutoExpandSquares}
                             borderPresets = {this.state.borderPresets}
                             updatePresets = {this.updatePresets} 
-                            selectedSquare = {this.state.selectedSquare} 
+                            selectedSquare = {this.state.selectedSquare}
+                            selectedSquareRef = {this.state.selectedSquareRef} 
                             resizeGrid = {this.resizeGrid} />
                     </Col>
                 </Row>

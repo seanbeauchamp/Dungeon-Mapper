@@ -13,11 +13,11 @@ const CustomBorderGrid = styled.table`
         "2px solid black" : "2px solid #EEEEEE"};
 `;
 
-const CenterSquare = styled.td`
+/*const CenterSquare = styled.td`
     width: 100px;
     height: 100px;
     padding: 0;
-`;
+`;*/
 
 const SideSection = styled.td`
     width: ${props => props.styleWidth};
@@ -28,24 +28,63 @@ const SideSection = styled.td`
 `;
 
 class BorderSelector extends Component{
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
+
+        let starterBorder = {
+            top: true,
+            bottom: true,
+            left: true,
+            right: true
+        }
+        if (props.source === "cell"){
+            starterBorder = this.props.selectedSquareRef.state.borderSides;
+        }       
+
         this.state = {
-            borderPresets: {
-                top: true,
-                bottom: true,
-                left: true,
-                right: true
-            }
+            borderPresets: starterBorder
         }
     }
 
     toggleSide = side => {
-        if (!this.props.expand){
-            let newPresets = this.state.borderPresets;
-            newPresets[side] = !newPresets[side];
-            this.setState({borderPresets: newPresets});
-            this.props.updatePresets(side);
+        if (this.props.source === "settings"){
+            if (!this.props.expand){
+                let newPresets = this.state.borderPresets;
+                newPresets[side] = !newPresets[side];
+                this.setState({borderPresets: newPresets});
+                this.props.updatePresets(side);
+            }
+        } else if (this.props.source === "cell"){
+            this.props.selectedSquareRef.toggleSide(side);
+            this.setState({borderPresets: this.props.selectedSquareRef.state.borderSides})
+        }
+    }
+
+    toggleAll = () => {
+        let allBordersSet = true;
+        for (let key in this.state.borderPresets){
+            if (!this.state.borderPresets[key]){
+                allBordersSet = false;
+                break;
+            }
+        }
+
+        if (allBordersSet){
+            for (let side in this.state.borderPresets){
+                this.toggleSide(side);
+            }
+        } else {
+            for (let side in this.state.borderPresets){
+                if (!this.state.borderPresets[side]){
+                    this.toggleSide(side);
+                }
+            }
+        }
+    }
+
+    componentDidUpdate(prevProps){
+        if (this.props.source === "cell" && prevProps.selectedSquareRef !== this.props.selectedSquareRef){
+            this.setState({borderPresets: this.props.selectedSquareRef.state.borderSides})
         }
     }
 
@@ -55,33 +94,29 @@ class BorderSelector extends Component{
             <CustomBorderGrid borderPresets={this.state.borderPresets}>
                 <tbody>
                 <tr>
-                    <td colSpan="3" style={{padding: "0", borderBottom: "1px solid #CCCCCC"}}
-                        onClick={() => this.toggleSide("top")}>
-                        <CustomSide thisWidth={"142px"} thisHeight={"20px"}
-                            expand={this.props.expand} />
-                    </td>
+                    <CustomSide thisWidth={"142px"} thisHeight={"20px"}
+                            expand={this.props.expand} 
+                            colSpan="3" style={{borderBottom: "1px solid #CCCCCC"}}
+                            handleClick={() => this.toggleSide("top")}/>
                 </tr>
                 <tr>
-                    <td style={{padding: "0", borderRight: "1px solid #CCCCCC"}}
-                        onClick={() => this.toggleSide("left")}>
-                        <CustomSide thisWidth={"20px"} thisHeight={"100px"}
-                            expand={this.props.expand} />
-                    </td>
-                    <td style={{padding: "0"}}>
-                        <CenterSquare />
-                    </td>
-                    <td style={{padding: "0", borderLeft: "1px solid #CCCCCC"}}
-                        onClick={() => this.toggleSide("right")}>
-                        <CustomSide thisWidth={"20px"} thisHeight={"100px"}
-                            expand={this.props.expand} />
-                    </td>
+                    <CustomSide thisWidth={"20px"} thisHeight={"100px"}
+                            expand={this.props.expand}
+                            style={{borderRight: "1px solid #CCCCCC"}}
+                            handleClick={() => this.toggleSide("left")} />
+                    <CustomSide thisWidth={"100px"} thisHeight={"100px"}
+                            expand={this.props.expand} 
+                            handleClick={this.toggleAll}/>
+                    <CustomSide thisWidth={"20px"} thisHeight={"100px"}
+                            expand={this.props.expand}
+                            style={{borderLeft: "1px solid #CCCCCC"}}
+                            handleClick={() => this.toggleSide("right")} />
                 </tr>
                 <tr>
-                    <td colSpan="3" style={{padding: "0", borderTop: "1px solid #CCCCCC"}}
-                        onClick={() => this.toggleSide("bottom")}>
-                        <CustomSide thisWidth={"142px"} thisHeight={"20px"}
-                            expand={this.props.expand} />
-                    </td>
+                    <CustomSide thisWidth={"142px"} thisHeight={"20px"}
+                            expand={this.props.expand}
+                            colSpan="3" style={{borderTop: "1px solid #CCCCCC"}}
+                            handleClick={() => this.toggleSide("bottom")} />
                 </tr>
             </tbody>
             </CustomBorderGrid>
@@ -108,8 +143,11 @@ class CustomSide extends Component{
         return(
             <SideSection hovering={this.state.hovering}
                 styleWidth={this.props.thisWidth} styleHeight={this.props.thisHeight}
+                colSpan={this.props.colSpan}
+                style={this.props.style}
                 onMouseEnter={() => this.setHoveringStatus(true)}
                 onMouseLeave={() => this.setHoveringStatus(false)}
+                onClick={this.props.handleClick}
                 />
         );
     }

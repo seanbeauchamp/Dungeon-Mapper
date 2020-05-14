@@ -7,7 +7,9 @@ class ResizeModal extends Component {
     state = {
         modal: false,
         currentRows: this.props.rows,
-        currentColumns: this.props.columns
+        currentColumns: this.props.columns,
+        minVal: 10,
+        maxVal: 50
     };
 
     toggle = () => {
@@ -22,9 +24,15 @@ class ResizeModal extends Component {
         this.toggle();
     };
 
+    revertSettings = () => {
+        this.toggle();
+        this.setState({currentRows: this.props.rows, currentColumns: this.props.columns});        
+    }
+
     handleChange(event) {
         let stateName = event.target.name;
-        this.setState({[stateName]: event.target.value});
+        this.setState({[stateName]: Math.min(this.state.maxVal, 
+            Math.max(this.state.minVal, event.target.value))});
     }
 
     render() {
@@ -56,7 +64,7 @@ class ResizeModal extends Component {
                             <FormGroup>
                                 <Button type="submit">Update</Button>
                                 &nbsp;
-                                <Button type="cancel">Cancel</Button>
+                                <Button onClick={this.revertSettings}>Cancel</Button>
                             </FormGroup>
                         </Form>
                     </ModalBody>

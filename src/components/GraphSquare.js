@@ -89,7 +89,7 @@ class GraphSquare extends Component{
     }
 
     componentDidUpdate(prevProps, prevState){
-        this.confirmBordersInPlace();
+        this.confirmBordersInPlace();       
     }
 
     confirmBordersInPlace = () => {
@@ -109,7 +109,7 @@ class GraphSquare extends Component{
 
     handleClicks = () => {
         if (this.props.activeButton === "1"){
-            this.props.setSelectedSquare(this.state.row, this.state.col)
+            this.props.setSelectedSquare(this.state.row, this.state.col, this.state.borderSides)
         } else if (this.props.activeButton === "2"){
             this.toggleborder();
         }

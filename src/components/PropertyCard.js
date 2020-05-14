@@ -53,7 +53,8 @@ class PropertyCard extends Component{
                                 {!this.props.selectedSquare ? 
                                 <h4 className="pt-4"> No Cell Selected </h4> :
                                 <CellSpecs 
-                                    selectedSquare={this.props.selectedSquare} />} 
+                                    selectedSquare={this.props.selectedSquare}
+                                    selectedSquareRef={this.props.selectedSquareRef} />} 
                             </Col>
                         </Row>
                     </TabPane>
@@ -76,7 +77,8 @@ class PropertyCard extends Component{
                                             <Label>
                                                 Custom Border Sides:
                                                 <BorderSelector expand={this.props.autoExpandSquares}
-                                                    updatePresets={this.props.updatePresets} />
+                                                    updatePresets={this.props.updatePresets}
+                                                    source={"settings"} />
                                             </Label>
                                         </CustomBordersField>
                                     </FormGroup>
