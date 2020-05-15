@@ -1,9 +1,25 @@
 import React, {Component} from 'react';
-import {Container, Row, Col} from 'reactstrap';
+import {Container, Row, Col, Label,
+        Input, Button} from 'reactstrap';
+import {FaPlus} from 'react-icons/fa';
+
+import MonsterModal from './MonsterModal';
 import BorderSelector from './BorderSelector';
 
-class CellSpecs extends Component {
+const pullBottom = {
+    position: "absolute",
+    bottom: "0",
+}
 
+class CellSpecs extends Component {
+    state = {
+        monsterModalRef: React.createRef()
+    }
+
+    accessMonsterModal = () => {
+        let modalButton = this.state.monsterModalRef.current;
+        modalButton.toggle();
+    }
 
     render(){
         return(
@@ -17,6 +33,17 @@ class CellSpecs extends Component {
                         <BorderSelector 
                             source={"cell"}
                             selectedSquareRef={this.props.selectedSquareRef} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Label for="monsterSection">Monsters</Label>
+                        <Input type="text"
+                            name="monsterSection" />
+                    </Col>
+                    <Col xs="2" style={{position: "relative"}}>
+                        <Button style={pullBottom} onClick={this.accessMonsterModal}><FaPlus /></Button>
+                        <MonsterModal ref={this.state.monsterModalRef} />
                     </Col>
                 </Row>
             </Container>
