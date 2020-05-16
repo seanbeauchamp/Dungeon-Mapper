@@ -26,9 +26,16 @@ class PropertyCard extends Component{
         this.setState({activeTab: tabIndex});
     }
 
+    componentDidUpdate(prevProps){
+        if (prevProps.activeButton !== this.props.activeButton &&
+                (this.props.activeButton === "1" || this.props.activeButton === "2")){
+                    this.setState({activeTab: this.props.activeButton})
+                }
+    }
+
     render(){
         return(
-            <Card>
+            <Card className="h-100">
                 <CardBody>
                     <Nav tabs>
                         <NavItem>
@@ -54,7 +61,8 @@ class PropertyCard extends Component{
                                 <h4 className="pt-4"> No Cell Selected </h4> :
                                 <CellSpecs 
                                     selectedSquare={this.props.selectedSquare}
-                                    selectedSquareRef={this.props.selectedSquareRef} />} 
+                                    selectedSquareRef={this.props.selectedSquareRef} 
+                                    setMonsterEntry={this.props.setMonsterEntry} />} 
                             </Col>
                         </Row>
                     </TabPane>

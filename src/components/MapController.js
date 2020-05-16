@@ -37,7 +37,8 @@ class MapController extends Component {
             activeButton: "2",
             selectedSquare: null,
             selectedSquareRef: null,
-            refArray: []
+            refArray: [],
+            monsterEntries: [[],[]]
         }
     }
 
@@ -61,10 +62,6 @@ class MapController extends Component {
 
     nullifySelectedSquare = () => {
         this.setState({selectedSquare: null, selectedSquareRef: null});
-    }
-
-    updateSelectedSquareBorders = () => {
-        //get reference to graph square
     }
 
     updatePresets = (side) => {
@@ -93,9 +90,19 @@ class MapController extends Component {
         return refs
     }
 
+    setMonsterEntry = (row, column, monsters, details) => {
+        let newMonsterData = {
+            inputs: monsters,
+            details: details
+        }
+        let newMonsterArray = this.state.monsterEntries;
+        newMonsterArray[row][column] = newMonsterData;
+        this.setState({monsterEntries: newMonsterArray});
+    }
+
     componentWillMount() {
-        let refs = this.setReferenceArray(this.state.rows, this.state.columns)
-        this.setState({refArray: refs})
+        let refs = this.setReferenceArray(this.state.rows, this.state.columns);
+        this.setState({refArray: refs});
     }
 
     render(){
@@ -123,7 +130,7 @@ class MapController extends Component {
                     </Col>
                     <Col></Col>
                 </Row>
-                <Row className='mt-2'>
+                <Row className='mt-2' style={{minHeight: "80vh"}}>
                     <Col style={panelStyle}></Col>
                     <Col md="auto" style={graphStyle}>
                         <Graph 
@@ -143,11 +150,13 @@ class MapController extends Component {
                             columns={this.state.columns}
                             autoExpandSquares={this.state.autoExpandSquares}
                             toggleAutoExpandSquares={this.toggleAutoExpandSquares}
+                            activeButton={this.state.activeButton}
                             borderPresets = {this.state.borderPresets}
                             updatePresets = {this.updatePresets} 
                             selectedSquare = {this.state.selectedSquare}
                             selectedSquareRef = {this.state.selectedSquareRef} 
-                            resizeGrid = {this.resizeGrid} />
+                            resizeGrid = {this.resizeGrid}
+                            setMonsterEntry={this.setMonsterEntry} />
                     </Col>
                 </Row>
                 </Container> 

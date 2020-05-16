@@ -1,13 +1,18 @@
 import React, {Component} from 'react';
 import {Modal, ModalHeader, ModalBody, Button,
     Input, Form, FormGroup, Row, Col} from 'reactstrap';
-import {FaPlus} from 'react-icons/fa';
+import {FaPlus, FaMinus} from 'react-icons/fa';
 
 class MonsterModal extends Component{
     state = {
         modal: false,
-        numMonsters: 0,
-        maxMonsters: 3
+        numMonsters: 1,
+        maxMonsters: 4,
+        details: '',
+        monsterData: {
+            monsterNames: [],
+            monsterNums: []
+        }
     }
 
     toggle = () => {
@@ -36,28 +41,44 @@ class MonsterModal extends Component{
         }
     }
 
-    addMonsterRow = () => {
-        if (this.state.numMonsters < this.state.maxMonsters){
-            this.setState({numMonsters: this.state.numMonsters + 1})
+    changeMonsterRow = (amt) => {
+        if ((amt > 0 && this.state.numMonsters < this.state.maxMonsters) ||
+            (amt < 0 && this.state.numMonsters > 0)){
+            this.setState({numMonsters: this.state.numMonsters + parseInt(amt)})
         }
+    }
+
+    revertSettings = () => {
+        this.toggle();
+    }
+
+    createEntry = (event) => {
+        event.preventDefault();
+
     }
 
     render(){
         let addedMonsters = [];
-        for (let n = 0; n < this.state.numMonsters; n++){
+        for (let n = 1; n < this.state.numMonsters; n++){
             addedMonsters.push(
-                        <Row>
+                        <Row className="mt-1">
                             <Col>
                                 <Input type="text"
                                     name="monsterName"
-                                    placeholder="Monster" />
+                                    placeholder="Monster"
+                                    value={this.state.monsterData.monsterNames[n]} />
                             </Col>
                             <Col>
-                                <Input type="text"
+                                <Input type="number"
                                     name="monsterNum"
-                                    placeholder="Number" />
+                                    placeholder="Number"
+                                    value={this.state.monsterData.monsterNums[n]} />
                             </Col>
-                            <Col></Col>
+                            <Col>
+                                {n === 1 ? <Button
+                                    onClick={() => this.changeMonsterRow(-1)}
+                                ><FaMinus /></Button> : ''  }
+                            </Col>
                         </Row>
             );
         }
@@ -72,23 +93,32 @@ class MonsterModal extends Component{
                             <Col>
                                 <Input type="text"
                                     name="monsterName"
-                                    placeholder="Monster" />
+                                    placeholder="Monster"
+                                    value={this.state.monsterData.monsterNames[0]} />
                             </Col>
                             <Col>
-                                <Input type="text"
+                                <Input type="number"
                                     name="monsterNum"
-                                    placeholder="Number" />
+                                    placeholder="Number" 
+                                    value={this.state.monsterData.monsterNums[0]} />
                             </Col>
                             <Col>
-                                <Button onClick={this.addMonsterRow}><FaPlus /></Button>
+                                <Button 
+                                onClick={() => this.changeMonsterRow(1)}
+                                ><FaPlus /></Button>
                             </Col>
                         </Row>
                         {addedMonsters}
                        </FormGroup>
                        <FormGroup>
+                           <textarea rows="7" cols="45"
+                                placeholder="Encounter Details"
+                                value={this.state.details} />
+                       </FormGroup>
+                       <FormGroup>
                         <Button type="submit">Update</Button>
                             &nbsp;
-                        <Button>Cancel</Button>
+                        <Button onClick={this.revertSettings}>Cancel</Button>
                        </FormGroup>
                    </Form>
                </ModalBody>
