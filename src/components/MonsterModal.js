@@ -9,17 +9,29 @@ class MonsterModal extends Component{
         numMonsters: 1,
         maxMonsters: 4,
         details: '',
-        monsterData: {
-            monsterNames: [],
-            monsterNums: []
-        }
+        monsterNames: [],
+        monsterNums: []
     }
 
     toggle = () => {
         this.setState(previous => ({
             modal: !previous.modal
         }));
+
+        if (!this.state.modal){
+            this.loadExistingData();
+        }
     };
+
+    loadExistingData = () => {
+        //for now just check for existing data in state, apply to other types of data later
+        if (this.props.selectedSquare.monsters){
+            this.setState({details: this.props.selectedSquare.monsters.details,
+                        monsterNames: this.props.selectedSquare.monsters.inputs.monsterNames,
+                        monsterNums: this.props.selectedSquare.monsters.inputs.monsterNums,
+                        numMonsters: this.props.selectedSquare.monsters.inputs.monsterNames.length});
+        }
+    }
 
     displayMonsterAndNumber = () => {
         if (this.state.numMonsters <= this.state.maxMonsters){
@@ -49,12 +61,30 @@ class MonsterModal extends Component{
     }
 
     revertSettings = () => {
+        this.setState({numMonsters: 1, details: '', monsterNames: [], monsterNums: []});
         this.toggle();
     }
 
-    createEntry = (event) => {
-        event.preventDefault();
+    changeNameValue = (event, index) => {
+        let newNames = this.state.monsterNames;
+        newNames[index] = event.target.value;
+        this.setState({monsterNames: newNames});
+    }
 
+    changeNumValue = (event, index) => {
+        let newNums = this.state.monsterNums;
+        newNums[index] = event.target.value;
+        this.setState({monsterNums: newNums});
+    }
+
+    submitData = (event) => {
+        event.preventDefault();
+        let inputs = {
+            monsterNames: this.state.monsterNames,
+            monsterNums: this.state.monsterNums
+        }
+        this.props.setMonsterEntry(inputs, this.state.details);
+        this.revertSettings();
     }
 
     render(){
@@ -64,15 +94,17 @@ class MonsterModal extends Component{
                         <Row className="mt-1">
                             <Col>
                                 <Input type="text"
-                                    name="monsterName"
+                                    name={"monsterName" + n}
                                     placeholder="Monster"
-                                    value={this.state.monsterData.monsterNames[n]} />
+                                    value={this.state.monsterNames[n]}
+                                    onChange={(event) => this.changeNameValue(event, n)} />
                             </Col>
                             <Col>
                                 <Input type="number"
-                                    name="monsterNum"
+                                    name={"monsterNum" + n}
                                     placeholder="Number"
-                                    value={this.state.monsterData.monsterNums[n]} />
+                                    value={this.state.monsterNums[n]}
+                                    onChange={(event) => this.changeNumValue(event, n)} />
                             </Col>
                             <Col>
                                 {n === 1 ? <Button
@@ -84,23 +116,25 @@ class MonsterModal extends Component{
         }
 
         return(
-           <Modal isOpen={this.state.modal} toggle={this.toggle}>
-               <ModalHeader toggle={this.toggle}>Monster Creation</ModalHeader>
+           <Modal isOpen={this.state.modal} toggle={this.revertSettings}>
+               <ModalHeader toggle={this.revertSettings}>Monster Creation</ModalHeader>
                <ModalBody>
-                   <Form>
+                   <Form onSubmit={this.submitData}>
                        <FormGroup>
                        <Row>
                             <Col>
                                 <Input type="text"
-                                    name="monsterName"
+                                    name="monsterName0"
                                     placeholder="Monster"
-                                    value={this.state.monsterData.monsterNames[0]} />
+                                    value={this.state.monsterNames[0]}
+                                    onChange={(event) => this.changeNameValue(event, 0)} />
                             </Col>
                             <Col>
                                 <Input type="number"
-                                    name="monsterNum"
+                                    name="monsterNum0"
                                     placeholder="Number" 
-                                    value={this.state.monsterData.monsterNums[0]} />
+                                    value={this.state.monsterNums[0]}
+                                    onChange={(event) => this.changeNumValue(event, 0)} />
                             </Col>
                             <Col>
                                 <Button 
@@ -113,7 +147,8 @@ class MonsterModal extends Component{
                        <FormGroup>
                            <textarea rows="7" cols="45"
                                 placeholder="Encounter Details"
-                                value={this.state.details} />
+                                value={this.state.details}
+                                onChange={(event => {this.setState({details: event.target.value})})} />
                        </FormGroup>
                        <FormGroup>
                         <Button type="submit">Update</Button>

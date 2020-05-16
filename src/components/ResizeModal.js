@@ -39,8 +39,8 @@ class ResizeModal extends Component {
         return (
             <>
                 <Button onClick={this.toggle}><FaCog /></Button>
-                <Modal isOpen={this.state.modal} toggle={this.toggle}>
-                    <ModalHeader toggle={this.toggle}>Resize Grid</ModalHeader>
+                <Modal isOpen={this.state.modal} toggle={this.revertSettings}>
+                    <ModalHeader toggle={this.revertSettings}>Resize Grid</ModalHeader>
                     <ModalBody>
                         <Form onSubmit={this.performResize}>
                             <FormGroup>

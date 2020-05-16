@@ -45,7 +45,8 @@ class CellSpecs extends Component {
                         <Button style={pullBottom} onClick={this.accessMonsterModal}><FaPlus /></Button>
                         <MonsterModal 
                             ref={this.state.monsterModalRef}
-                             selectedSquare={this.props.selectedSquare} />
+                            selectedSquare={this.props.selectedSquare}
+                            setMonsterEntry={this.props.setMonsterEntry} />
                     </Col>
                 </Row>
             </Container>

@@ -52,10 +52,15 @@ class MapController extends Component {
     }
 
     setSelectedSquare = (newRow, newCol, borderSides, squareRef) => {
+        let monsterData = null;
+        if (this.state.monsterEntries[newRow] && this.state.monsterEntries[newRow][newCol] !== undefined){
+            monsterData = this.state.monsterEntries[newRow][newCol];
+        }
         let newSquare = {
             row: newRow,
             col: newCol,
             borders: borderSides,
+            monsters: monsterData
         };
         this.setState({selectedSquare: newSquare, selectedSquareRef: squareRef});
     }
@@ -90,14 +95,16 @@ class MapController extends Component {
         return refs
     }
 
-    setMonsterEntry = (row, column, monsters, details) => {
+    setMonsterEntry = (monsters, details) => {
         let newMonsterData = {
             inputs: monsters,
             details: details
         }
         let newMonsterArray = this.state.monsterEntries;
-        newMonsterArray[row][column] = newMonsterData;
-        this.setState({monsterEntries: newMonsterArray});
+        if (!newMonsterArray[this.state.selectedSquare.row])
+        newMonsterArray[this.state.selectedSquare.row] = [];
+        newMonsterArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = newMonsterData;
+        this.setState({monsterEntries: newMonsterArray, selectedSquare: {...this.state.selectedSquare, monsters: newMonsterData}});
     }
 
     componentWillMount() {
