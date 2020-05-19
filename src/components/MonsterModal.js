@@ -57,6 +57,10 @@ class MonsterModal extends Component{
         if ((amt > 0 && this.state.numMonsters < this.state.maxMonsters) ||
             (amt < 0 && this.state.numMonsters > 0)){
             this.setState({numMonsters: this.state.numMonsters + parseInt(amt)})
+            if (amt < 0){
+                this.state.monsterNames.pop();
+                this.state.monsterNums.pop();
+            }
         }
     }
 
@@ -123,14 +127,14 @@ class MonsterModal extends Component{
                        <FormGroup>
                        <Row>
                             <Col>
-                                <Input type="text"
+                                <Input required type="text"
                                     name="monsterName0"
                                     placeholder="Monster"
                                     value={this.state.monsterNames[0]}
                                     onChange={(event) => this.changeNameValue(event, 0)} />
                             </Col>
                             <Col>
-                                <Input type="number"
+                                <Input required type="number"
                                     name="monsterNum0"
                                     placeholder="Number" 
                                     value={this.state.monsterNums[0]}
@@ -159,6 +163,31 @@ class MonsterModal extends Component{
                </ModalBody>
            </Modal>
         );
+    }
+}
+
+class ClearMonsterModal extends Component {
+    state = {
+        modal: false
+    }
+
+    toggle = () => {
+        this.setState({modal: !this.state.modal});
+    }
+
+    render() {
+        return(
+            <Modal isOpen={this.state.modal} toggle={this.toggle}>
+                <ModalHeader toggle={this.toggle}>Delete Monster Data</ModalHeader>
+                <ModalBody>
+                    <p>Are you sure you want to remove all monster data for the 
+                        current square?</p>
+                    <Button>OK</Button>
+                        &nbsp;
+                    <Button>Cancel</Button>
+                </ModalBody>
+            </Modal>
+        )
     }
 }
 

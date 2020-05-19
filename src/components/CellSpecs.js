@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {Container, Row, Col, Label,
         Input, Button} from 'reactstrap';
-import {FaPlus} from 'react-icons/fa';
+import {FaPlus, FaTrash} from 'react-icons/fa';
 
 import MonsterModal from './MonsterModal';
 import BorderSelector from './BorderSelector';
@@ -22,6 +22,16 @@ class CellSpecs extends Component {
     }
 
     render(){
+        let monsterBlurb = '';
+        if (this.props.selectedSquare.monsters !== null){
+            let monsterName = this.props.selectedSquare.monsters.inputs.monsterNames[0];
+            let monsterNum = this.props.selectedSquare.monsters.inputs.monsterNums[0];
+            monsterBlurb = monsterNum + ' x ' + monsterName;
+            if (this.props.selectedSquare.monsters.inputs.monsterNames.length > 1){
+                monsterBlurb += ' & others'
+            }
+        }
+
         return(
             <Container className="pt-4">
                 <Row>
@@ -38,15 +48,19 @@ class CellSpecs extends Component {
                 <Row>
                     <Col>
                         <Label for="monsterSection">Monsters</Label>
-                        <Input type="text"
-                            name="monsterSection" />
+                        <Input disabled type="text"
+                            name="monsterSection"
+                            value={monsterBlurb} />
                     </Col>
                     <Col xs="2" style={{position: "relative"}}>
                         <Button style={pullBottom} onClick={this.accessMonsterModal}><FaPlus /></Button>
                         <MonsterModal 
                             ref={this.state.monsterModalRef}
-                            selectedSquare={this.props.selectedSquare}
-                            setMonsterEntry={this.props.setMonsterEntry} />
+                             selectedSquare={this.props.selectedSquare}
+                             setMonsterEntry={this.props.setMonsterEntry} />
+                    </Col>
+                    <Col xs="2" style={{position: "relative"}}>
+                        <Button style={pullBottom}><FaTrash /></Button> 
                     </Col>
                 </Row>
             </Container>

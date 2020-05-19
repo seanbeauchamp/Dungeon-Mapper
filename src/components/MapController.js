@@ -105,6 +105,7 @@ class MapController extends Component {
         newMonsterArray[this.state.selectedSquare.row] = [];
         newMonsterArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = newMonsterData;
         this.setState({monsterEntries: newMonsterArray, selectedSquare: {...this.state.selectedSquare, monsters: newMonsterData}});
+        this.state.selectedSquareRef.setState({monsterSet: true});
     }
 
     componentWillMount() {

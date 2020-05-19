@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
 import styled from 'styled-components';
 
+import goblinFace from '../Images/GoblinFace.png';
+
 const StyledSquare = styled.span`
     background-color: ${props => !props.selected ?
         props.backgroundNeutral : "#e3e184"};
@@ -17,6 +19,21 @@ const StyledSquare = styled.span`
         "1px solid #BBBBBB" : "2px solid black"}; 
 `;
 
+const imageContainer = {
+    position: "relative", 
+    height: '30px'
+}
+
+const centeredImage = {
+    height: '20px',
+    width: '20px',
+    position: 'absolute',
+    left: '50%',
+    marginLeft: '-10px',
+    top: '50%',
+    marginTop: '-10px'
+}
+
 class GraphSquare extends Component{
     constructor(props){
         super(props);
@@ -31,7 +48,8 @@ class GraphSquare extends Component{
             },
             backgroudNeutral: "#FFFFFF",
             row: this.props.rowNum,
-            col: this.props.colNum
+            col: this.props.colNum,
+            monsterSet: false
         }
     }
 
@@ -125,6 +143,14 @@ class GraphSquare extends Component{
     }
 
     render(){
+        let monsterIcon = '';
+        if (this.state.monsterSet){
+            monsterIcon = <div style={imageContainer}>
+                <img src={goblinFace}
+                    alt="Monster Icon" style={centeredImage} />
+                </div>
+        }
+
         return(
             <StyledSquare bordered={this.state.border} 
             onClick={this.handleClicks} 
@@ -132,7 +158,9 @@ class GraphSquare extends Component{
             selected={this.state.selected}
             backgroundNeutral={this.state.backgroundNeutral}
             onMouseEnter={() => this.setHoveringStatus(true)}
-            onMouseLeave={() => this.setHoveringStatus(false)} />
+            onMouseLeave={() => this.setHoveringStatus(false)}>
+                {monsterIcon}
+            </StyledSquare>
         );
     }
 }
