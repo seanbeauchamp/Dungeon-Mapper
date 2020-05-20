@@ -3,7 +3,7 @@ import {Container, Row, Col, Label,
         Input, Button} from 'reactstrap';
 import {FaPlus, FaTrash} from 'react-icons/fa';
 
-import MonsterModal from './MonsterModal';
+import MonsterModal, {ClearMonsterModal} from './MonsterModal';
 import BorderSelector from './BorderSelector';
 
 const pullBottom = {
@@ -13,12 +13,20 @@ const pullBottom = {
 
 class CellSpecs extends Component {
     state = {
-        monsterModalRef: React.createRef()
+        monsterModalRef: React.createRef(),
+        clearMonsterModalRef: React.createRef()
     }
 
     accessMonsterModal = () => {
         let modalButton = this.state.monsterModalRef.current;
         modalButton.toggle();
+    }
+
+    accessClearMonsterModal = () => {
+        if (this.props.selectedSquare.monsters !== null){
+            let modalButton = this.state.clearMonsterModalRef.current;
+            modalButton.toggle();
+        }
     }
 
     render(){
@@ -60,7 +68,14 @@ class CellSpecs extends Component {
                              setMonsterEntry={this.props.setMonsterEntry} />
                     </Col>
                     <Col xs="2" style={{position: "relative"}}>
-                        <Button style={pullBottom}><FaTrash /></Button> 
+                        <Button disabled={this.props.selectedSquare.monsters !== null ?
+                            "" : "true"} style={pullBottom} 
+                            onClick={this.accessClearMonsterModal}>
+                            <FaTrash />
+                        </Button>
+                        <ClearMonsterModal
+                            ref={this.state.clearMonsterModalRef}
+                            clearMonsterEntry={this.props.clearMonsterEntry} /> 
                     </Col>
                 </Row>
             </Container>

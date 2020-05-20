@@ -175,16 +175,24 @@ class ClearMonsterModal extends Component {
         this.setState({modal: !this.state.modal});
     }
 
+    submitChange = (event) => {
+        event.preventDefault();
+        this.props.clearMonsterEntry();
+        this.toggle();
+    }
+
     render() {
         return(
             <Modal isOpen={this.state.modal} toggle={this.toggle}>
                 <ModalHeader toggle={this.toggle}>Delete Monster Data</ModalHeader>
                 <ModalBody>
-                    <p>Are you sure you want to remove all monster data for the 
-                        current square?</p>
-                    <Button>OK</Button>
-                        &nbsp;
-                    <Button>Cancel</Button>
+                    <Form onSubmit={this.submitChange}>
+                        <p>Are you sure you want to remove all monster data for the 
+                            current square?</p>
+                        <Button type="submit">OK</Button>
+                            &nbsp;
+                        <Button onClick={this.toggle}>Cancel</Button>
+                    </Form>
                 </ModalBody>
             </Modal>
         )
@@ -192,3 +200,7 @@ class ClearMonsterModal extends Component {
 }
 
 export default MonsterModal;
+
+export {
+    ClearMonsterModal
+}

@@ -101,11 +101,23 @@ class MapController extends Component {
             details: details
         }
         let newMonsterArray = this.state.monsterEntries;
-        if (!newMonsterArray[this.state.selectedSquare.row])
-        newMonsterArray[this.state.selectedSquare.row] = [];
+        if (!newMonsterArray[this.state.selectedSquare.row]){
+            newMonsterArray[this.state.selectedSquare.row] = [];
+        }
         newMonsterArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = newMonsterData;
         this.setState({monsterEntries: newMonsterArray, selectedSquare: {...this.state.selectedSquare, monsters: newMonsterData}});
         this.state.selectedSquareRef.setState({monsterSet: true});
+    }
+
+    clearMonsterEntry = () => {
+        let newMonsterArray = this.state.monsterEntries;
+        //may be reduntant. Test with first, then without
+        if (!newMonsterArray[this.state.selectedSquare.row]){
+            newMonsterArray[this.state.selectedSquare.row] = [];
+        }
+        newMonsterArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = null;
+        this.setState({monsterEntries: newMonsterArray, selectedSquare: {...this.state.selectedSquare, monsters: null}});
+        this.state.selectedSquareRef.setState({monsterSet: false});
     }
 
     componentWillMount() {
@@ -164,7 +176,8 @@ class MapController extends Component {
                             selectedSquare = {this.state.selectedSquare}
                             selectedSquareRef = {this.state.selectedSquareRef} 
                             resizeGrid = {this.resizeGrid}
-                            setMonsterEntry={this.setMonsterEntry} />
+                            setMonsterEntry={this.setMonsterEntry}
+                            clearMonsterEntry={this.clearMonsterEntry} />
                     </Col>
                 </Row>
                 </Container> 

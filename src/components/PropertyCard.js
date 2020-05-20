@@ -62,7 +62,8 @@ class PropertyCard extends Component{
                                 <CellSpecs 
                                     selectedSquare={this.props.selectedSquare}
                                     selectedSquareRef={this.props.selectedSquareRef} 
-                                    setMonsterEntry={this.props.setMonsterEntry} />} 
+                                    setMonsterEntry={this.props.setMonsterEntry}
+                                    clearMonsterEntry={this.props.clearMonsterEntry} />} 
                             </Col>
                         </Row>
                     </TabPane>
