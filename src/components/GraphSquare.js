@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import styled from 'styled-components';
 
 import goblinFace from '../Images/GoblinFace.png';
+import lootBag from '../Images/LootBag.png';
 
 const StyledSquare = styled.span`
     background-color: ${props => !props.selected ?
@@ -143,11 +144,16 @@ class GraphSquare extends Component{
     }
 
     render(){
-        let monsterIcon = '';
+        let eventIcon = '';
         if (this.state.monsterSet){
-            monsterIcon = <div style={imageContainer}>
+            eventIcon = <div style={imageContainer}>
                 <img src={goblinFace}
                     alt="Monster Icon" style={centeredImage} />
+                </div>
+        } else if (this.state.lootSet){
+            eventIcon = <div style={imageContainer}>
+                <img src={lootBag}
+                    alt="Loot Icon" style={centeredImage} />
                 </div>
         }
 
@@ -159,7 +165,7 @@ class GraphSquare extends Component{
             backgroundNeutral={this.state.backgroundNeutral}
             onMouseEnter={() => this.setHoveringStatus(true)}
             onMouseLeave={() => this.setHoveringStatus(false)}>
-                {monsterIcon}
+                {eventIcon}
             </StyledSquare>
         );
     }

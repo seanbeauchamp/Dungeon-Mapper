@@ -5,7 +5,6 @@ import {FaMousePointer, FaSquare, FaBorderAll, FaExclamation} from 'react-icons/
 import Header from './Header';
 import Graph from './Graph';
 import PropertyCard from './PropertyCard';
-//import GoblinFaceButton from '../Images/GoblinFaceButton.png';
 
 
 const panelStyle = {
