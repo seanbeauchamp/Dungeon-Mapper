@@ -38,7 +38,8 @@ class MapController extends Component {
             selectedSquare: null,
             selectedSquareRef: null,
             refArray: [],
-            monsterEntries: [[],[]]
+            monsterEntries: [[],[]],
+            lootEntries: [[],[]]
         }
     }
 
@@ -56,11 +57,18 @@ class MapController extends Component {
         if (this.state.monsterEntries[newRow] && this.state.monsterEntries[newRow][newCol] !== undefined){
             monsterData = this.state.monsterEntries[newRow][newCol];
         }
+
+        let lootData = null;
+        if (this.state.lootEntries[newRow] && this.state.lootEntries[newRow][newCol] !== undefined){
+            lootData = this.state.lootEntries[newRow][newCol];
+        }
+
         let newSquare = {
             row: newRow,
             col: newCol,
             borders: borderSides,
-            monsters: monsterData
+            monsters: monsterData,
+            loot: lootData
         };
         this.setState({selectedSquare: newSquare, selectedSquareRef: squareRef});
     }
@@ -109,15 +117,32 @@ class MapController extends Component {
         this.state.selectedSquareRef.setState({monsterSet: true});
     }
 
+    setLootEntry = (loots, details) => {
+        let newLootData = {
+            inputs: loots,
+            details: details
+        }
+        let newLootArray = this.state.lootEntries;
+        if (!newLootArray[this.state.selectedSquare.row]){
+            newLootArray[this.state.selectedSquare.row] = [];
+        }
+        newLootArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = newLootData;
+        this.setState({lootEntries: newLootArray, selectedSquare: {...this.state.selectedSquare, loot: newLootData}});
+        this.state.selectedSquareRef.setState({lootSet: true});
+    }
+
     clearMonsterEntry = () => {
         let newMonsterArray = this.state.monsterEntries;
-        //may be reduntant. Test with first, then without
-        if (!newMonsterArray[this.state.selectedSquare.row]){
-            newMonsterArray[this.state.selectedSquare.row] = [];
-        }
         newMonsterArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = null;
         this.setState({monsterEntries: newMonsterArray, selectedSquare: {...this.state.selectedSquare, monsters: null}});
         this.state.selectedSquareRef.setState({monsterSet: false});
+    }
+
+    clearLootEntry = () => {
+        let newLootArray = this.state.lootEntries;
+        newLootArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = null;
+        this.setState({lootEntries: newLootArray, selectedSquare: {...this.state.selectedSquare, loot: null}});
+        this.state.selectedSquareRef.setState({lootSet: false});
     }
 
     componentWillMount() {
@@ -177,7 +202,9 @@ class MapController extends Component {
                             selectedSquareRef = {this.state.selectedSquareRef} 
                             resizeGrid = {this.resizeGrid}
                             setMonsterEntry={this.setMonsterEntry}
-                            clearMonsterEntry={this.clearMonsterEntry} />
+                            clearMonsterEntry={this.clearMonsterEntry}
+                            setLootEntry={this.setLootEntry}
+                            clearLootEntry={this.clearLootEntry} />
                     </Col>
                 </Row>
                 </Container> 

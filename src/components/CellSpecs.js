@@ -3,7 +3,7 @@ import {Container, Row, Col, Label,
         Input, Button} from 'reactstrap';
 import {FaPlus, FaTrash} from 'react-icons/fa';
 
-import MonsterModal, {ClearMonsterModal} from './MonsterModal';
+import EntryModal, {ClearEntryModal} from './EntryModal';
 import BorderSelector from './BorderSelector';
 
 const pullBottom = {
@@ -14,31 +14,39 @@ const pullBottom = {
 class CellSpecs extends Component {
     state = {
         monsterModalRef: React.createRef(),
-        clearMonsterModalRef: React.createRef()
+        clearMonsterModalRef: React.createRef(),
+        lootModalRef: React.createRef(),
+        clearLootModalRef: React.createRef()
     }
 
-    accessMonsterModal = () => {
-        let modalButton = this.state.monsterModalRef.current;
+    accessEntryModal = (currentRef) => {
+        let modalButton = currentRef.current;
         modalButton.toggle();
     }
 
-    accessClearMonsterModal = () => {
-        if (this.props.selectedSquare.monsters !== null){
-            let modalButton = this.state.clearMonsterModalRef.current;
+    accessClearEntryModal = (propVal, currentRef) => {
+        if (propVal !== null){
+            let modalButton = currentRef.current;
             modalButton.toggle();
         }
     }
 
     render(){
-        let monsterBlurb = '';
-        if (this.props.selectedSquare.monsters !== null){
-            let monsterName = this.props.selectedSquare.monsters.inputs.monsterNames[0];
-            let monsterNum = this.props.selectedSquare.monsters.inputs.monsterNums[0];
-            monsterBlurb = monsterNum + ' x ' + monsterName;
-            if (this.props.selectedSquare.monsters.inputs.monsterNames.length > 1){
-                monsterBlurb += ' & others'
+        let entryStates = [this.props.selectedSquare.monsters,
+                        this.props.selectedSquare.loot];        
+
+        let entryBlurbs = entryStates.map((currentState, index) => {
+            let newBlurb = ''
+            if (currentState !== null){
+                let entryName = currentState.inputs.entryNames[0];
+                let entryNum = currentState.inputs.entryNums[0];
+                newBlurb = entryNum + ' x ' + entryName;
+                if (currentState.inputs.entryNames.length > 1){
+                    newBlurb += ' & others'
+                }
             }
-        }
+            return newBlurb;
+        })
 
         return(
             <Container className="pt-4">
@@ -58,24 +66,56 @@ class CellSpecs extends Component {
                         <Label for="monsterSection">Monsters</Label>
                         <Input disabled type="text"
                             name="monsterSection"
-                            value={monsterBlurb} />
+                            value={entryBlurbs[0]} />
                     </Col>
                     <Col xs="2" style={{position: "relative"}}>
-                        <Button style={pullBottom} onClick={this.accessMonsterModal}><FaPlus /></Button>
-                        <MonsterModal 
+                        <Button style={pullBottom} 
+                            onClick={() => this.accessEntryModal(this.state.monsterModalRef)}><FaPlus /></Button>
+                        <EntryModal 
                             ref={this.state.monsterModalRef}
-                             selectedSquare={this.props.selectedSquare}
-                             setMonsterEntry={this.props.setMonsterEntry} />
+                             entries={this.props.selectedSquare.monsters}
+                             setEntry={this.props.setMonsterEntry}
+                             entryType={"Monster"} />
                     </Col>
                     <Col xs="2" style={{position: "relative"}}>
                         <Button disabled={this.props.selectedSquare.monsters !== null ?
                             "" : "true"} style={pullBottom} 
-                            onClick={this.accessClearMonsterModal}>
+                            onClick={() => 
+                            this.accessClearEntryModal(this.props.selectedSquare.monsters, this.state.clearMonsterModalRef)}>
                             <FaTrash />
                         </Button>
-                        <ClearMonsterModal
+                        <ClearEntryModal
                             ref={this.state.clearMonsterModalRef}
-                            clearMonsterEntry={this.props.clearMonsterEntry} /> 
+                            clearEntry={this.props.clearMonsterEntry}
+                            entryType={"Monster"} /> 
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                            <Label for="lootSection">Loot</Label>
+                            <Input disabled type="text"
+                                name="lootSection"
+                                value={entryBlurbs[1]} />
+                    </Col>
+                    <Col xs="2" style={{position: "relative"}}>
+                        <Button style={pullBottom}
+                        onClick={() => this.accessEntryModal(this.state.lootModalRef)}><FaPlus /></Button>
+                        <EntryModal
+                            ref={this.state.lootModalRef}
+                            entries={this.props.selectedSquare.loot}
+                            setEntry={this.props.setLootEntry}
+                            entryType={"Loot"} />
+                    </Col>
+                    <Col xs="2" style={{position: "relative"}}>
+                        <Button disabled={this.props.selectedSquare.loot !== null ?
+                        "" : "true"} style={pullBottom}
+                        onClick={() => this.accessClearEntryModal(this.props.selectedSquare.loot, this.state.clearLootModalRef)}>
+                            <FaTrash />
+                        </Button>
+                        <ClearEntryModal
+                            ref={this.state.clearLootModalRef}
+                            clearEntry={this.props.clearLootEntry}
+                            entryType={"Loot"} />
                     </Col>
                 </Row>
             </Container>
