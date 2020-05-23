@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import goblinFace from '../Images/GoblinFace.png';
 import lootBag from '../Images/LootBag.png';
 import skullFace from '../Images/SkullFace.png';
+import miscIcon from '../Images/MiscIcon.png';
 
 const StyledSquare = styled.span`
     background-color: ${props => !props.selected ?
@@ -148,17 +149,28 @@ class GraphSquare extends Component{
         let eventIcon = '';
         let source;
         let altName;
+        let iconCount = 0;
         if (this.state.monsterSet){
             source = goblinFace;
             altName= "Monster Icon";
-        } else if (this.state.lootSet){
+            iconCount++;
+        } 
+        if (this.state.lootSet){
             source=lootBag;
             altName = "Loot Icon";
-        } else if (this.state.trapsSet){
+            iconCount++;
+        }
+        if (this.state.trapsSet){
             source = skullFace;
             altName = "Trap Icon"
-        } else {
-            return eventIcon
+            iconCount++;
+        } 
+        
+        if (iconCount === 0) {
+            return eventIcon;
+        } else if (iconCount >= 2){
+            source = miscIcon;
+            altName = "Multiple Events";
         }
 
         eventIcon = <div style={imageContainer}>
