@@ -38,7 +38,8 @@ class MapController extends Component {
             selectedSquareRef: null,
             refArray: [],
             monsterEntries: [[],[]],
-            lootEntries: [[],[]]
+            lootEntries: [[],[]],
+            trapEntries: [[],[]]
         }
     }
 
@@ -52,6 +53,7 @@ class MapController extends Component {
     }
 
     setSelectedSquare = (newRow, newCol, borderSides, squareRef) => {
+        //refactor this
         let monsterData = null;
         if (this.state.monsterEntries[newRow] && this.state.monsterEntries[newRow][newCol] !== undefined){
             monsterData = this.state.monsterEntries[newRow][newCol];
@@ -62,12 +64,18 @@ class MapController extends Component {
             lootData = this.state.lootEntries[newRow][newCol];
         }
 
+        let trapData = null;
+        if (this.state.trapEntries[newRow] && this.state.trapEntries[newRow][newCol] !== undefined){
+            trapData = this.state.trapEntries[newRow][newCol];
+        }
+
         let newSquare = {
             row: newRow,
             col: newCol,
             borders: borderSides,
             monsters: monsterData,
-            loot: lootData
+            loot: lootData,
+            traps: trapData
         };
         this.setState({selectedSquare: newSquare, selectedSquareRef: squareRef});
     }
@@ -130,6 +138,20 @@ class MapController extends Component {
         this.state.selectedSquareRef.setState({lootSet: true});
     }
 
+    setTrapsEntry = (trap, details) => {
+        let newTrapData = {
+            inputs: trap,
+            details: details
+        }
+        let newTrapArray = this.state.trapEntries;
+        if (!newTrapArray[this.state.selectedSquare.row]){
+            newTrapArray[this.state.selectedSquare.row] = [];
+        }
+        newTrapArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = newTrapData;
+        this.setState({trapEntries: newTrapArray, selectedSquare: {...this.state.selectedSquare, traps: newTrapData}});
+        this.state.selectedSquareRef.setState({trapsSet: true})
+    }
+
     clearMonsterEntry = () => {
         let newMonsterArray = this.state.monsterEntries;
         newMonsterArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = null;
@@ -142,6 +164,13 @@ class MapController extends Component {
         newLootArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = null;
         this.setState({lootEntries: newLootArray, selectedSquare: {...this.state.selectedSquare, loot: null}});
         this.state.selectedSquareRef.setState({lootSet: false});
+    }
+
+    clearTrapsEntry = () => {
+        let newTrapArray = this.state.trapEntries;
+        newTrapArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = null;
+        this.setState({lootEntries: newTrapArray, selectedSquare: {...this.state.selectedSquare, traps: null}});
+        this.state.selectedSquareRef.setState({trapsSet: false});
     }
 
     componentWillMount() {
@@ -203,7 +232,9 @@ class MapController extends Component {
                             setMonsterEntry={this.setMonsterEntry}
                             clearMonsterEntry={this.clearMonsterEntry}
                             setLootEntry={this.setLootEntry}
-                            clearLootEntry={this.clearLootEntry} />
+                            clearLootEntry={this.clearLootEntry}
+                            setTrapsEntry={this.setTrapsEntry}
+                            clearTrapsEntry={this.clearTrapsEntry} />
                     </Col>
                 </Row>
                 </Container> 

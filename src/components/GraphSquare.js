@@ -3,6 +3,7 @@ import styled from 'styled-components';
 
 import goblinFace from '../Images/GoblinFace.png';
 import lootBag from '../Images/LootBag.png';
+import skullFace from '../Images/SkullFace.png';
 
 const StyledSquare = styled.span`
     background-color: ${props => !props.selected ?
@@ -143,19 +144,33 @@ class GraphSquare extends Component{
         }
     }
 
-    render(){
+    setIcon = () => {
         let eventIcon = '';
+        let source;
+        let altName;
         if (this.state.monsterSet){
-            eventIcon = <div style={imageContainer}>
-                <img src={goblinFace}
-                    alt="Monster Icon" style={centeredImage} />
-                </div>
+            source = goblinFace;
+            altName= "Monster Icon";
         } else if (this.state.lootSet){
-            eventIcon = <div style={imageContainer}>
-                <img src={lootBag}
-                    alt="Loot Icon" style={centeredImage} />
-                </div>
+            source=lootBag;
+            altName = "Loot Icon";
+        } else if (this.state.trapsSet){
+            source = skullFace;
+            altName = "Trap Icon"
+        } else {
+            return eventIcon
         }
+
+        eventIcon = <div style={imageContainer}>
+            <img src={source}
+                alt={altName} style={centeredImage} />
+            </div>;
+
+        return eventIcon;
+    }
+
+    render(){
+        let eventIcon = this.setIcon();      
 
         return(
             <StyledSquare bordered={this.state.border} 

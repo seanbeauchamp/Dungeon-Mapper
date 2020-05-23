@@ -16,7 +16,9 @@ class CellSpecs extends Component {
         monsterModalRef: React.createRef(),
         clearMonsterModalRef: React.createRef(),
         lootModalRef: React.createRef(),
-        clearLootModalRef: React.createRef()
+        clearLootModalRef: React.createRef(),
+        trapModalRef: React.createRef(),
+        clearTrapsModalRef: React.createRef()
     }
 
     accessEntryModal = (currentRef) => {
@@ -33,16 +35,24 @@ class CellSpecs extends Component {
 
     render(){
         let entryStates = [this.props.selectedSquare.monsters,
-                        this.props.selectedSquare.loot];        
+                        this.props.selectedSquare.loot,
+                        this.props.selectedSquare.traps];
+                        
+        let iteratingStates = [this.props.selectedSquare.monsters,
+                                this.props.selectedSquare.loot];                       
 
         let entryBlurbs = entryStates.map((currentState, index) => {
             let newBlurb = ''
             if (currentState !== null){
-                let entryName = currentState.inputs.entryNames[0];
-                let entryNum = currentState.inputs.entryNums[0];
-                newBlurb = entryNum + ' x ' + entryName;
-                if (currentState.inputs.entryNames.length > 1){
-                    newBlurb += ' & others'
+                if (iteratingStates.includes(currentState)){
+                    let entryName = currentState.inputs.entryNames[0];
+                    let entryNum = currentState.inputs.entryNums[0];
+                    newBlurb = entryNum + ' x ' + entryName;
+                    if (currentState.inputs.entryNames.length > 1){
+                        newBlurb += ' & others'
+                    }
+                } else {
+                    newBlurb = currentState.inputs.entryNames[0];
                 }
             }
             return newBlurb;
@@ -116,6 +126,34 @@ class CellSpecs extends Component {
                             ref={this.state.clearLootModalRef}
                             clearEntry={this.props.clearLootEntry}
                             entryType={"Loot"} />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                            <Label for="trapSection">Traps</Label>
+                            <Input disabled type="text"
+                                name="trapSection"
+                                value={entryBlurbs[2]} />
+                    </Col>
+                    <Col xs="2" style={{position: "relative"}}>
+                        <Button style={pullBottom}
+                        onClick={() => this.accessEntryModal(this.state.trapModalRef)}><FaPlus /></Button>
+                        <EntryModal
+                            ref={this.state.trapModalRef}
+                            entries={this.props.selectedSquare.traps}
+                            setEntry={this.props.setTrapsEntry}
+                            entryType={"Traps"} />
+                    </Col>
+                    <Col xs="2" style={{position: "relative"}}>
+                        <Button disabled={this.props.selectedSquare.traps !== null ?
+                        "" : "true"} style={pullBottom}
+                        onClick={() => this.accessClearEntryModal(this.props.selectedSquare.traps, this.state.clearTrapsModalRef)}>
+                            <FaTrash />
+                        </Button>
+                        <ClearEntryModal
+                            ref={this.state.clearTrapsModalRef}
+                            clearEntry={this.props.clearTrapsEntry}
+                            entryType="Traps" />
                     </Col>
                 </Row>
             </Container>

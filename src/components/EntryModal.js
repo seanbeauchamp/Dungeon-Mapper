@@ -93,6 +93,7 @@ class EntryModal extends Component{
 
     render(){
         let addedEntries = [];
+        let iterableTypes = ['Monster', 'Loot'];
         for (let n = 1; n < this.state.numEntries; n++){
             addedEntries.push(
                         <Row className="mt-1">
@@ -133,6 +134,8 @@ class EntryModal extends Component{
                                     value={this.state.entryNames[0]}
                                     onChange={(event) => this.changeNameValue(event, 0)} />
                             </Col>
+                            {iterableTypes.includes(this.props.entryType) ? 
+                            <>
                             <Col>
                                 <Input required type="number"
                                     name="entryNum0"
@@ -145,6 +148,8 @@ class EntryModal extends Component{
                                 onClick={() => this.changeEntryRow(1)}
                                 ><FaPlus /></Button>
                             </Col>
+                            </>
+                            : ''}
                         </Row>
                         {addedEntries}
                        </FormGroup>

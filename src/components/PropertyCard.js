@@ -65,7 +65,9 @@ class PropertyCard extends Component{
                                     setMonsterEntry={this.props.setMonsterEntry}
                                     clearMonsterEntry={this.props.clearMonsterEntry}
                                     setLootEntry={this.props.setLootEntry}
-                                    clearLootEntry={this.props.clearLootEntry} />} 
+                                    clearLootEntry={this.props.clearLootEntry}
+                                    setTrapsEntry={this.props.setTrapsEntry}
+                                    clearTrapsEntry={this.props.clearTrapsEntry} />} 
                             </Col>
                         </Row>
                     </TabPane>
