@@ -6,6 +6,9 @@ import Header from './Header';
 import Graph from './Graph';
 import PropertyCard from './PropertyCard';
 
+import StairsDown from '../Images/StairsDown.png';
+import StairsUp from '../Images/StairsUp.png';
+
 
 const panelStyle = {
     flex: "0 0 400px",
@@ -34,6 +37,7 @@ class MapController extends Component {
             autoExpandSquares: true,
             borderPresets: allTrueBorder,
             activeButton: "2",
+            activeEvent: StairsDown,
             selectedSquare: null,
             selectedSquareRef: null,
             refArray: [],
@@ -90,8 +94,8 @@ class MapController extends Component {
         this.setState({borderPresets: newPresets})
     }
 
-    toggleButton = (button) => {
-        this.setState({activeButton: button});
+    toggleButton = (button, state) => {
+        this.setState({[state]: button});
     }
 
     setReferenceArray = (rowNum, colNum) => {
@@ -188,18 +192,28 @@ class MapController extends Component {
                     <Col>
                         <ButtonGroup>
                             <Button className={this.state.activeButton === "1" ?
-                            "active": null} onClick={() => this.toggleButton("1")}
+                            "active": null} onClick={() => this.toggleButton("1", "activeButton")}
                             ><FaMousePointer /></Button>
                             <Button className={this.state.activeButton === "2" ?
-                            "active" : null} onClick={() => this.toggleButton("2")}
+                            "active" : null} onClick={() => this.toggleButton("2", "activeButton")}
                             ><FaSquare /></Button>
                             <Button className={this.state.activeButton === "3" ?
-                            "active" : null} onClick={() => this.toggleButton("3")}
+                            "active" : null} onClick={() => this.toggleButton("3", "activeButton")}
                             ><FaBorderAll /></Button>
                             <Button className={this.state.activeButton === "4" ?
-                            "active" : null} onClick={() => this.toggleButton("4")}
+                            "active" : null} onClick={() => this.toggleButton("4", "activeButton")}
                             ><FaExclamation /></Button>
                         </ButtonGroup>
+                        {' '}
+                        {this.state.activeButton === "4" ?
+                        <ButtonGroup>
+                            <Button outline className={this.state.activeEvent === "1" ?
+                            "active" : null} onClick={() => this.toggleButton(StairsDown, "activeEvent")}
+                            ><img src={StairsDown} width="20px" height="20px" alt="option1" /></Button>
+                            <Button outline className={this.state.activeEvent === "2" ?
+                            "active" : null} onClick={() => this.toggleButton(StairsUp, "activeEvent")}
+                            ><img src={StairsUp} width="20px" height="20px" alt="option2" /></Button>
+                        </ButtonGroup> : ''}
                     </Col>
                     <Col></Col>
                 </Row>
@@ -213,6 +227,7 @@ class MapController extends Component {
                             columns = {this.state.columns} 
                             borderPresets = {this.state.borderPresets} 
                             activeButton = {this.state.activeButton}
+                            activeEvent = {this.state.activeEvent}
                             selectedSquare = {this.state.selectedSquare}
                             setSelectedSquare = {this.setSelectedSquare} 
                             nullifySelectedSquare = {this.nullifySelectedSquare} />

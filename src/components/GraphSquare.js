@@ -52,7 +52,10 @@ class GraphSquare extends Component{
             backgroudNeutral: "#FFFFFF",
             row: this.props.rowNum,
             col: this.props.colNum,
-            monsterSet: false
+            monsterSet: false,
+            lootSet: false,
+            trapsSet: false,
+            currentSticker: null
         }
     }
 
@@ -130,10 +133,21 @@ class GraphSquare extends Component{
     }
 
     handleClicks = () => {
+        //you'll be able to replace this with a switch statement
         if (this.props.activeButton === "1"){
             this.props.setSelectedSquare(this.state.row, this.state.col, this.state.borderSides)
         } else if (this.props.activeButton === "2"){
             this.toggleborder();
+        } else if (this.props.activeButton === "4"){
+            this.setSticker();
+        }
+    }
+
+    setSticker = () => {
+        if (this.state.currentSticker === this.props.activeEvent){
+            this.setState({currentSticker: null});
+        } else {
+            this.setState({currentSticker: this.props.activeEvent});
         }
     }
 
@@ -147,36 +161,43 @@ class GraphSquare extends Component{
 
     setIcon = () => {
         let eventIcon = '';
-        let source;
-        let altName;
-        let iconCount = 0;
-        if (this.state.monsterSet){
-            source = goblinFace;
-            altName= "Monster Icon";
-            iconCount++;
-        } 
-        if (this.state.lootSet){
-            source=lootBag;
-            altName = "Loot Icon";
-            iconCount++;
-        }
-        if (this.state.trapsSet){
-            source = skullFace;
-            altName = "Trap Icon"
-            iconCount++;
-        } 
-        
-        if (iconCount === 0) {
-            return eventIcon;
-        } else if (iconCount >= 2){
-            source = miscIcon;
-            altName = "Multiple Events";
-        }
+        if (this.state.currentSticker){
+            eventIcon = <div style={imageContainer}>
+                <img src={this.state.currentSticker}
+                    alt="sticker" style={centeredImage} />
+                </div>;
+        } else {        
+            let source;
+            let altName;
+            let iconCount = 0;
+            if (this.state.monsterSet){
+                source = goblinFace;
+                altName= "Monster Icon";
+                iconCount++;
+            } 
+            if (this.state.lootSet){
+                source=lootBag;
+                altName = "Loot Icon";
+                iconCount++;
+            }
+            if (this.state.trapsSet){
+                source = skullFace;
+                altName = "Trap Icon"
+                iconCount++;
+            } 
+            
+            if (iconCount === 0) {
+                return eventIcon;
+            } else if (iconCount >= 2){
+                source = miscIcon;
+                altName = "Multiple Events";
+            }
 
-        eventIcon = <div style={imageContainer}>
-            <img src={source}
-                alt={altName} style={centeredImage} />
-            </div>;
+            eventIcon = <div style={imageContainer}>
+                <img src={source}
+                    alt={altName} style={centeredImage} />
+                </div>;
+        }
 
         return eventIcon;
     }

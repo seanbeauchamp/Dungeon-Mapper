@@ -111,6 +111,7 @@ class Graph extends Component{
                         autoExpandSquares={this.props.autoExpandSquares} 
                         borderPresets={this.props.borderPresets}
                         activeButton={this.props.activeButton}
+                        activeEvent={this.props.activeEvent}
                         setSelectedSquare={this.setSelectedSquare} />
                 )
             }
