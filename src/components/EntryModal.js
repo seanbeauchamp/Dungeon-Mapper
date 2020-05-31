@@ -87,7 +87,7 @@ class EntryModal extends Component{
             entryNames: this.state.entryNames,
             entryNums: this.state.entryNums
         }
-        this.props.setEntry(inputs, this.state.details);
+        this.props.setEntry(inputs, this.state.details, ...this.props.setArguments);
         this.revertSettings();
     }
 
@@ -182,7 +182,7 @@ class ClearEntryModal extends Component {
 
     submitChange = (event) => {
         event.preventDefault();
-        this.props.clearEntry();
+        this.props.clearEventEntry();
         this.toggle();
     }
 

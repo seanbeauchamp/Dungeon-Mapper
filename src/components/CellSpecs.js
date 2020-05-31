@@ -84,7 +84,8 @@ class CellSpecs extends Component {
                         <EntryModal 
                             ref={this.state.monsterModalRef}
                              entries={this.props.selectedSquare.monsters}
-                             setEntry={this.props.setMonsterEntry}
+                             setEntry={this.props.setEventEntry}
+                             setArguments={["monsterEntries", "monsters", "monsterSet"]}
                              entryType={"Monster"} />
                     </Col>
                     <Col xs="2" style={{position: "relative"}}>
@@ -96,7 +97,7 @@ class CellSpecs extends Component {
                         </Button>
                         <ClearEntryModal
                             ref={this.state.clearMonsterModalRef}
-                            clearEntry={this.props.clearMonsterEntry}
+                            clearEventEntry={() => this.props.clearEventEntry("monsterEntries", "monsters", "monsterSet")}
                             entryType={"Monster"} /> 
                     </Col>
                 </Row>
@@ -113,7 +114,8 @@ class CellSpecs extends Component {
                         <EntryModal
                             ref={this.state.lootModalRef}
                             entries={this.props.selectedSquare.loot}
-                            setEntry={this.props.setLootEntry}
+                            setEntry={this.props.setEventEntry}
+                            setArguments={["lootEntries", "loot", "lootSet"]}
                             entryType={"Loot"} />
                     </Col>
                     <Col xs="2" style={{position: "relative"}}>
@@ -124,7 +126,7 @@ class CellSpecs extends Component {
                         </Button>
                         <ClearEntryModal
                             ref={this.state.clearLootModalRef}
-                            clearEntry={this.props.clearLootEntry}
+                            clearEventEntry={() => this.props.clearEventEntry("lootEntries", "loot", "lootSet")}
                             entryType={"Loot"} />
                     </Col>
                 </Row>
@@ -141,7 +143,8 @@ class CellSpecs extends Component {
                         <EntryModal
                             ref={this.state.trapModalRef}
                             entries={this.props.selectedSquare.traps}
-                            setEntry={this.props.setTrapsEntry}
+                            setEntry={this.props.setEventEntry}
+                            setArguments={["trapEntries", "traps", "trapsSet"]}
                             entryType={"Traps"} />
                     </Col>
                     <Col xs="2" style={{position: "relative"}}>
@@ -152,7 +155,7 @@ class CellSpecs extends Component {
                         </Button>
                         <ClearEntryModal
                             ref={this.state.clearTrapsModalRef}
-                            clearEntry={this.props.clearTrapsEntry}
+                            clearEventEntry={() => this.props.clearEventEntry("trapEntries", "traps", "trapsSet")}
                             entryType="Traps" />
                     </Col>
                 </Row>

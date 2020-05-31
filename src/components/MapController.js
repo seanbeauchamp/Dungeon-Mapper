@@ -40,6 +40,8 @@ class MapController extends Component {
             activeEvent: StairsDown,
             selectedSquare: null,
             selectedSquareRef: null,
+            currentGraph: 0,
+            squareArray: [],
             refArray: [],
             monsterEntries: [[],[]],
             lootEntries: [[],[]],
@@ -98,6 +100,10 @@ class MapController extends Component {
         this.setState({[state]: button});
     }
 
+    setSquareArray = (graphInfo) => {
+        this.setState({squareArray: graphInfo});
+    }
+
     setReferenceArray = (rowNum, colNum) => {
         let refs = [];
         for (let r=0; r<=rowNum; r++){
@@ -114,67 +120,25 @@ class MapController extends Component {
         return refs
     }
 
-    setMonsterEntry = (monsters, details) => {
-        let newMonsterData = {
-            inputs: monsters,
-            details: details
+    setEventEntry = (input, detail, entriesState, eventType, eventBool) => {
+        let newEventData = {
+            inputs: input,
+            details: detail
         }
-        let newMonsterArray = this.state.monsterEntries;
-        if (!newMonsterArray[this.state.selectedSquare.row]){
-            newMonsterArray[this.state.selectedSquare.row] = [];
+        let newEventArray = this.state[entriesState];
+        if (!newEventArray[this.state.selectedSquare.row]){
+            newEventArray[this.state.selectedSquare.row] = [];
         }
-        newMonsterArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = newMonsterData;
-        this.setState({monsterEntries: newMonsterArray, selectedSquare: {...this.state.selectedSquare, monsters: newMonsterData}});
-        this.state.selectedSquareRef.setState({monsterSet: true});
+        newEventArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = newEventData;
+        this.setState({[entriesState]: newEventArray, selectedSquare: {...this.state.selectedSquare, [eventType]: newEventData}});
+        this.state.selectedSquareRef.setState({[eventBool]: true});
     }
 
-    setLootEntry = (loots, details) => {
-        let newLootData = {
-            inputs: loots,
-            details: details
-        }
-        let newLootArray = this.state.lootEntries;
-        if (!newLootArray[this.state.selectedSquare.row]){
-            newLootArray[this.state.selectedSquare.row] = [];
-        }
-        newLootArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = newLootData;
-        this.setState({lootEntries: newLootArray, selectedSquare: {...this.state.selectedSquare, loot: newLootData}});
-        this.state.selectedSquareRef.setState({lootSet: true});
-    }
-
-    setTrapsEntry = (trap, details) => {
-        let newTrapData = {
-            inputs: trap,
-            details: details
-        }
-        let newTrapArray = this.state.trapEntries;
-        if (!newTrapArray[this.state.selectedSquare.row]){
-            newTrapArray[this.state.selectedSquare.row] = [];
-        }
-        newTrapArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = newTrapData;
-        this.setState({trapEntries: newTrapArray, selectedSquare: {...this.state.selectedSquare, traps: newTrapData}});
-        this.state.selectedSquareRef.setState({trapsSet: true})
-    }
-
-    clearMonsterEntry = () => {
-        let newMonsterArray = this.state.monsterEntries;
+    clearEventEntry = (arrayObject, squareProperty, setBools) => {
+        let newMonsterArray = this.state[arrayObject];
         newMonsterArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = null;
-        this.setState({monsterEntries: newMonsterArray, selectedSquare: {...this.state.selectedSquare, monsters: null}});
-        this.state.selectedSquareRef.setState({monsterSet: false});
-    }
-
-    clearLootEntry = () => {
-        let newLootArray = this.state.lootEntries;
-        newLootArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = null;
-        this.setState({lootEntries: newLootArray, selectedSquare: {...this.state.selectedSquare, loot: null}});
-        this.state.selectedSquareRef.setState({lootSet: false});
-    }
-
-    clearTrapsEntry = () => {
-        let newTrapArray = this.state.trapEntries;
-        newTrapArray[this.state.selectedSquare.row][this.state.selectedSquare.col] = null;
-        this.setState({lootEntries: newTrapArray, selectedSquare: {...this.state.selectedSquare, traps: null}});
-        this.state.selectedSquareRef.setState({trapsSet: false});
+        this.setState({[arrayObject]: newMonsterArray, selectedSquare: {...this.state.selectedSquare, [squareProperty]: null}});
+        this.state.selectedSquareRef.setState({[setBools]: false});
     }
 
     componentWillMount() {
@@ -230,7 +194,9 @@ class MapController extends Component {
                             activeEvent = {this.state.activeEvent}
                             selectedSquare = {this.state.selectedSquare}
                             setSelectedSquare = {this.setSelectedSquare} 
-                            nullifySelectedSquare = {this.nullifySelectedSquare} />
+                            nullifySelectedSquare = {this.nullifySelectedSquare}
+                            squareArray = {this.state.squareArray}
+                            setSquareArray = {this.setSquareArray} />
                     </Col>
                     <Col style={panelStyle}>
                         <PropertyCard
@@ -244,12 +210,8 @@ class MapController extends Component {
                             selectedSquare = {this.state.selectedSquare}
                             selectedSquareRef = {this.state.selectedSquareRef} 
                             resizeGrid = {this.resizeGrid}
-                            setMonsterEntry={this.setMonsterEntry}
-                            clearMonsterEntry={this.clearMonsterEntry}
-                            setLootEntry={this.setLootEntry}
-                            clearLootEntry={this.clearLootEntry}
-                            setTrapsEntry={this.setTrapsEntry}
-                            clearTrapsEntry={this.clearTrapsEntry} />
+                            setEventEntry = {this.setEventEntry}
+                            clearEventEntry={this.clearEventEntry}/>
                     </Col>
                 </Row>
                 </Container> 

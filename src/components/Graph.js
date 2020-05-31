@@ -11,18 +11,10 @@ const RowDiv = styled.div`
 `;
 
 class Graph extends Component{
-    constructor(props){
-        super(props);
-
-        this.state = {
-            squareArray: [],
-        }
-    }
-
     setSelectedSquare = (thisRow, thisCol, borderSides) => {
         //if a previously selected square is in place, de-select that first
         if (this.props.selectedSquare){
-            let oldSquare = this.state.squareArray[this.props.selectedSquare.row].props.children[this.props.selectedSquare.col].ref.current;
+            let oldSquare = this.props.squareArray[this.props.selectedSquare.row].props.children[this.props.selectedSquare.col].ref.current;
             oldSquare.toggleSelected();
 
             if (this.props.selectedSquare.row === thisRow && this.props.selectedSquare.col === thisCol){
@@ -31,7 +23,7 @@ class Graph extends Component{
             }           
         }
         
-        let currentSquare = this.state.squareArray[thisRow].props.children[thisCol].ref.current;
+        let currentSquare = this.props.squareArray[thisRow].props.children[thisCol].ref.current;
         currentSquare.toggleSelected();
         this.props.setSelectedSquare(thisRow, thisCol, borderSides, currentSquare);
     }
@@ -42,13 +34,13 @@ class Graph extends Component{
             return null;
 
         let upBox = (thisRow - 1 >= 0 ? 
-            this.state.squareArray[thisRow - 1].props.children[thisCol].ref.current : null);
+            this.props.squareArray[thisRow - 1].props.children[thisCol].ref.current : null);
         let downBox = (thisRow + 1 <= this.props.rows ? 
-            this.state.squareArray[thisRow + 1].props.children[thisCol].ref.current : null);
+            this.props.squareArray[thisRow + 1].props.children[thisCol].ref.current : null);
         let rightBox = (thisCol + 1 <= this.props.columns ? 
-            this.state.squareArray[thisRow].props.children[thisCol + 1].ref.current : null);
+            this.props.squareArray[thisRow].props.children[thisCol + 1].ref.current : null);
         let leftBox = (thisCol - 1 >= 0 ? 
-            this.state.squareArray[thisRow].props.children[thisCol - 1].ref.current : null);
+            this.props.squareArray[thisRow].props.children[thisCol - 1].ref.current : null);
 
         return this.calculateGraphNeighbours(upBox, downBox, rightBox, leftBox, borderOn);
     }
@@ -106,7 +98,6 @@ class Graph extends Component{
                 let newkey = `row${r}col${c}`;
                 cols.push(
                     <GraphSquare rowNum={r} colNum={c} ref={newref} key={newkey}
-                        gridWidth={this.state.rows} gridHeight={this.state.columns}
                         checkAdjacentSquares={this.checkAdjacentSquares}
                         autoExpandSquares={this.props.autoExpandSquares} 
                         borderPresets={this.props.borderPresets}
@@ -122,21 +113,19 @@ class Graph extends Component{
     }
 
     componentDidMount(){
-        let rows = this.createGraph();
-        this.setState({squareArray: rows});
+        this.props.setSquareArray(this.createGraph());
     }
 
     componentDidUpdate(prevProps){
         if (this.props.selectedSquare && prevProps.activeButton === "1" && this.props.activeButton !== "1")
         {
-            let oldSquare = this.state.squareArray[this.props.selectedSquare.row].props.children[this.props.selectedSquare.col].ref.current;
+            let oldSquare = this.props.squareArray[this.props.selectedSquare.row].props.children[this.props.selectedSquare.col].ref.current;
             oldSquare.toggleSelected();
             this.props.nullifySelectedSquare();
         }
 
         if (this.props.refArray !== prevProps.refArray){
-            let rows = this.createGraph();
-            this.setState({squareArray: rows});
+            this.props.setSquareArray(this.createGraph());
         }
     }
 
