@@ -40,12 +40,12 @@ class MapController extends Component {
             activeEvent: StairsDown,
             selectedSquare: null,
             selectedSquareRef: null,
-            currentGraph: 0,
             squareArray: [],
             refArray: [],
             monsterEntries: [[],[]],
             lootEntries: [[],[]],
-            trapEntries: [[],[]]
+            trapEntries: [[],[]],
+            storedFloors: []
         }
     }
 
