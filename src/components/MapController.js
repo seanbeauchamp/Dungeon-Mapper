@@ -5,6 +5,7 @@ import {FaMousePointer, FaSquare, FaBorderAll, FaExclamation} from 'react-icons/
 import Header from './Header';
 import Graph from './Graph';
 import PropertyCard from './PropertyCard';
+import FloorSelector from './FloorSelector';
 
 import StairsDown from '../Images/StairsDown.png';
 import StairsUp from '../Images/StairsUp.png';
@@ -182,7 +183,10 @@ class MapController extends Component {
                     <Col></Col>
                 </Row>
                 <Row className='mt-2' style={{minHeight: "80vh"}}>
-                    <Col style={panelStyle}></Col>
+                    <Col style={panelStyle}>
+                        <FloorSelector
+                            storedFloors={this.state.storedFloors} />
+                    </Col>
                     <Col md="auto" style={graphStyle}>
                         <Graph 
                             autoExpandSquares={this.state.autoExpandSquares} 
@@ -211,7 +215,7 @@ class MapController extends Component {
                             selectedSquareRef = {this.state.selectedSquareRef} 
                             resizeGrid = {this.resizeGrid}
                             setEventEntry = {this.setEventEntry}
-                            clearEventEntry={this.clearEventEntry}/>
+                            clearEventEntry={this.clearEventEntry} />
                     </Col>
                 </Row>
                 </Container> 
