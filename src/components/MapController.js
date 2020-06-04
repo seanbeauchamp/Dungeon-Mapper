@@ -21,6 +21,8 @@ const graphStyle = {
     //overflow: "scroll"
 }
 
+const maxFloors = 5;
+
 class MapController extends Component {
     constructor(){
         super();
@@ -46,7 +48,13 @@ class MapController extends Component {
             monsterEntries: [[],[]],
             lootEntries: [[],[]],
             trapEntries: [[],[]],
-            storedFloors: []
+            currentFloorIndex: 1,
+            storedFloors: [
+                {
+                    name: "New Floor",
+                    index: 1
+                }
+            ]
         }
     }
 
@@ -147,6 +155,17 @@ class MapController extends Component {
         this.setState({refArray: refs});
     }
 
+    addFloor = () => {
+        if (this.state.storedFloors.length < maxFloors){
+            let newFloors = this.state.storedFloors;
+            newFloors.push({
+                name: "New Floor",
+                index: this.state.currentFloorIndex + 1
+            })
+            this.setState({storedFloors: newFloors, currentFloorIndex: this.state.currentFloorIndex + 1})
+        }
+    }
+
     render(){
         return(
             <>
@@ -185,7 +204,8 @@ class MapController extends Component {
                 <Row className='mt-2' style={{minHeight: "80vh"}}>
                     <Col style={panelStyle}>
                         <FloorSelector
-                            storedFloors={this.state.storedFloors} />
+                            storedFloors={this.state.storedFloors}
+                            addFloor={this.addFloor} />
                     </Col>
                     <Col md="auto" style={graphStyle}>
                         <Graph 
