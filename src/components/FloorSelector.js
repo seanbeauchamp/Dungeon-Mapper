@@ -34,6 +34,14 @@ class FloorSelector extends Component {
         this.toggleModal();
     }
 
+    moveActiveFloor = increment => {
+        let currentFloor = this.props.storedFloors[this.state.activeFloor].index;
+        let successfulMove = this.props.moveFloor(currentFloor, increment);
+        if (successfulMove){
+            this.setState({activeFloor: this.state.activeFloor + increment});
+        }
+    }
+
     updateActiveFloor = (floorNum) => {
         this.setState({activeFloor: floorNum});
     }
@@ -60,19 +68,29 @@ class FloorSelector extends Component {
                 <CardHeader style={{padding: ".15rem .55rem"}}>
                 <Navbar>
                         <Nav>
-                            <NavItem onClick={this.props.addFloor} style={menuOptionStyles}><FaPlus /></NavItem>
+                            <NavItem onClick={this.props.addFloor} 
+                                style={menuOptionStyles}><FaPlus /></NavItem>
                         </Nav>
                         <Nav>
                             <NavItem><FaEdit /></NavItem>
                         </Nav>
                         <Nav>
-                            <NavItem><FaChevronUp /></NavItem>
+                            <NavItem onClick={() => this.moveActiveFloor(-1)}
+                                style={menuOptionStyles}>
+                                <FaChevronUp style={ this.props.storedFloors.length <= 1 ?
+                                    {color:"#DEDEDE"} : {}}  /></NavItem>
                         </Nav>
                         <Nav>
-                            <NavItem><FaChevronDown /></NavItem>
+                            <NavItem onClick={() => this.moveActiveFloor(1)}
+                                style={menuOptionStyles}>
+                                <FaChevronDown style={ this.props.storedFloors.length <= 1 ?
+                                    {color:"#DEDEDE"} : {}}  /></NavItem>
                         </Nav>
                         <Nav>
-                            <NavItem onClick={this.openModal} style={menuOptionStyles}><FaTrash /></NavItem>
+                            <NavItem onClick={this.openModal} style={menuOptionStyles}>
+                                <FaTrash style={ this.props.storedFloors.length <= 1 ?
+                                    {color:"#DEDEDE"} : {}} />
+                                </NavItem>
                         </Nav>
                     </Navbar>
                 </CardHeader>

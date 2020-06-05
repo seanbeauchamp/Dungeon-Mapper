@@ -176,6 +176,29 @@ class MapController extends Component {
         this.setState({storedFloors: newFloors});
     }
 
+    moveFloor = (indexNum, increment) => {
+        let validMove = false;
+        if (this.state.storedFloors.length > 1){
+            let newFloors = this.state.storedFloors;
+            let arrayNum;
+            for (let n = 0; n < newFloors.length; n++){
+                if (newFloors[n].index === indexNum){
+                    arrayNum = n;
+                    break;
+                }
+            }
+            if ((increment < 0 && arrayNum > 0) ||
+                (increment > 0 && arrayNum < newFloors.length - 1)){
+                let tempFloor = newFloors[arrayNum + increment];
+                newFloors[arrayNum + increment] = newFloors[arrayNum];
+                newFloors[arrayNum] = tempFloor;
+                validMove = true;
+            }
+            this.setState({storedFloors: newFloors});
+        }
+        return validMove;
+    }
+
     render(){
         return(
             <>
@@ -216,7 +239,8 @@ class MapController extends Component {
                         <FloorSelector
                             storedFloors={this.state.storedFloors}
                             addFloor={this.addFloor}
-                            removeFloor={this.removeFloor} />
+                            removeFloor={this.removeFloor}
+                            moveFloor={this.moveFloor} />
                     </Col>
                     <Col md="auto" style={graphStyle}>
                         <Graph 
