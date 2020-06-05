@@ -166,6 +166,16 @@ class MapController extends Component {
         }
     }
 
+    removeFloor = indexNum => {
+        let newFloors = this.state.storedFloors;
+        newFloors.forEach(function (floor){
+            if (floor.index === indexNum){
+                newFloors.splice(newFloors.findIndex(v => v.index === floor.index), 1);
+            }
+        });
+        this.setState({storedFloors: newFloors});
+    }
+
     render(){
         return(
             <>
@@ -205,7 +215,8 @@ class MapController extends Component {
                     <Col style={panelStyle}>
                         <FloorSelector
                             storedFloors={this.state.storedFloors}
-                            addFloor={this.addFloor} />
+                            addFloor={this.addFloor}
+                            removeFloor={this.removeFloor} />
                     </Col>
                     <Col md="auto" style={graphStyle}>
                         <Graph 
