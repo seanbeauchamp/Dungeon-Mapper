@@ -38,6 +38,12 @@ class FloorSelector extends Component {
         this.setState({activeFloor: floorNum});
     }
 
+    openModal = () => {
+        if (this.props.storedFloors.length > 1){
+            this.toggleModal();
+        }
+    }
+
     toggleModal = () => {
         this.setState(previous => ({
             modalOpen: !previous.modalOpen
@@ -66,7 +72,7 @@ class FloorSelector extends Component {
                             <NavItem><FaChevronDown /></NavItem>
                         </Nav>
                         <Nav>
-                            <NavItem onClick={this.toggleModal} style={menuOptionStyles}><FaTrash /></NavItem>
+                            <NavItem onClick={this.openModal} style={menuOptionStyles}><FaTrash /></NavItem>
                         </Nav>
                     </Navbar>
                 </CardHeader>
