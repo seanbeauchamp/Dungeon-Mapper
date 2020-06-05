@@ -1,7 +1,8 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardHeader, Navbar, 
     Nav, NavItem, ListGroup, ListGroupItem,
-    Modal, ModalBody, ModalHeader, Button} from 'reactstrap';
+    Modal, ModalBody, ModalHeader, Button,
+    Form, Input, Label} from 'reactstrap';
 import {FaPlus, FaTrash, FaChevronUp, FaChevronDown, FaEdit} from 'react-icons/fa';
 
 const menuOptionStyles = {
@@ -11,7 +12,9 @@ const menuOptionStyles = {
 class FloorSelector extends Component {
     state = {
         activeFloor: 0,
-        modalOpen: false
+        deleteModalOpen: false,
+        renameModalOpen: false,
+        tempRenameValue: ''
     }
 
     displayFloors = () => {
@@ -22,7 +25,7 @@ class FloorSelector extends Component {
             floorBody.push(<ListGroupItem className={ 
                 this.state.activeFloor === n ? "active" : null
             } onClick={() => this.updateActiveFloor(n)}
-            key={n}>{this.props.storedFloors[n].name} {this.props.storedFloors[n].index}
+            key={n}>{this.props.storedFloors[n].name}
             </ListGroupItem>);
         }
         return floorBody;
@@ -31,7 +34,7 @@ class FloorSelector extends Component {
     removeActiveFloor = () => {
         let currentFloor = this.props.storedFloors[this.state.activeFloor].index;
         this.props.removeFloor(currentFloor);
-        this.toggleModal();
+        this.toggleDeleteModal();
     }
 
     moveActiveFloor = increment => {
@@ -46,16 +49,40 @@ class FloorSelector extends Component {
         this.setState({activeFloor: floorNum});
     }
 
-    openModal = () => {
+    openDeleteModal = () => {
         if (this.props.storedFloors.length > 1){
-            this.toggleModal();
+            this.toggleDeleteModal();
         }
     }
 
-    toggleModal = () => {
+    toggleDeleteModal = () => {
         this.setState(previous => ({
-            modalOpen: !previous.modalOpen
+            deleteModalOpen: !previous.deleteModalOpen
         }));
+    }
+
+    openRenameModal = () => {
+        this.setState({tempRenameValue: this.props.storedFloors[this.state.activeFloor].name});
+        this.toggleRenameModal();
+    }
+
+    toggleRenameModal = () => {
+        this.setState(previous => ({
+            renameModalOpen: !previous.renameModalOpen
+        }));
+    }
+
+    handleRenameChange = event => {
+        let currentName = event.target.value;
+        this.setState({tempRenameValue: currentName});
+    }
+
+    renameFloor = (event) => {
+        event.preventDefault();
+        let newName = this.state.tempRenameValue;
+        let currentFloor = this.props.storedFloors[this.state.activeFloor].index;
+        this.props.renameFloor(currentFloor, newName);
+        this.toggleRenameModal();
     }
 
     render(){
@@ -69,10 +96,9 @@ class FloorSelector extends Component {
                 <Navbar>
                         <Nav>
                             <NavItem onClick={this.props.addFloor} 
-                                style={menuOptionStyles}><FaPlus /></NavItem>
-                        </Nav>
-                        <Nav>
-                            <NavItem><FaEdit /></NavItem>
+                                style={menuOptionStyles}>
+                                <FaPlus style={ this.props.storedFloors.length >= this.props.maxFloors ?
+                                    {color:"#DEDEDE"} : {}} /></NavItem>
                         </Nav>
                         <Nav>
                             <NavItem onClick={() => this.moveActiveFloor(-1)}
@@ -87,7 +113,11 @@ class FloorSelector extends Component {
                                     {color:"#DEDEDE"} : {}}  /></NavItem>
                         </Nav>
                         <Nav>
-                            <NavItem onClick={this.openModal} style={menuOptionStyles}>
+                            <NavItem onClick={this.openRenameModal} style={menuOptionStyles}>
+                                <FaEdit /></NavItem>
+                        </Nav>
+                        <Nav>
+                            <NavItem onClick={this.openDeleteModal} style={menuOptionStyles}>
                                 <FaTrash style={ this.props.storedFloors.length <= 1 ?
                                     {color:"#DEDEDE"} : {}} />
                                 </NavItem>
@@ -102,14 +132,31 @@ class FloorSelector extends Component {
                     </Card>
                 </CardBody>
             </Card>
-            <Modal isOpen={this.state.modalOpen} toggle={this.toggleModal}>
-                <ModalHeader toggle={this.toggleModal}>
+            <Modal isOpen={this.state.deleteModalOpen} toggle={this.toggleDeleteModal}>
+                <ModalHeader toggle={this.toggleDeleteModal}>
                     Confirm Deletion
                 </ModalHeader>
                 <ModalBody>
                     <p>Are you sure you want to delete this floor?</p>
                     <Button onClick={this.removeActiveFloor}>OK</Button> {" "}
-                    <Button onClick={this.toggleModal}>Cancel</Button>
+                    <Button onClick={this.toggleDeleteModal}>Cancel</Button>
+                </ModalBody>
+            </Modal>
+            <Modal isOpen={this.state.renameModalOpen} toggle={this.toggleRenameModal}>
+                <ModalHeader toggle={this.toggleRenameModal}>
+                    Rename Floor Title
+                </ModalHeader>
+                <ModalBody>
+                    <Form onSubmit={this.renameFloor}>
+                        <Label for="newName">Enter the new floor name</Label>
+                        <Input 
+                            type="text"        
+                            name="newName"
+                            value={this.state.tempRenameValue}
+                            onChange={(event) => this.handleRenameChange(event)} />
+                        <Button type="submit">OK</Button>{" "}
+                        <Button onClick={this.toggleRenameModal}>Cancel</Button>
+                    </Form>
                 </ModalBody>
             </Modal>
             </>

@@ -60,7 +60,6 @@ class ResizeModal extends Component {
                                     value={this.state.currentColumns}
                                     />
                             </FormGroup>
-
                             <FormGroup>
                                 <Button type="submit">Update</Button>
                                 &nbsp;

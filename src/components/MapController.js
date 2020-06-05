@@ -158,8 +158,15 @@ class MapController extends Component {
     addFloor = () => {
         if (this.state.storedFloors.length < maxFloors){
             let newFloors = this.state.storedFloors;
+            //TODO: If name already exists in array, count occurrances and add that number to new name
+            let newName = "New Floor";
+            newFloors.forEach(floor => {
+                if (floor.name === newName) {
+                    newName += "+";
+                }
+            });
             newFloors.push({
-                name: "New Floor",
+                name: newName,
                 index: this.state.currentFloorIndex + 1
             })
             this.setState({storedFloors: newFloors, currentFloorIndex: this.state.currentFloorIndex + 1})
@@ -173,6 +180,17 @@ class MapController extends Component {
                 newFloors.splice(newFloors.findIndex(v => v.index === floor.index), 1);
             }
         });
+        this.setState({storedFloors: newFloors});
+    }
+
+    renameFloor = (indexNum, newName) => {
+        let newFloors = this.state.storedFloors;
+        for (let n = 0; n < newFloors.length; n++){
+            if (newFloors[n].index === indexNum){
+                newFloors[n].name = newName;
+                break;
+            }
+        }
         this.setState({storedFloors: newFloors});
     }
 
@@ -238,8 +256,10 @@ class MapController extends Component {
                     <Col style={panelStyle}>
                         <FloorSelector
                             storedFloors={this.state.storedFloors}
+                            maxFloors={maxFloors}
                             addFloor={this.addFloor}
                             removeFloor={this.removeFloor}
+                            renameFloor={this.renameFloor}
                             moveFloor={this.moveFloor} />
                     </Col>
                     <Col md="auto" style={graphStyle}>
