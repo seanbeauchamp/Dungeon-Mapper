@@ -48,6 +48,7 @@ class MapController extends Component {
             monsterEntries: [[],[]],
             lootEntries: [[],[]],
             trapEntries: [[],[]],
+            incrementingFloorIndex: 1,
             currentFloorIndex: 1,
             storedFloors: [
                 {
@@ -167,9 +168,9 @@ class MapController extends Component {
             });
             newFloors.push({
                 name: newName,
-                index: this.state.currentFloorIndex + 1
+                index: this.state.incrementingFloorIndex + 1
             })
-            this.setState({storedFloors: newFloors, currentFloorIndex: this.state.currentFloorIndex + 1})
+            this.setState({storedFloors: newFloors, incrementingFloorIndex: this.state.incrementingFloorIndex + 1})
         }
     }
 
@@ -256,6 +257,7 @@ class MapController extends Component {
                     <Col style={panelStyle}>
                         <FloorSelector
                             storedFloors={this.state.storedFloors}
+                            currentFloorIndex={this.state.currentFloorIndex}
                             maxFloors={maxFloors}
                             addFloor={this.addFloor}
                             removeFloor={this.removeFloor}

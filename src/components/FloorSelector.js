@@ -154,6 +154,7 @@ class FloorSelector extends Component {
                             name="newName"
                             value={this.state.tempRenameValue}
                             onChange={(event) => this.handleRenameChange(event)} />
+                        <br />
                         <Button type="submit">OK</Button>{" "}
                         <Button onClick={this.toggleRenameModal}>Cancel</Button>
                     </Form>
