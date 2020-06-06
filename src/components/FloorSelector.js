@@ -3,7 +3,8 @@ import {Card, CardBody, CardHeader, Navbar,
     Nav, NavItem, ListGroup, ListGroupItem,
     Modal, ModalBody, ModalHeader, Button,
     Form, Input, Label} from 'reactstrap';
-import {FaPlus, FaTrash, FaChevronUp, FaChevronDown, FaEdit} from 'react-icons/fa';
+import {FaPlus, FaTrash, FaChevronUp, FaChevronDown, 
+    FaEdit, FaEye} from 'react-icons/fa';
 
 const menuOptionStyles = {
     cursor: "pointer"
@@ -14,7 +15,8 @@ class FloorSelector extends Component {
         activeFloor: 0,
         deleteModalOpen: false,
         renameModalOpen: false,
-        tempRenameValue: ''
+        tempRenameValue: '',
+        errors: []
     }
 
     displayFloors = () => {
@@ -26,6 +28,8 @@ class FloorSelector extends Component {
                 this.state.activeFloor === n ? "active" : null
             } onClick={() => this.updateActiveFloor(n)}
             key={n}>{this.props.storedFloors[n].name}
+            {this.props.storedFloors[n].index === this.props.currentFloorIndex ?
+                <FaEye style={{float: "right"}} /> : ''}
             </ListGroupItem>);
         }
         return floorBody;
@@ -80,9 +84,25 @@ class FloorSelector extends Component {
     renameFloor = (event) => {
         event.preventDefault();
         let newName = this.state.tempRenameValue;
+        let nameAlreadyExists = false;
         let currentFloor = this.props.storedFloors[this.state.activeFloor].index;
-        this.props.renameFloor(currentFloor, newName);
-        this.toggleRenameModal();
+        this.props.storedFloors.forEach(floor => {
+            if (newName === floor.name && currentFloor !== floor.index){
+               nameAlreadyExists = true;
+            }
+        });
+        if (!nameAlreadyExists){
+            this.props.renameFloor(currentFloor, newName);
+            this.toggleRenameModal();
+        }
+    }
+
+    displayErrors = () => {
+        let errorMessages = [];
+        this.state.errors.forEach((error) => {
+            errorMessages.push(<p>{error}</p>);
+        });
+        return errorMessages;
     }
 
     render(){
@@ -149,7 +169,7 @@ class FloorSelector extends Component {
                 <ModalBody>
                     <Form onSubmit={this.renameFloor}>
                         <Label for="newName">Enter the new floor name</Label>
-                        <Input 
+                        <Input required
                             type="text"        
                             name="newName"
                             value={this.state.tempRenameValue}

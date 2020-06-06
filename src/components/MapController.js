@@ -162,8 +162,8 @@ class MapController extends Component {
             //TODO: If name already exists in array, count occurrances and add that number to new name
             let newName = "New Floor";
             newFloors.forEach(floor => {
-                if (floor.name === newName) {
-                    newName += "+";
+                if (floor.name.includes(newName)) {
+                    newName = floor.name + "+";
                 }
             });
             newFloors.push({
