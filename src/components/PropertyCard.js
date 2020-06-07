@@ -8,6 +8,7 @@ import classnames from 'classnames';
 import BorderSelector from './BorderSelector';
 import CellSpecs from './CellSpecs';
 import ResizeModal from './ResizeModal';
+import FloorSelector from './FloorSelector';
 
 const CustomBordersField = styled.fieldset`
     opacity: ${props => props.expand ? 
@@ -18,7 +19,7 @@ class PropertyCard extends Component{
     constructor(props){
         super(props);
         this.state = {
-            activeTab: '2',
+            activeTab: '0',
         }
     }
 
@@ -40,6 +41,13 @@ class PropertyCard extends Component{
                     <Nav tabs>
                         <NavItem>
                             <NavLink
+                                className={classnames({active: this.state.activeTab === '0'})}
+                                onClick={() => this.setTab('0')}
+                                style={{cursor: "pointer"}}
+                                >Floors</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink
                               className={classnames({active: this.state.activeTab === '1'})}
                               onClick={() => this.setTab('1')}
                               style={{cursor: "pointer"}}
@@ -54,6 +62,20 @@ class PropertyCard extends Component{
                         </NavItem>
                     </Nav>
                     <TabContent activeTab={this.state.activeTab}>
+                    <TabPane tabId="0">
+                        <Row>
+                            <Col sm="12">
+                                <FloorSelector 
+                                    storedFloors={this.props.storedFloors}
+                                    currentFloorIndex={this.props.currentFloorIndex}
+                                    maxFloors={this.props.maxFloors}
+                                    addFloor={this.props.addFloor}
+                                    removeFloor={this.props.removeFloor}
+                                    renameFloor={this.props.renameFloor}
+                                    moveFloor={this.props.moveFloor} />
+                            </Col>
+                        </Row>
+                    </TabPane>
                     <TabPane tabId="1">
                         <Row>
                             <Col sm="12">

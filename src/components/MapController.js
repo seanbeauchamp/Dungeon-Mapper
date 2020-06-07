@@ -5,7 +5,6 @@ import {FaMousePointer, FaSquare, FaBorderAll, FaExclamation} from 'react-icons/
 import Header from './Header';
 import Graph from './Graph';
 import PropertyCard from './PropertyCard';
-import FloorSelector from './FloorSelector';
 
 import StairsDown from '../Images/StairsDown.png';
 import StairsUp from '../Images/StairsUp.png';
@@ -218,6 +217,30 @@ class MapController extends Component {
         return validMove;
     }
 
+    switchActiveFloor = (newIndex) => {
+        let storedState;
+        for (let n = 0; n < this.state.storedFloors.length; n++){
+            let currentState = this.state.storedFloors[n];
+            if (currentState.index === this.state.currentFloorIndex){
+                storedState = this.backupFloor(n);
+            }
+        }
+    }
+
+    backupFloor = (n) => {
+        let currentState = this.state.storedFloors[n];
+        currentState.squareArray = this.state.squareArray;
+        currentState.refArray = this.state.refArray;
+        currentState.monsterEntries = this.state.monsterEntries;
+        currentState.lootEntries = this.state.lootEntries;
+        currentState.trapEntries = this.state.trapEntries;
+        return currentState;
+    }
+
+    loadFloor = () => {
+        
+    }
+
     render(){
         return(
             <>
@@ -255,14 +278,7 @@ class MapController extends Component {
                 </Row>
                 <Row className='mt-2' style={{minHeight: "80vh"}}>
                     <Col style={panelStyle}>
-                        <FloorSelector
-                            storedFloors={this.state.storedFloors}
-                            currentFloorIndex={this.state.currentFloorIndex}
-                            maxFloors={maxFloors}
-                            addFloor={this.addFloor}
-                            removeFloor={this.removeFloor}
-                            renameFloor={this.renameFloor}
-                            moveFloor={this.moveFloor} />
+                        
                     </Col>
                     <Col md="auto" style={graphStyle}>
                         <Graph 
@@ -292,7 +308,14 @@ class MapController extends Component {
                             selectedSquareRef = {this.state.selectedSquareRef} 
                             resizeGrid = {this.resizeGrid}
                             setEventEntry = {this.setEventEntry}
-                            clearEventEntry={this.clearEventEntry} />
+                            clearEventEntry={this.clearEventEntry}
+                            storedFloors={this.state.storedFloors}
+                            currentFloorIndex={this.state.currentFloorIndex}
+                            maxFloors={maxFloors}
+                            addFloor={this.addFloor}
+                            removeFloor={this.removeFloor}
+                            renameFloor={this.renameFloor}
+                            moveFloor={this.moveFloor} />
                     </Col>
                 </Row>
                 </Container> 
