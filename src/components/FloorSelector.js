@@ -66,7 +66,8 @@ class FloorSelector extends Component {
     }
 
     openRenameModal = () => {
-        this.setState({tempRenameValue: this.props.storedFloors[this.state.activeFloor].name});
+        this.setState({tempRenameValue: this.props.storedFloors[this.state.activeFloor].name,
+                        errors: []});
         this.toggleRenameModal();
     }
 
@@ -94,15 +95,11 @@ class FloorSelector extends Component {
         if (!nameAlreadyExists){
             this.props.renameFloor(currentFloor, newName);
             this.toggleRenameModal();
+        } else {
+            let newErrors = [];
+            newErrors.push(<li key={this.state.errors.length}>Name already exists. Please choose another</li>)
+            this.setState({errors: newErrors});
         }
-    }
-
-    displayErrors = () => {
-        let errorMessages = [];
-        this.state.errors.forEach((error) => {
-            errorMessages.push(<p>{error}</p>);
-        });
-        return errorMessages;
     }
 
     render(){
@@ -168,6 +165,7 @@ class FloorSelector extends Component {
                 </ModalHeader>
                 <ModalBody>
                     <Form onSubmit={this.renameFloor}>
+                        { this.state.errors.length > 0 ? <ul>{this.state.errors}</ul> : ''}
                         <Label for="newName">Enter the new floor name</Label>
                         <Input required
                             type="text"        
