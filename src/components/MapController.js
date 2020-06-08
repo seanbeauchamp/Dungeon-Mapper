@@ -44,6 +44,7 @@ class MapController extends Component {
             selectedSquareRef: null,
             squareArray: [],
             refArray: [],
+            bordersArray: [],
             monsterEntries: [[],[]],
             lootEntries: [[],[]],
             trapEntries: [[],[]],
@@ -65,6 +66,21 @@ class MapController extends Component {
     resizeGrid = (newRows, newCols) => {
         let newRef = this.setReferenceArray(newRows, newCols);       
         this.setState({rows: newRows, columns: newCols, refArray: newRef});
+    }
+
+    backupBordersArray = (newArray) => {
+        let newBordersArray = []
+        for (let row = 0; row < this.state.rows; row++){
+            newBordersArray[row] = [];
+            for (let col=0; col < this.state.columns; col++){
+                let currentSquare = this.state.squareArray[row].props.children[col].ref.current;
+                newBordersArray[row][col] = {
+                    border: currentSquare.state.border,
+                    borderSides: currentSquare.state.borderSides
+                }
+            }
+        }
+        return newBordersArray;
     }
 
     setSelectedSquare = (newRow, newCol, borderSides, squareRef) => {
@@ -150,9 +166,13 @@ class MapController extends Component {
         this.state.selectedSquareRef.setState({[setBools]: false});
     }
 
-    componentWillMount() {
+    setRefs = () => {
         let refs = this.setReferenceArray(this.state.rows, this.state.columns);
         this.setState({refArray: refs});
+    }
+
+    componentWillMount() {
+        this.setRefs();
     }
 
     addFloor = () => {
@@ -218,27 +238,59 @@ class MapController extends Component {
     }
 
     switchActiveFloor = (newIndex) => {
+        //first backup current data into current floor element
         let storedState;
+        let storedIndex;
         for (let n = 0; n < this.state.storedFloors.length; n++){
             let currentState = this.state.storedFloors[n];
             if (currentState.index === this.state.currentFloorIndex){
+                storedIndex = n;
                 storedState = this.backupFloor(n);
+                break;
             }
         }
+        //recreate storedFloors in full to replace element data on stored State in setState
+        let newStoredFloors = this.state.storedFloors;
+        newStoredFloors[storedIndex] = storedState;
+        //now check new element, loading data if present and nullifying existing states otherwise
+        let newState;
+        for (let n = 0; n < this.state.storedFloors.length; n++){
+            let currentState = this.state.storedFloors[n];
+            if (currentState.index === newIndex)
+                newState = this.loadFloor(n);
+        }
+        //squareArray is just the actual component instances, not the underlying states. Create & save border info instead
+        this.setState({
+            currentFloorIndex: newIndex,
+            storedFloors: newStoredFloors,
+            squareArray: newState.squareArray,
+            monsterEntries: newState.monsterEntries,
+            lootEntries: newState.lootEntries,
+            trapEntries: newState.trapEntries
+        });
+        this.setRefs();
     }
 
     backupFloor = (n) => {
         let currentState = this.state.storedFloors[n];
-        currentState.squareArray = this.state.squareArray;
-        currentState.refArray = this.state.refArray;
+        //currentState.squareArray = this.state.squareArray;
+        //currentState.refArray = this.state.refArray;
+        currentState.bordersArray = this.backupBordersArray()
         currentState.monsterEntries = this.state.monsterEntries;
         currentState.lootEntries = this.state.lootEntries;
         currentState.trapEntries = this.state.trapEntries;
         return currentState;
     }
 
-    loadFloor = () => {
-        
+    loadFloor = (n) => {
+        let newState = this.state.storedFloors[n];
+        //newState.squareArray = newState.squareArray ? newState.squareArray : [];
+        //newState.refArray = newState.refArray ? newState.refArray : [];
+        newState.bordersArray = newState.bordersArray ? newState.bordersArray : []
+        newState.monsterEntries = newState.monsterEntries ? newState.monsterEntries : [[],[]];
+        newState.lootEntries = newState.lootEntries ? newState.lootEntries : [[],[]];
+        newState.trapEntries = newState.trapEntries ? newState.trapEntries : [[],[]];
+        return newState;
     }
 
     render(){
@@ -293,7 +345,12 @@ class MapController extends Component {
                             setSelectedSquare = {this.setSelectedSquare} 
                             nullifySelectedSquare = {this.nullifySelectedSquare}
                             squareArray = {this.state.squareArray}
-                            setSquareArray = {this.setSquareArray} />
+                            setSquareArray = {this.setSquareArray}
+                            backupBordersArray = {this.backupBordersArray}
+                            bordersArray = {this.state.bordersArray}
+                            monsterEntries = {this.state.monsterEntries}
+                            lootEntries = {this.state.lootEntries}
+                            trapEntries = {this.state.trapEntries} />
                     </Col>
                     <Col style={panelStyle}>
                         <PropertyCard
@@ -315,7 +372,8 @@ class MapController extends Component {
                             addFloor={this.addFloor}
                             removeFloor={this.removeFloor}
                             renameFloor={this.renameFloor}
-                            moveFloor={this.moveFloor} />
+                            moveFloor={this.moveFloor}
+                            switchActiveFloor={this.switchActiveFloor} />
                     </Col>
                 </Row>
                 </Container> 

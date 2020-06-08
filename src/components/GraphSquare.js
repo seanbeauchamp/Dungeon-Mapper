@@ -114,7 +114,22 @@ class GraphSquare extends Component{
     }
 
     componentDidUpdate(prevProps, prevState){
-        this.confirmBordersInPlace();       
+        this.confirmBordersInPlace();
+        
+        if (this.props.refUpdateFlag !== prevProps.refUpdateFlag){
+            let newData = this.props.checkExistingSquareData(this.state.row, this.state.col);
+            if (newData.borderInfo){
+                this.setState({border: newData.borderInfo.border, borderSides: newData.borderInfo.borderSides});
+            } else {
+                this.setState({border: false, 
+                    borderSides: {
+                        top: false,
+                        bottom: false,
+                        right: false,
+                        left: false
+                    }})
+            }
+        }
     }
 
     confirmBordersInPlace = () => {

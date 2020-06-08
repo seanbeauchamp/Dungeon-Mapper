@@ -27,7 +27,7 @@ class FloorSelector extends Component {
             floorBody.push(<ListGroupItem className={ 
                 this.state.activeFloor === n ? "active" : null
             } onClick={() => this.updateActiveFloor(n)}
-            onDoubleClick={() => console.log("double click registered") }
+            onDoubleClick={() => this.switchFloor(n)}
             key={n}><span style={{userSelect: "none"}}>{this.props.storedFloors[n].name}</span>
             {this.props.storedFloors[n].index === this.props.currentFloorIndex ?
                 <FaEye style={{float: "right"}} /> : ''}
@@ -104,7 +104,8 @@ class FloorSelector extends Component {
     }
 
     switchFloor = (floorNum) => {
-        let floorIndex = this.props.storedFloors[floorNum].index;
+        let newFloorIndex = this.props.storedFloors[floorNum].index;
+        this.props.switchActiveFloor(newFloorIndex);
     }
 
     render(){

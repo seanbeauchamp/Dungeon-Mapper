@@ -72,7 +72,8 @@ class PropertyCard extends Component{
                                     addFloor={this.props.addFloor}
                                     removeFloor={this.props.removeFloor}
                                     renameFloor={this.props.renameFloor}
-                                    moveFloor={this.props.moveFloor} />
+                                    moveFloor={this.props.moveFloor}
+                                    switchActiveFloor={this.props.switchActiveFloor} />
                             </Col>
                         </Row>
                     </TabPane>

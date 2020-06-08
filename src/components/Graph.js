@@ -11,6 +11,10 @@ const RowDiv = styled.div`
 `;
 
 class Graph extends Component{
+    state = {
+        refUpdateFlag: false
+    }
+
     setSelectedSquare = (thisRow, thisCol, borderSides) => {
         //if a previously selected square is in place, de-select that first
         if (this.props.selectedSquare){
@@ -26,6 +30,21 @@ class Graph extends Component{
         let currentSquare = this.props.squareArray[thisRow].props.children[thisCol].ref.current;
         currentSquare.toggleSelected();
         this.props.setSelectedSquare(thisRow, thisCol, borderSides, currentSquare);
+    }
+
+    checkExistingSquareData = (thisRow, thisCol) => {
+        let squareData = {
+            borderInfo: null,
+            monsterInfo: null,
+            lootInfo: null,
+            trapInfo: null
+        }
+        //check bordersArray, monsterEntries, trapEntries and lootEntries in current indexes and return to square
+        if (this.props.bordersArray[thisRow] && this.props.bordersArray[thisRow][thisCol]){
+            squareData.borderInfo = this.props.bordersArray[thisRow][thisCol];
+        }        
+        //add the rest of the info checks if this one works
+        return squareData;
     }
 
     //TODO: Account for disabled squares as well, returning the original borders if they existed
@@ -98,12 +117,14 @@ class Graph extends Component{
                 let newkey = `row${r}col${c}`;
                 cols.push(
                     <GraphSquare rowNum={r} colNum={c} ref={newref} key={newkey}
+                        refUpdateFlag={this.state.refUpdateFlag}
                         checkAdjacentSquares={this.checkAdjacentSquares}
                         autoExpandSquares={this.props.autoExpandSquares} 
                         borderPresets={this.props.borderPresets}
                         activeButton={this.props.activeButton}
                         activeEvent={this.props.activeEvent}
-                        setSelectedSquare={this.setSelectedSquare} />
+                        setSelectedSquare={this.setSelectedSquare}
+                        checkExistingSquareData={this.checkExistingSquareData} />
                 )
             }
             let rowkey=`row${r}`;
@@ -126,7 +147,14 @@ class Graph extends Component{
 
         if (this.props.refArray !== prevProps.refArray){
             this.props.setSquareArray(this.createGraph());
+            this.setState({refUpdateFlag: !this.state.refUpdateFlag})
         }
+
+        /*if (this.props.squareArray !== prevProps.squareArray){
+            if (this.props.squareArray.length <= 0){
+                this.props.setSquareArray(this.createGraph());
+            }
+        }*/
     }
 
     render(){
