@@ -48,6 +48,7 @@ class MapController extends Component {
             monsterEntries: [[],[]],
             lootEntries: [[],[]],
             trapEntries: [[],[]],
+            stickerEntries: [[],[]],
             incrementingFloorIndex: 1,
             currentFloorIndex: 1,
             storedFloors: [
@@ -143,6 +144,15 @@ class MapController extends Component {
             refs.push(cols)
         }
         return refs
+    }
+
+    setStickerEntry = (rowNum, colNum, stickerOn) => {
+        let newStickerEntries = this.state.stickerEntries;
+        if (!newStickerEntries[rowNum]){
+            newStickerEntries[rowNum] = [];
+        }
+        newStickerEntries[rowNum][colNum] = stickerOn ? this.state.activeEvent : null;
+        this.setState({stickerEntries: newStickerEntries});
     }
 
     setEventEntry = (input, detail, entriesState, eventType, eventBool) => {
@@ -267,6 +277,7 @@ class MapController extends Component {
             monsterEntries: newState.monsterEntries,
             lootEntries: newState.lootEntries,
             trapEntries: newState.trapEntries,
+            stickerEntries: newState.stickerEntries,
             selectedSquare: null,
             selectedSquareRef: null,
         });
@@ -279,6 +290,7 @@ class MapController extends Component {
         currentState.monsterEntries = this.state.monsterEntries;
         currentState.lootEntries = this.state.lootEntries;
         currentState.trapEntries = this.state.trapEntries;
+        currentState.stickerEntries = this.state.stickerEntries;
         return currentState;
     }
 
@@ -288,6 +300,7 @@ class MapController extends Component {
         newState.monsterEntries = newState.monsterEntries ? newState.monsterEntries : [[],[]];
         newState.lootEntries = newState.lootEntries ? newState.lootEntries : [[],[]];
         newState.trapEntries = newState.trapEntries ? newState.trapEntries : [[],[]];
+        newState.stickerEntries = newState.stickerEntries ? newState.stickerEntries : [[],[]];
         return newState;
     }
 
@@ -348,7 +361,9 @@ class MapController extends Component {
                             bordersArray = {this.state.bordersArray}
                             monsterEntries = {this.state.monsterEntries}
                             lootEntries = {this.state.lootEntries}
-                            trapEntries = {this.state.trapEntries} />
+                            trapEntries = {this.state.trapEntries}
+                            stickerEntries = {this.state.stickerEntries}
+                            setStickerEntry = {this.setStickerEntry} />
                     </Col>
                     <Col style={panelStyle}>
                         <PropertyCard

@@ -37,7 +37,8 @@ class Graph extends Component{
             borderInfo: null,
             monsterInfo: null,
             lootInfo: null,
-            trapInfo: null
+            trapInfo: null,
+            stickerInfo: null
         }
         if (this.props.bordersArray[thisRow] && this.props.bordersArray[thisRow][thisCol]){
             squareData.borderInfo = this.props.bordersArray[thisRow][thisCol];
@@ -50,6 +51,9 @@ class Graph extends Component{
         }
         if (this.props.trapEntries[thisRow] && this.props.trapEntries[thisRow][thisCol]){
             squareData.trapInfo = this.props.trapEntries[thisRow][thisCol];
+        }
+        if (this.props.stickerEntries[thisRow] && this.props.stickerEntries[thisRow][thisCol]){
+            squareData.stickerInfo = this.props.stickerEntries[thisRow][thisCol];
         }
         return squareData;
     }
@@ -131,7 +135,8 @@ class Graph extends Component{
                         activeButton={this.props.activeButton}
                         activeEvent={this.props.activeEvent}
                         setSelectedSquare={this.setSelectedSquare}
-                        checkExistingSquareData={this.checkExistingSquareData} />
+                        checkExistingSquareData={this.checkExistingSquareData}
+                        setStickerEntry={this.props.setStickerEntry} />
                 )
             }
             let rowkey=`row${r}`;
@@ -156,12 +161,6 @@ class Graph extends Component{
             this.props.setSquareArray(this.createGraph());
             this.setState({refUpdateFlag: !this.state.refUpdateFlag})
         }
-
-        /*if (this.props.squareArray !== prevProps.squareArray){
-            if (this.props.squareArray.length <= 0){
-                this.props.setSquareArray(this.createGraph());
-            }
-        }*/
     }
 
     render(){

@@ -127,6 +127,7 @@ class GraphSquare extends Component{
             let tempMonsterSet = false;
             let tempLootSet = false;
             let tempTrapsSet = false;
+            let tempSticker = null;
             let newData = this.props.checkExistingSquareData(this.state.row, this.state.col);
             if (newData.borderInfo){
                 tempBorder = newData.borderInfo.border;
@@ -141,8 +142,11 @@ class GraphSquare extends Component{
             if (newData.trapInfo){
                 tempTrapsSet = true;
             }
+            if (newData.stickerInfo){
+                tempSticker = newData.stickerInfo;
+            }
             this.setState({border: tempBorder, borderSides: tempBorderSides, monsterSet: tempMonsterSet,
-                trapsSet: tempTrapsSet, lootSet: tempLootSet, selected: null});
+                trapsSet: tempTrapsSet, lootSet: tempLootSet, currentSticker: tempSticker, selected: null});
         }
     }
 
@@ -175,8 +179,10 @@ class GraphSquare extends Component{
     setSticker = () => {
         if (this.state.currentSticker === this.props.activeEvent){
             this.setState({currentSticker: null});
+            this.props.setStickerEntry(this.state.row, this.state.col, false);
         } else {
             this.setState({currentSticker: this.props.activeEvent});
+            this.props.setStickerEntry(this.state.row, this.state.col, true);
         }
     }
 
