@@ -39,11 +39,18 @@ class Graph extends Component{
             lootInfo: null,
             trapInfo: null
         }
-        //check bordersArray, monsterEntries, trapEntries and lootEntries in current indexes and return to square
         if (this.props.bordersArray[thisRow] && this.props.bordersArray[thisRow][thisCol]){
             squareData.borderInfo = this.props.bordersArray[thisRow][thisCol];
-        }        
-        //add the rest of the info checks if this one works
+        }   
+        if (this.props.monsterEntries[thisRow] && this.props.monsterEntries[thisRow][thisCol]){
+            squareData.monsterInfo = this.props.monsterEntries[thisRow][thisCol];
+        }     
+        if (this.props.lootEntries[thisRow] && this.props.lootEntries[thisRow][thisCol]){
+            squareData.lootInfo = this.props.lootEntries[thisRow][thisCol];
+        }
+        if (this.props.trapEntries[thisRow] && this.props.trapEntries[thisRow][thisCol]){
+            squareData.trapInfo = this.props.trapEntries[thisRow][thisCol];
+        }
         return squareData;
     }
 

@@ -263,18 +263,18 @@ class MapController extends Component {
         this.setState({
             currentFloorIndex: newIndex,
             storedFloors: newStoredFloors,
-            squareArray: newState.squareArray,
+            bordersArray: newState.bordersArray,
             monsterEntries: newState.monsterEntries,
             lootEntries: newState.lootEntries,
-            trapEntries: newState.trapEntries
+            trapEntries: newState.trapEntries,
+            selectedSquare: null,
+            selectedSquareRef: null,
         });
         this.setRefs();
     }
 
     backupFloor = (n) => {
         let currentState = this.state.storedFloors[n];
-        //currentState.squareArray = this.state.squareArray;
-        //currentState.refArray = this.state.refArray;
         currentState.bordersArray = this.backupBordersArray()
         currentState.monsterEntries = this.state.monsterEntries;
         currentState.lootEntries = this.state.lootEntries;
@@ -284,8 +284,6 @@ class MapController extends Component {
 
     loadFloor = (n) => {
         let newState = this.state.storedFloors[n];
-        //newState.squareArray = newState.squareArray ? newState.squareArray : [];
-        //newState.refArray = newState.refArray ? newState.refArray : [];
         newState.bordersArray = newState.bordersArray ? newState.bordersArray : []
         newState.monsterEntries = newState.monsterEntries ? newState.monsterEntries : [[],[]];
         newState.lootEntries = newState.lootEntries ? newState.lootEntries : [[],[]];

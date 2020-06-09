@@ -115,20 +115,34 @@ class GraphSquare extends Component{
 
     componentDidUpdate(prevProps, prevState){
         this.confirmBordersInPlace();
-        
+
         if (this.props.refUpdateFlag !== prevProps.refUpdateFlag){
+            let tempBorder = false;
+            let tempBorderSides = {
+                top: false,
+                bottom: false,
+                right: false,
+                left: false
+            };
+            let tempMonsterSet = false;
+            let tempLootSet = false;
+            let tempTrapsSet = false;
             let newData = this.props.checkExistingSquareData(this.state.row, this.state.col);
             if (newData.borderInfo){
-                this.setState({border: newData.borderInfo.border, borderSides: newData.borderInfo.borderSides});
-            } else {
-                this.setState({border: false, 
-                    borderSides: {
-                        top: false,
-                        bottom: false,
-                        right: false,
-                        left: false
-                    }})
+                tempBorder = newData.borderInfo.border;
+                tempBorderSides = newData.borderInfo.borderSides;
+            } 
+            if (newData.monsterInfo){
+                tempMonsterSet = true;
             }
+            if (newData.lootInfo){
+                tempLootSet = true;
+            }
+            if (newData.trapInfo){
+                tempTrapsSet = true;
+            }
+            this.setState({border: tempBorder, borderSides: tempBorderSides, monsterSet: tempMonsterSet,
+                trapsSet: tempTrapsSet, lootSet: tempLootSet, selected: null});
         }
     }
 
