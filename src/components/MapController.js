@@ -5,12 +5,12 @@ import {FaMousePointer, FaSquare, FaBorderAll, FaExclamation} from 'react-icons/
 import Header from './Header';
 import Graph from './Graph';
 import PropertyCard from './PropertyCard';
+import SubHeader from './SubHeader';
 
 import StairsDown from '../Images/StairsDown.png';
 import StairsUp from '../Images/StairsUp.png';
 import DoorLocked from '../Images/DoorLocked.png';
 import DoorReg from '../Images/DoorReg.png';
-
 
 const panelStyle = {
     flex: "0 0 400px",
@@ -310,6 +310,7 @@ class MapController extends Component {
         return(
             <>
                 <Header />
+                <SubHeader storedFloors={this.state.storedFloors} />
                 <Container fluid className='mt-2'>
                 <Row>
                     <Col></Col>
