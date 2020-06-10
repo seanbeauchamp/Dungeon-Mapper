@@ -8,6 +8,8 @@ import PropertyCard from './PropertyCard';
 
 import StairsDown from '../Images/StairsDown.png';
 import StairsUp from '../Images/StairsUp.png';
+import DoorLocked from '../Images/DoorLocked.png';
+import DoorReg from '../Images/DoorReg.png';
 
 
 const panelStyle = {
@@ -335,6 +337,12 @@ class MapController extends Component {
                             <Button outline className={this.state.activeEvent === "2" ?
                             "active" : null} onClick={() => this.toggleButton(StairsUp, "activeEvent")}
                             ><img src={StairsUp} width="20px" height="20px" alt="option2" /></Button>
+                            <Button outline className={this.state.activeEvent === "3" ?
+                            "active" : null} onClick={() => this.toggleButton(DoorReg, "activeEvent")}
+                            ><img src={DoorReg} width="20px" height="20px" alt="option3" /></Button>
+                            <Button outline className={this.state.activeEvent === "4" ?
+                            "active" : null} onClick={() => this.toggleButton(DoorLocked, "activeEvent")}
+                            ><img src={DoorLocked} width="20px" height="20px" alt="option4" /></Button>
                         </ButtonGroup> : ''}
                     </Col>
                     <Col></Col>
