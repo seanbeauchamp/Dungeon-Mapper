@@ -1,16 +1,10 @@
 import React, {Component} from 'react';
-import {Container, Row, Col, Button, ButtonGroup} from 'reactstrap';
-import {FaMousePointer, FaSquare, FaBorderAll, FaExclamation} from 'react-icons/fa';
+import {Container, Row, Col} from 'reactstrap';
 
 import Header from './Header';
 import Graph from './Graph';
 import PropertyCard from './PropertyCard';
 import SubHeader from './SubHeader';
-
-import StairsDown from '../Images/StairsDown.png';
-import StairsUp from '../Images/StairsUp.png';
-import DoorLocked from '../Images/DoorLocked.png';
-import DoorReg from '../Images/DoorReg.png';
 
 const panelStyle = {
     flex: "0 0 400px",
@@ -41,7 +35,7 @@ class MapController extends Component {
             autoExpandSquares: true,
             borderPresets: allTrueBorder,
             activeButton: "2",
-            activeEvent: StairsDown,
+            activeEvent: null,
             selectedSquare: null,
             selectedSquareRef: null,
             squareArray: [],
@@ -310,41 +304,15 @@ class MapController extends Component {
         return(
             <>
                 <Header />
-                <SubHeader storedFloors={this.state.storedFloors} />
+                <SubHeader storedFloors={this.state.storedFloors}
+                            toggleButton={this.toggleButton}
+                            activeButton={this.state.activeButton}
+                             />
                 <Container fluid className='mt-2'>
                 <Row>
                     <Col></Col>
                     <Col>
-                        <ButtonGroup>
-                            <Button className={this.state.activeButton === "1" ?
-                            "active": null} onClick={() => this.toggleButton("1", "activeButton")}
-                            ><FaMousePointer /></Button>
-                            <Button className={this.state.activeButton === "2" ?
-                            "active" : null} onClick={() => this.toggleButton("2", "activeButton")}
-                            ><FaSquare /></Button>
-                            <Button className={this.state.activeButton === "3" ?
-                            "active" : null} onClick={() => this.toggleButton("3", "activeButton")}
-                            ><FaBorderAll /></Button>
-                            <Button className={this.state.activeButton === "4" ?
-                            "active" : null} onClick={() => this.toggleButton("4", "activeButton")}
-                            ><FaExclamation /></Button>
-                        </ButtonGroup>
-                        {' '}
-                        {this.state.activeButton === "4" ?
-                        <ButtonGroup>
-                            <Button outline className={this.state.activeEvent === "1" ?
-                            "active" : null} onClick={() => this.toggleButton(StairsDown, "activeEvent")}
-                            ><img src={StairsDown} width="20px" height="20px" alt="option1" /></Button>
-                            <Button outline className={this.state.activeEvent === "2" ?
-                            "active" : null} onClick={() => this.toggleButton(StairsUp, "activeEvent")}
-                            ><img src={StairsUp} width="20px" height="20px" alt="option2" /></Button>
-                            <Button outline className={this.state.activeEvent === "3" ?
-                            "active" : null} onClick={() => this.toggleButton(DoorReg, "activeEvent")}
-                            ><img src={DoorReg} width="20px" height="20px" alt="option3" /></Button>
-                            <Button outline className={this.state.activeEvent === "4" ?
-                            "active" : null} onClick={() => this.toggleButton(DoorLocked, "activeEvent")}
-                            ><img src={DoorLocked} width="20px" height="20px" alt="option4" /></Button>
-                        </ButtonGroup> : ''}
+                        
                     </Col>
                     <Col></Col>
                 </Row>

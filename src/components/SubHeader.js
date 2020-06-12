@@ -1,35 +1,17 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Navbar, Nav, UncontrolledDropdown,
-DropdownToggle, DropdownItem, DropdownMenu} from 'reactstrap';
-import FileSaver, {saveAs} from 'file-saver';
+DropdownToggle, DropdownItem, DropdownMenu,
+Button, ButtonGroup} from 'reactstrap';
+import FileSaver from 'file-saver';
+import {FaMousePointer, FaSquare, FaBorderAll, FaExclamation} from 'react-icons/fa';
+
+import StairsDown from '../Images/StairsDown.png';
+import StairsUp from '../Images/StairsUp.png';
+import DoorLocked from '../Images/DoorLocked.png';
+import DoorReg from '../Images/DoorReg.png';
+
 
 const SubHeader = (props) => {
-    const [isOpen, setIsOpen] = useState(false);
-    const toggleOpen = () => setIsOpen(!isOpen);
-
-    const testJson = `{
-        "glossary": {
-            "title": "example glossary",
-            "GlossDiv": {
-                "title": "S",
-                "GlossList": {
-                    "GlossEntry": {
-                        "ID": "SGML",
-                        "SortAs": "SGML",
-                        "GlossTerm": "Standard Generalized Markup Language",
-                        "Acronym": "SGML",
-                        "Abbrev": "ISO 8879:1986",
-                        "GlossDef": {
-                            "para": "A meta-markup language, used to create markup languages such as DocBook.",
-                            "GlossSeeAlso": ["GML", "XML"]
-                        },
-                        "GlossSee": "markup"
-                    }
-                }
-            }
-        }
-    }`
-
     const serializeStoredFloors = () => {
         let jsonString = '{ floors: {';
         props.storedFloors.forEach(floor => {
@@ -71,6 +53,38 @@ const SubHeader = (props) => {
                                 </DropdownItem>
                             </DropdownMenu>
                         </UncontrolledDropdown>
+                        <ButtonGroup style={{position: "absolute", left: "50%", top: "50%",
+                                transform: "translate(-50%, -50%)"}}>
+                            <Button className={props.activeButton === "1" ?
+                            "active": null} onClick={() => props.toggleButton("1", "activeButton")}
+                            ><FaMousePointer /></Button>
+                            <Button className={props.activeButton === "2" ?
+                            "active" : null} onClick={() => props.toggleButton("2", "activeButton")}
+                            ><FaSquare /></Button>
+                            <Button className={props.activeButton === "3" ?
+                            "active" : null} onClick={() => props.toggleButton("3", "activeButton")}
+                            ><FaBorderAll /></Button>
+                            <Button className={props.activeButton === "4" ?
+                            "active" : null} onClick={() => props.toggleButton("4", "activeButton")}
+                            ><FaExclamation /></Button>
+                        </ButtonGroup>
+                        {' '}
+                        {props.activeButton === "4" ?
+                        <ButtonGroup style={{position: "absolute", left: "50%", top: "105%",
+                                transform: "translate(-50%, 0%)"}}>
+                            <Button outline className={props.activeEvent === "1" ?
+                            "active" : null} onClick={() => props.toggleButton(StairsDown, "activeEvent")}
+                            ><img src={StairsDown} width="20px" height="20px" alt="option1" /></Button>
+                            <Button outline className={props.activeEvent === "2" ?
+                            "active" : null} onClick={() => props.toggleButton(StairsUp, "activeEvent")}
+                            ><img src={StairsUp} width="20px" height="20px" alt="option2" /></Button>
+                            <Button outline className={props.activeEvent === "3" ?
+                            "active" : null} onClick={() => props.toggleButton(DoorReg, "activeEvent")}
+                            ><img src={DoorReg} width="20px" height="20px" alt="option3" /></Button>
+                            <Button outline className={props.activeEvent === "4" ?
+                            "active" : null} onClick={() => props.toggleButton(DoorLocked, "activeEvent")}
+                            ><img src={DoorLocked} width="20px" height="20px" alt="option4" /></Button>
+                        </ButtonGroup> : ''}
                 </Nav>
             </Navbar>
         </>
