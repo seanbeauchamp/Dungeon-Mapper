@@ -6,17 +6,24 @@ import Graph from './Graph';
 import PropertyCard from './PropertyCard';
 import SubHeader from './SubHeader';
 
+const maxFloors = 5;
+const panelWidth = 400;
+
 const panelStyle = {
-    flex: "0 0 400px",
+    flex: "0 0 " + panelWidth + "px",
     msFlex: "0 0 400px"
 };
 
+//default info on your monitor for ref: total graph size is 630px. Free space after two panels at full screen: 1120px
+//with borders etc, starts having trouble when 660px free space or less
+//ergo,  on window check, if smaller than 660, set to 30 below free space and turn on X-Scroll
 const graphStyle = {
     margin: "auto",
-    //overflow: "scroll"
+    whiteSpace: "nowrap",
+    //width: "calc(100% - 800px)"
+    //overflowX: "scroll"
 }
 
-const maxFloors = 5;
 
 class MapController extends Component {
     constructor(){
@@ -55,6 +62,13 @@ class MapController extends Component {
             ]
         }
     }
+
+    handleWindowResize = () => {
+        let freeWidth = window.innerWidth - (panelWidth * 2);
+        console.log("Width: " + window.innerWidth);
+        console.log("Height: " + window.innerHeight);
+        console.log("Available width for graph: " + freeWidth);
+    }    
 
     toggleAutoExpandSquares = () => {
         this.setState({autoExpandSquares: !this.state.autoExpandSquares});
@@ -179,6 +193,10 @@ class MapController extends Component {
 
     componentWillMount() {
         this.setRefs();
+    }
+
+    componentDidMount(){
+        window.addEventListener("resize", this.handleWindowResize);
     }
 
     addFloor = () => {
@@ -308,7 +326,7 @@ class MapController extends Component {
                             toggleButton={this.toggleButton}
                             activeButton={this.state.activeButton}
                              />
-                <Container fluid className='mt-2'>
+                <Container fluid className='mt-2' style={{whiteSpace: "nowrap"}}>
                 <Row>
                     <Col></Col>
                     <Col>
@@ -318,7 +336,27 @@ class MapController extends Component {
                 </Row>
                 <Row className='mt-2' style={{minHeight: "80vh"}}>
                     <Col style={panelStyle}>
-                        
+                    <PropertyCard
+                            rows={this.state.rows}
+                            columns={this.state.columns}
+                            autoExpandSquares={this.state.autoExpandSquares}
+                            toggleAutoExpandSquares={this.toggleAutoExpandSquares}
+                            activeButton={this.state.activeButton}
+                            borderPresets = {this.state.borderPresets}
+                            updatePresets = {this.updatePresets} 
+                            selectedSquare = {this.state.selectedSquare}
+                            selectedSquareRef = {this.state.selectedSquareRef} 
+                            resizeGrid = {this.resizeGrid}
+                            setEventEntry = {this.setEventEntry}
+                            clearEventEntry={this.clearEventEntry}
+                            storedFloors={this.state.storedFloors}
+                            currentFloorIndex={this.state.currentFloorIndex}
+                            maxFloors={maxFloors}
+                            addFloor={this.addFloor}
+                            removeFloor={this.removeFloor}
+                            renameFloor={this.renameFloor}
+                            moveFloor={this.moveFloor}
+                            switchActiveFloor={this.switchActiveFloor} />
                     </Col>
                     <Col md="auto" style={graphStyle}>
                         <Graph 
@@ -343,27 +381,7 @@ class MapController extends Component {
                             setStickerEntry = {this.setStickerEntry} />
                     </Col>
                     <Col style={panelStyle}>
-                        <PropertyCard
-                            rows={this.state.rows}
-                            columns={this.state.columns}
-                            autoExpandSquares={this.state.autoExpandSquares}
-                            toggleAutoExpandSquares={this.toggleAutoExpandSquares}
-                            activeButton={this.state.activeButton}
-                            borderPresets = {this.state.borderPresets}
-                            updatePresets = {this.updatePresets} 
-                            selectedSquare = {this.state.selectedSquare}
-                            selectedSquareRef = {this.state.selectedSquareRef} 
-                            resizeGrid = {this.resizeGrid}
-                            setEventEntry = {this.setEventEntry}
-                            clearEventEntry={this.clearEventEntry}
-                            storedFloors={this.state.storedFloors}
-                            currentFloorIndex={this.state.currentFloorIndex}
-                            maxFloors={maxFloors}
-                            addFloor={this.addFloor}
-                            removeFloor={this.removeFloor}
-                            renameFloor={this.renameFloor}
-                            moveFloor={this.moveFloor}
-                            switchActiveFloor={this.switchActiveFloor} />
+                        
                     </Col>
                 </Row>
                 </Container> 
