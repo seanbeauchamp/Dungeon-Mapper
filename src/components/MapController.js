@@ -7,23 +7,12 @@ import PropertyCard from './PropertyCard';
 import SubHeader from './SubHeader';
 
 const maxFloors = 5;
-const panelWidth = 400;
+const panelWidth = 375;
 
 const panelStyle = {
     flex: "0 0 " + panelWidth + "px",
-    msFlex: "0 0 400px"
+    msFlex: "0 0 " + panelWidth + "px",
 };
-
-//default info on your monitor for ref: total graph size is 630px. Free space after two panels at full screen: 1120px
-//with borders etc, starts having trouble when 660px free space or less
-//ergo,  on window check, if smaller than 660, set to 30 below free space and turn on X-Scroll
-const graphStyle = {
-    margin: "auto",
-    whiteSpace: "nowrap",
-    //width: "calc(100% - 800px)"
-    //overflowX: "scroll"
-}
-
 
 class MapController extends Component {
     constructor(){
@@ -39,6 +28,7 @@ class MapController extends Component {
         this.state= {
             rows: 20,
             columns: 20,
+            squareSize: 30,
             autoExpandSquares: true,
             borderPresets: allTrueBorder,
             activeButton: "2",
@@ -59,15 +49,30 @@ class MapController extends Component {
                     name: "New Floor",
                     index: 1
                 }
-            ]
+            ],
+            graphStyle: {
+                margin: "auto",
+                whiteSpace: "nowrap",
+                //width: "calc(100% - 800px)"
+                //overflowX: "hidden"
+            }
         }
     }
 
-    handleWindowResize = () => {
+    handleWindowResize = (numRows, numCols) => {
+        numRows = numRows || this.state.rows;
+        numCols = numCols || this.state.columns;
         let freeWidth = window.innerWidth - (panelWidth * 2);
-        console.log("Width: " + window.innerWidth);
-        console.log("Height: " + window.innerHeight);
-        console.log("Available width for graph: " + freeWidth);
+        let graphWidth = this.state.squareSize * (numCols + 3);
+        let newGraphStyle = {};
+        if (graphWidth > freeWidth){           
+            newGraphStyle["width"] = freeWidth + "px";
+            newGraphStyle["overflowX"] = "scroll";
+        } else {
+            newGraphStyle["width"] = graphWidth + "px";
+            newGraphStyle["overflowX"] = "hidden";
+        }
+        this.setState({graphStyle: {...this.state.graphStyle, ...newGraphStyle}});
     }    
 
     toggleAutoExpandSquares = () => {
@@ -77,6 +82,7 @@ class MapController extends Component {
     resizeGrid = (newRows, newCols) => {
         let newRef = this.setReferenceArray(newRows, newCols);       
         this.setState({rows: newRows, columns: newCols, refArray: newRef});
+        this.handleWindowResize(newRows, newCols);
     }
 
     backupBordersArray = (newArray) => {
@@ -196,6 +202,7 @@ class MapController extends Component {
     }
 
     componentDidMount(){
+        this.handleWindowResize();
         window.addEventListener("resize", this.handleWindowResize);
     }
 
@@ -358,7 +365,7 @@ class MapController extends Component {
                             moveFloor={this.moveFloor}
                             switchActiveFloor={this.switchActiveFloor} />
                     </Col>
-                    <Col md="auto" style={graphStyle}>
+                    <Col md="auto" style={this.state.graphStyle}>
                         <Graph 
                             autoExpandSquares={this.state.autoExpandSquares} 
                             refArray = {this.state.refArray}
