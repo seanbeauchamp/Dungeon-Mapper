@@ -8,6 +8,7 @@ import SubHeader from './SubHeader';
 
 const maxFloors = 5;
 const panelWidth = 375;
+const containerPadding = 30;
 
 const panelStyle = {
     flex: "0 0 " + panelWidth + "px",
@@ -60,10 +61,11 @@ class MapController extends Component {
     }
 
     handleWindowResize = (numRows, numCols) => {
-        numRows = numRows || this.state.rows;
+        numRows = numRows || this.state.rows; //set these up for optional params
         numCols = numCols || this.state.columns;
+
         let freeWidth = window.innerWidth - (panelWidth * 2);
-        let graphWidth = this.state.squareSize * (numCols + 3);
+        let graphWidth = this.state.squareSize * (numCols + 2);
         let newGraphStyle = {};
         if (graphWidth > freeWidth){           
             newGraphStyle["width"] = freeWidth + "px";
@@ -72,6 +74,18 @@ class MapController extends Component {
             newGraphStyle["width"] = graphWidth + "px";
             newGraphStyle["overflowX"] = "hidden";
         }
+
+        let headersHeight = document.getElementById("mainHeader").offsetHeight + document.getElementById("subHeader").offsetHeight;
+        let freeHeight = window.innerHeight - headersHeight - containerPadding;
+        let graphHeight = this.state.squareSize * (numRows + 2);
+        if (graphHeight > freeHeight){
+            newGraphStyle["height"] = freeHeight + "px";
+            newGraphStyle["overflowY"] = "scroll";
+        } else {
+            newGraphStyle["height"] = graphHeight + "px";
+            newGraphStyle["overflowY"] = "hidden";
+        }
+
         this.setState({graphStyle: {...this.state.graphStyle, ...newGraphStyle}});
     }    
 
@@ -202,8 +216,8 @@ class MapController extends Component {
     }
 
     componentDidMount(){
-        this.handleWindowResize();
-        window.addEventListener("resize", this.handleWindowResize);
+        this.handleWindowResize(this.state.rows, this.state.columns);
+        window.addEventListener("resize",() => this.handleWindowResize(this.state.rows, this.state.columns));
     }
 
     addFloor = () => {
@@ -333,7 +347,7 @@ class MapController extends Component {
                             toggleButton={this.toggleButton}
                             activeButton={this.state.activeButton}
                              />
-                <Container fluid className='mt-2' style={{whiteSpace: "nowrap"}}>
+                <Container id="mapContainer" fluid className='mt-2' style={{whiteSpace: "nowrap"}}>
                 <Row>
                     <Col></Col>
                     <Col>

@@ -10,7 +10,7 @@ const HeaderWrapper = styled.section`
 class Header extends Component{
     render(){
         return(
-            <HeaderWrapper className="text-center">
+            <HeaderWrapper id="mainHeader" className="text-center">
                 <h1 style={{padding: "0%"}}>Placeholder Header</h1>
             </HeaderWrapper>
         );

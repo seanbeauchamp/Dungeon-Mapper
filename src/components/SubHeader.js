@@ -35,7 +35,7 @@ const SubHeader = (props) => {
 
     return (
         <>
-            <Navbar style={{padding: "0"}} color="dark" dark expand="md">
+            <Navbar id="subHeader" style={{padding: "0"}} color="dark" dark expand="md">
                 <Nav className="mr-auto" navbar>
                         <UncontrolledDropdown nav inNavbar>
                             <DropdownToggle nav caret>
