@@ -1,9 +1,10 @@
 import React, {Component} from 'react';
 import {Card, CardBody, Form, FormGroup, Container,
     Input, Label, Nav, NavItem, NavLink, TabContent, TabPane,
-    Row, Col} from 'reactstrap';
+    Row, Col, Button} from 'reactstrap';
 import styled from 'styled-components';
 import classnames from 'classnames';
+import {FaCog} from 'react-icons/fa';
 
 import BorderSelector from './BorderSelector';
 import CellSpecs from './CellSpecs';
@@ -93,6 +94,15 @@ class PropertyCard extends Component{
                     <TabPane tabId="2">
                             <div className="optionsSection pl-2 pt-4">
                                 <Form>
+                                    <FormGroup>
+                                        <Row>
+                                        <Col xs="2"><Label for="nameInput">Name</Label></Col>                                       
+                                        <Col xs="7"><Input disabled type="text" name="nameInput"
+                                            value={this.props.name} size="10" maxLength="10" /></Col>
+                                        <Col xs="2"><Button><FaCog /></Button></Col>
+                                        </Row>
+                                    </FormGroup>
+                                    <hr />
                                     <FormGroup check>
                                         <Label check>
                                         <Input
@@ -114,6 +124,7 @@ class PropertyCard extends Component{
                                             </Label>
                                         </CustomBordersField>
                                     </FormGroup>
+                                    <hr />
                                     <FormGroup>
                                         <Container>
                                             <Row>

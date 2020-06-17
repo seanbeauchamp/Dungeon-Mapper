@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
 import {Card, CardBody, CardHeader, Navbar, 
     Nav, NavItem, ListGroup, ListGroupItem,
-    Modal, ModalBody, ModalHeader, Button,
-    Form, Input, Label} from 'reactstrap';
+    Modal, ModalBody, ModalHeader, Button} from 'reactstrap';
 import {FaPlus, FaTrash, FaChevronUp, FaChevronDown, 
     FaEdit, FaEye} from 'react-icons/fa';
+import {RenameModal} from './MiscModals';
 
 const menuOptionStyles = {
     cursor: "pointer"
@@ -78,14 +78,7 @@ class FloorSelector extends Component {
         }));
     }
 
-    handleRenameChange = event => {
-        let currentName = event.target.value;
-        this.setState({tempRenameValue: currentName});
-    }
-
-    renameFloor = (event) => {
-        event.preventDefault();
-        let newName = this.state.tempRenameValue;
+    renameFloor = (newName) => {
         let nameAlreadyExists = false;
         let currentFloor = this.props.storedFloors[this.state.activeFloor].index;
         this.props.storedFloors.forEach(floor => {
@@ -112,9 +105,6 @@ class FloorSelector extends Component {
         return(
             <>
             <Card className="h-100 mt-1">
-                {/*<CardHeader style={{backgroundColor: "white"}}>
-                    <h4>Floors</h4>
-                    </CardHeader>*/}
                 <CardHeader style={{padding: ".15rem .55rem"}}>
                 <Navbar>
                         <Nav>
@@ -165,25 +155,11 @@ class FloorSelector extends Component {
                     <Button onClick={this.toggleDeleteModal}>Cancel</Button>
                 </ModalBody>
             </Modal>
-            <Modal isOpen={this.state.renameModalOpen} toggle={this.toggleRenameModal}>
-                <ModalHeader toggle={this.toggleRenameModal}>
-                    Rename Floor Title
-                </ModalHeader>
-                <ModalBody>
-                    <Form onSubmit={this.renameFloor}>
-                        { this.state.errors.length > 0 ? <ul>{this.state.errors}</ul> : ''}
-                        <Label for="newName">Enter the new floor name</Label>
-                        <Input required
-                            type="text"        
-                            name="newName"
-                            value={this.state.tempRenameValue}
-                            onChange={(event) => this.handleRenameChange(event)} />
-                        <br />
-                        <Button type="submit">OK</Button>{" "}
-                        <Button onClick={this.toggleRenameModal}>Cancel</Button>
-                    </Form>
-                </ModalBody>
-            </Modal>
+            <RenameModal type={"Floor"} modalOpen={this.state.renameModalOpen}
+                        inputValue={this.state.tempRenameValue}
+                        errors={this.state.errors}
+                        setModalOpen={this.toggleRenameModal}
+                        renameInput={this.renameFloor} />
             </>
         );
     }

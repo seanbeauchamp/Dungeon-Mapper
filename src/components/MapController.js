@@ -27,6 +27,7 @@ class MapController extends Component {
         };
 
         this.state= {
+            name: "New Dungeon",
             rows: 20,
             columns: 20,
             squareSize: 30,
@@ -358,6 +359,7 @@ class MapController extends Component {
                 <Row className='mt-2' style={{minHeight: "80vh"}}>
                     <Col style={panelStyle}>
                     <PropertyCard
+                            name={this.state.name}
                             rows={this.state.rows}
                             columns={this.state.columns}
                             autoExpandSquares={this.state.autoExpandSquares}

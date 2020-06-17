@@ -71,6 +71,7 @@ class CellSpecs extends Component {
                             selectedSquareRef={this.props.selectedSquareRef} />
                     </Col>
                 </Row>
+                <hr />
                 <Row>
                     <Col>
                         <Label for="monsterSection">Monsters</Label>
