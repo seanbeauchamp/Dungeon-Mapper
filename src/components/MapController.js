@@ -55,10 +55,12 @@ class MapController extends Component {
             graphStyle: {
                 margin: "auto",
                 whiteSpace: "nowrap",
-                //width: "calc(100% - 800px)"
-                //overflowX: "hidden"
             }
         }
+    }
+
+    setName = (newName) => {
+        this.setState({name: newName});
     }
 
     handleWindowResize = (numRows, numCols) => {
@@ -360,6 +362,7 @@ class MapController extends Component {
                     <Col style={panelStyle}>
                     <PropertyCard
                             name={this.state.name}
+                            setName={this.setName}
                             rows={this.state.rows}
                             columns={this.state.columns}
                             autoExpandSquares={this.state.autoExpandSquares}

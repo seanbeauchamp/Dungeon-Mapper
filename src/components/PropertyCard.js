@@ -10,6 +10,7 @@ import BorderSelector from './BorderSelector';
 import CellSpecs from './CellSpecs';
 import ResizeModal from './ResizeModal';
 import FloorSelector from './FloorSelector';
+import {RenameModal} from './MiscModals';
 
 const CustomBordersField = styled.fieldset`
     opacity: ${props => props.expand ? 
@@ -21,6 +22,9 @@ class PropertyCard extends Component{
         super(props);
         this.state = {
             activeTab: '0',
+            renameModalOpen: false,
+            tempRenameValue: '',
+            errors: []
         }
     }
 
@@ -35,8 +39,21 @@ class PropertyCard extends Component{
                 }
     }
 
+    setNameFromModal = (newName) => {
+        this.props.setName(newName);
+        this.toggleRenameModal();
+    }
+
+    toggleRenameModal = () => {
+        this.setState(previous => ({
+            renameModalOpen: !previous.renameModalOpen,
+            tempRenameValue: this.props.name, errors: []
+        }));
+    }
+
     render(){
         return(
+            <>
             <Card className="h-100">
                 <CardBody>
                     <Nav tabs>
@@ -98,8 +115,8 @@ class PropertyCard extends Component{
                                         <Row>
                                         <Col xs="2"><Label for="nameInput">Name</Label></Col>                                       
                                         <Col xs="7"><Input disabled type="text" name="nameInput"
-                                            value={this.props.name} size="10" maxLength="10" /></Col>
-                                        <Col xs="2"><Button><FaCog /></Button></Col>
+                                            value={this.props.name} size="10" maxLength="20" /></Col>
+                                        <Col xs="2"><Button onClick={this.toggleRenameModal}><FaCog /></Button></Col>
                                         </Row>
                                     </FormGroup>
                                     <hr />
@@ -148,6 +165,12 @@ class PropertyCard extends Component{
                     </TabContent>
                 </CardBody>
             </Card>
+            <RenameModal type="Dungeon" modalOpen={this.state.renameModalOpen}
+            inputValue={this.state.tempRenameValue}
+            errors={this.state.errors}
+            setModalOpen={this.toggleRenameModal}
+            renameInput={this.setNameFromModal} />
+            </>
         );
     }
 }

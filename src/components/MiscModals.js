@@ -2,11 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {Modal, ModalBody, ModalHeader,
     Form, Button, Label, Input} from 'reactstrap';
 
-//props.modalOpen
-//props.inputValue
-//props.errors
-//props.setModalOpen (function)
-//props.renameInput (function)
 const RenameModal = (props) => {
     const [tempValue, setTempValue] = useState("");
 
@@ -38,6 +33,7 @@ const RenameModal = (props) => {
                         <Input required
                             type="text"        
                             name="newName"
+                            maxLength="20"
                             value={tempValue}
                             onChange={(event) => handleInputChange(event)} />
                         <br />
