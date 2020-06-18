@@ -40,10 +40,10 @@ class MapController extends Component {
             squareArray: [],
             refArray: [],
             bordersArray: [],
-            monsterEntries: [[],[]],
-            lootEntries: [[],[]],
-            trapEntries: [[],[]],
-            stickerEntries: [[],[]],
+            monsterEntries: [],
+            lootEntries: [],
+            trapEntries: [],
+            stickerEntries: [],
             incrementingFloorIndex: 1,
             currentFloorIndex: 1,
             storedFloors: [
@@ -285,8 +285,7 @@ class MapController extends Component {
         return validMove;
     }
 
-    switchActiveFloor = (newIndex) => {
-        //first backup current data into current floor element
+    backupCurrentFloor = () => {
         let storedState;
         let storedIndex;
         for (let n = 0; n < this.state.storedFloors.length; n++){
@@ -300,6 +299,18 @@ class MapController extends Component {
         //recreate storedFloors in full to replace element data on stored State in setState
         let newStoredFloors = this.state.storedFloors;
         newStoredFloors[storedIndex] = storedState;
+
+        return newStoredFloors;
+    }
+
+    prepareBackupForSave = () => {
+        let newStoredFloors = this.backupCurrentFloor();
+        this.setState({storedFloors: newStoredFloors});
+    }
+
+    switchActiveFloor = (newIndex) => {
+        //first backup current data into current floor element
+        let newStoredFloors = this.backupCurrentFloor();
         //now check new element, loading data if present and nullifying existing states otherwise
         let newState;
         for (let n = 0; n < this.state.storedFloors.length; n++){
@@ -335,10 +346,10 @@ class MapController extends Component {
     loadFloor = (n) => {
         let newState = this.state.storedFloors[n];
         newState.bordersArray = newState.bordersArray ? newState.bordersArray : []
-        newState.monsterEntries = newState.monsterEntries ? newState.monsterEntries : [[],[]];
-        newState.lootEntries = newState.lootEntries ? newState.lootEntries : [[],[]];
-        newState.trapEntries = newState.trapEntries ? newState.trapEntries : [[],[]];
-        newState.stickerEntries = newState.stickerEntries ? newState.stickerEntries : [[],[]];
+        newState.monsterEntries = newState.monsterEntries ? newState.monsterEntries : [];
+        newState.lootEntries = newState.lootEntries ? newState.lootEntries : [];
+        newState.trapEntries = newState.trapEntries ? newState.trapEntries : [];
+        newState.stickerEntries = newState.stickerEntries ? newState.stickerEntries : [];
         return newState;
     }
 
@@ -349,6 +360,9 @@ class MapController extends Component {
                 <SubHeader storedFloors={this.state.storedFloors}
                             toggleButton={this.toggleButton}
                             activeButton={this.state.activeButton}
+                            prepareBackupForSave={this.prepareBackupForSave}
+                            name={this.state.name}
+                            rows={this.state.rows} columns={this.state.columns}
                              />
                 <Container id="mapContainer" fluid className='mt-2' style={{whiteSpace: "nowrap"}}>
                 <Row>

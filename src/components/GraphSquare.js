@@ -8,7 +8,7 @@ import miscIcon from '../Images/MiscIcon.png';
 
 const StyledSquare = styled.span`
     background-color: ${props => !props.selected ?
-        props.backgroundNeutral : "#e3e184"};
+        props.backgroundNeutral : "#fffd85"};
     display: inline-block;
     height: 30px;
     width: 30px;

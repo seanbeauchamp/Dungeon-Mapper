@@ -13,7 +13,11 @@ import DoorReg from '../Images/DoorReg.png';
 
 const SubHeader = (props) => {
     const serializeStoredFloors = () => {
-        let jsonString = '{ floors: {';
+        let jsonString = `{ 
+            name: ${props.name}
+            rows: ${props.rows}
+            columns: ${props.columns}
+            floors: {`;
         props.storedFloors.forEach(floor => {
             jsonString += JSON.stringify(floor);
         });
@@ -28,9 +32,10 @@ const SubHeader = (props) => {
     }
 
     const testSave = () => {
+        props.prepareBackupForSave();
         let jsonData = serializeStoredFloors();
         var blob = new Blob([jsonData], {type: "application/dgnm;charset=utf-8"});
-        FileSaver.saveAs(blob, "testfile.dgnm");
+        FileSaver.saveAs(blob, `${props.name}.dgnm`);
     }
 
     return (
