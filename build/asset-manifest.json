@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/Dungeon-Mapper/static/css/main.8ab6f918.chunk.css",
+    "main.js": "/Dungeon-Mapper/static/js/main.6fdf1e22.chunk.js",
+    "main.js.map": "/Dungeon-Mapper/static/js/main.6fdf1e22.chunk.js.map",
+    "runtime-main.js": "/Dungeon-Mapper/static/js/runtime-main.ef03fe71.js",
+    "runtime-main.js.map": "/Dungeon-Mapper/static/js/runtime-main.ef03fe71.js.map",
+    "static/css/2.69121389.chunk.css": "/Dungeon-Mapper/static/css/2.69121389.chunk.css",
+    "static/js/2.2159084b.chunk.js": "/Dungeon-Mapper/static/js/2.2159084b.chunk.js",
+    "static/js/2.2159084b.chunk.js.map": "/Dungeon-Mapper/static/js/2.2159084b.chunk.js.map",
+    "index.html": "/Dungeon-Mapper/index.html",
+    "precache-manifest.af2c1d26c78e34b89957d68ab729d654.js": "/Dungeon-Mapper/precache-manifest.af2c1d26c78e34b89957d68ab729d654.js",
+    "service-worker.js": "/Dungeon-Mapper/service-worker.js",
+    "static/css/2.69121389.chunk.css.map": "/Dungeon-Mapper/static/css/2.69121389.chunk.css.map",
+    "static/css/main.8ab6f918.chunk.css.map": "/Dungeon-Mapper/static/css/main.8ab6f918.chunk.css.map",
+    "static/js/2.2159084b.chunk.js.LICENSE.txt": "/Dungeon-Mapper/static/js/2.2159084b.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.ef03fe71.js",
+    "static/css/2.69121389.chunk.css",
+    "static/js/2.2159084b.chunk.js",
+    "static/css/main.8ab6f918.chunk.css",
+    "static/js/main.6fdf1e22.chunk.js"
+  ]
+}
