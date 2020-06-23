@@ -3,7 +3,7 @@ import {Navbar, Nav, UncontrolledDropdown,
 DropdownToggle, DropdownItem, DropdownMenu,
 Button, ButtonGroup} from 'reactstrap';
 import FileSaver from 'file-saver';
-import {FaMousePointer, FaSquare, FaBorderAll, FaExclamation} from 'react-icons/fa';
+import {FaMousePointer, FaSquare, FaExclamation} from 'react-icons/fa';
 
 import StairsDown from '../Images/StairsDown.png';
 import StairsUp from '../Images/StairsUp.png';
@@ -40,13 +40,13 @@ const SubHeader = (props) => {
 
     return (
         <>
-            <Navbar id="subHeader" style={{padding: "0"}} color="dark" dark expand="md">
+            <Navbar id="subHeader" style={{padding: "0"}} color="dark" className="py-3" dark expand="md">
                 <Nav className="mr-auto" navbar>
                         <UncontrolledDropdown nav inNavbar>
-                            <DropdownToggle nav caret>
-                                File
+                            <DropdownToggle nav >
+                                {/* File */}
                             </DropdownToggle>
-                            <DropdownMenu>
+                            {/*<DropdownMenu>
                                 <DropdownItem>
                                     New Map
                                 </DropdownItem>
@@ -56,7 +56,7 @@ const SubHeader = (props) => {
                                 <DropdownItem onClick={handleFileSelect}>
                                     Load
                                 </DropdownItem>
-                            </DropdownMenu>
+                            </DropdownMenu>*/}
                         </UncontrolledDropdown>
                         <ButtonGroup style={{position: "absolute", left: "50%", top: "50%",
                                 transform: "translate(-50%, -50%)"}}>
@@ -66,9 +66,6 @@ const SubHeader = (props) => {
                             <Button className={props.activeButton === "2" ?
                             "active" : null} onClick={() => props.toggleButton("2", "activeButton")}
                             ><FaSquare /></Button>
-                            <Button className={props.activeButton === "3" ?
-                            "active" : null} onClick={() => props.toggleButton("3", "activeButton")}
-                            ><FaBorderAll /></Button>
                             <Button className={props.activeButton === "4" ?
                             "active" : null} onClick={() => props.toggleButton("4", "activeButton")}
                             ><FaExclamation /></Button>

@@ -11,7 +11,8 @@ class Header extends Component{
     render(){
         return(
             <HeaderWrapper id="mainHeader" className="text-center">
-                <h1 style={{padding: "0%"}}>Placeholder Header</h1>
+                <h2 style={{padding: "0%"}}>Square Dungeon</h2>
+                <h5>Grid-Based Mapping App</h5>
             </HeaderWrapper>
         );
     }
